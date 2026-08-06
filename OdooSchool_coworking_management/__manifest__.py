@@ -24,6 +24,7 @@
     ],
     'demo': [
         'demo/os_coworking_location_demo.xml',
+        'demo/os_coworking_resource_demo.xml',
     ],
     'images': ['static/description/icon.png'],
     'installable': True,

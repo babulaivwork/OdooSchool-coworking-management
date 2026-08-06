@@ -26,7 +26,7 @@
         <field name="name">Resources: user can access assigned locations</field>
         <field name="model_id" ref="model_os_coworking_resource"/>
         <field name="groups" eval="[Command.link(ref('group_coworking_user'))]"/>
-        <field name="domain_force">['&amp;', ('active', '=', True), '|', ('location_id.manager_id', '=', user.id), ('location_id.staff_user_ids', 'in', [user.id])]</field>
+        <field name="domain_force">['&amp;', '&amp;', ('active', '=', True), ('location_id.active', '=', True), '|', ('location_id.manager_id', '=', user.id), ('location_id.staff_user_ids', 'in', [user.id])]</field>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="False"/>

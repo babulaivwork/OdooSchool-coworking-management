@@ -22,6 +22,16 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_resources"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-cubes"
+                        >
+                            <field name="resource_count" widget="statinfo" string="Resources"/>
+                        </button>
+                    </div>
                     <group>
                         <group string="General Information">
                             <field name="name"/>

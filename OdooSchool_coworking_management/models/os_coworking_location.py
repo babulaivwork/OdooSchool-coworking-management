@@ -47,6 +47,15 @@ class OSCoworkingLocation(models.Model):
     )
     image_1920 = fields.Image(string='Image')
     description = fields.Text(string='Description')
+    resource_ids = fields.One2many(
+        comodel_name='os.coworking.resource',
+        inverse_name='location_id',
+        string='Resources',
+    )
+    resource_count = fields.Integer(
+        string='Resource Count',
+        compute='_compute_resource_count',
+    )
 
     _code_company_unique = models.Constraint(
         'UNIQUE(company_id, code)',
@@ -83,3 +92,23 @@ class OSCoworkingLocation(models.Model):
                         'Working hours must be within 00:00 and 24:00, and the closing hour must be later than the opening hour.'
                     )
                 )
+
+    @api.depends('resource_ids', 'resource_ids.active')
+    def _compute_resource_count(self):
+        """Compute the number of active resources for each location."""
+        for location in self:
+            location.resource_count = len(location.resource_ids.filtered('active'))
+
+    def action_view_resources(self):
+        """Open the resources that belong to the selected location.
+
+        :return: Window action filtered by the current location.
+        :rtype: dict
+        """
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id(
+            'OdooSchool_coworking_management.os_coworking_action_resource'
+        )
+        action['domain'] = [('location_id', '=', self.id)]
+        action['context'] = {'default_location_id': self.id}
+        return action
