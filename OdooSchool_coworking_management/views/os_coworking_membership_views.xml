@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="os_coworking_view_membership_list" model="ir.ui.view">
+        <field name="name">os.coworking.membership.list</field>
+        <field name="model">os.coworking.membership</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="plan_id"/>
+                <field name="location_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="remaining_hours" optional="show"/>
+                <field name="remaining_visits" optional="show"/>
+                <field name="auto_renew" optional="hide"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_membership_form" model="ir.ui.view">
+        <field name="name">os.coworking.membership.form</field>
+        <field name="model">os.coworking.membership</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_activate"
+                        string="Activate"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state != 'draft'"
+                    />
+                    <button
+                        name="action_freeze"
+                        string="Freeze"
+                        type="object"
+                        invisible="state != 'active'"
+                    />
+                    <button
+                        name="action_unfreeze"
+                        string="Unfreeze"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state != 'frozen'"
+                    />
+                    <button
+                        name="action_cancel"
+                        string="Terminate"
+                        type="object"
+                        invisible="state not in ['active', 'frozen']"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,active,frozen,expired,cancelled"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Membership">
+                            <field name="partner_id" readonly="state != 'draft'"/>
+                            <field name="plan_id" readonly="state != 'draft'"/>
+                            <field name="location_id" readonly="state != 'draft'"/>
+                            <field
+                                name="auto_renew"
+                                readonly="state in ['expired', 'cancelled']"
+                            />
+                        </group>
+                        <group string="Validity">
+                            <field name="date_start" readonly="state != 'draft'"/>
+                            <field name="date_end" readonly="1" force_save="1"/>
+                            <field name="freeze_date" invisible="state != 'frozen'"/>
+                            <field name="total_frozen_days"/>
+                        </group>
+                    </group>
+                    <group string="Remaining Limits">
+                        <group>
+                            <field name="remaining_hours" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="remaining_visits" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Renewal History">
+                        <group>
+                            <field
+                                name="previous_membership_id"
+                                invisible="not previous_membership_id"
+                            />
+                        </group>
+                        <group>
+                            <field
+                                name="renewed_membership_id"
+                                invisible="not renewed_membership_id"
+                            />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="notes" string="Notes">
+                            <field name="note" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_membership_search" model="ir.ui.view">
+        <field name="name">os.coworking.membership.search</field>
+        <field name="model">os.coworking.membership</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="plan_id"/>
+                <field name="location_id"/>
+                <separator/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="active" string="Active" domain="[('state', '=', 'active')]"/>
+                <filter name="frozen" string="Frozen" domain="[('state', '=', 'frozen')]"/>
+                <filter name="expired" string="Expired" domain="[('state', '=', 'expired')]"/>
+                <filter name="cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter name="start_date" string="Start Date" date="date_start"/>
+                <filter name="end_date" string="End Date" date="date_end"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_plan" string="Membership Plan" context="{'group_by': 'plan_id'}"/>
+                    <filter name="group_by_location" string="Location" context="{'group_by': 'location_id'}"/>
+                    <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter
+                        name="group_by_start_month"
+                        string="Start Month"
+                        context="{'group_by': 'date_start:month'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_membership_pivot" model="ir.ui.view">
+        <field name="name">os.coworking.membership.pivot</field>
+        <field name="model">os.coworking.membership</field>
+        <field name="arch" type="xml">
+            <pivot string="Membership Analysis" display_quantity="1">
+                <field name="plan_id" type="row"/>
+                <field name="location_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="remaining_hours" type="measure"/>
+                <field name="remaining_visits" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+</odoo>
