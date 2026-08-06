@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_os_coworking_location_user,access.os.coworking.location.user,model_os_coworking_location,OdooSchool_coworking_management.group_coworking_user,1,0,0,0
+access_os_coworking_location_admin,access.os.coworking.location.admin,model_os_coworking_location,OdooSchool_coworking_management.group_coworking_admin,1,1,1,1

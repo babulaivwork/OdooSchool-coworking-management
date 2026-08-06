@@ -15,6 +15,8 @@
     ],
     'data': [
         'security/os_coworking_groups.xml',
+        'security/os_coworking_security.xml',
+        'security/ir.model.access.csv',
         'data/os_coworking_sequences.xml',
         'views/os_coworking_menu_views.xml',
         'views/os_coworking_location_views.xml',
