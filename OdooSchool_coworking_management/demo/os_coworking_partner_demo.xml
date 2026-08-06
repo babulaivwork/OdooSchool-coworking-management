@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="os_coworking_partner_demo_amelia_carter" model="res.partner">
+        <field name="name">Amelia Carter</field>
+        <field name="is_coworking_client" eval="True"/>
+        <field name="email">amelia.carter@example.com</field>
+        <field name="phone">+380 50 100 10 01</field>
+        <field name="street">14 Lesi Ukrainky Street</field>
+        <field name="city">Lutsk</field>
+        <field name="zip">43016</field>
+        <field name="country_id" ref="base.ua"/>
+    </record>
+
+    <record id="os_coworking_partner_demo_noah_bennett" model="res.partner">
+        <field name="name">Noah Bennett</field>
+        <field name="is_coworking_client" eval="True"/>
+        <field name="email">noah.bennett@example.com</field>
+        <field name="phone">+380 50 100 10 02</field>
+        <field name="street">31 Voli Avenue</field>
+        <field name="city">Lutsk</field>
+        <field name="zip">43010</field>
+        <field name="country_id" ref="base.ua"/>
+    </record>
+
+    <record id="os_coworking_partner_demo_sophia_reed" model="res.partner">
+        <field name="name">Sophia Reed</field>
+        <field name="is_coworking_client" eval="True"/>
+        <field name="email">sophia.reed@example.com</field>
+        <field name="phone">+380 50 100 10 03</field>
+        <field name="street">7 Kryvyi Val Street</field>
+        <field name="city">Lutsk</field>
+        <field name="zip">43025</field>
+        <field name="country_id" ref="base.ua"/>
+    </record>
+
+    <record id="os_coworking_partner_demo_liam_brooks" model="res.partner">
+        <field name="name">Liam Brooks</field>
+        <field name="is_coworking_client" eval="True"/>
+        <field name="email">liam.brooks@example.com</field>
+        <field name="phone">+380 50 100 10 04</field>
+        <field name="street">9 Naberezhna Street</field>
+        <field name="city">Lutsk</field>
+        <field name="zip">43021</field>
+        <field name="country_id" ref="base.ua"/>
+    </record>
+
+    <record id="os_coworking_partner_demo_brightpath_studio" model="res.partner">
+        <field name="name">BrightPath Studio</field>
+        <field name="company_type">company</field>
+        <field name="is_coworking_client" eval="True"/>
+        <field name="email">office@brightpath.example.com</field>
+        <field name="phone">+380 33 200 20 01</field>
+        <field name="street">18 Soborna Street</field>
+        <field name="city">Lutsk</field>
+        <field name="zip">43000</field>
+        <field name="country_id" ref="base.ua"/>
+    </record>
+
+    <record id="os_coworking_partner_demo_northstar_labs" model="res.partner">
+        <field name="name">Northstar Labs</field>
+        <field name="company_type">company</field>
+        <field name="is_coworking_client" eval="True"/>
+        <field name="email">team@northstarlabs.example.com</field>
+        <field name="phone">+380 33 200 20 02</field>
+        <field name="street">42 Rivnenska Street</field>
+        <field name="city">Lutsk</field>
+        <field name="zip">43024</field>
+        <field name="country_id" ref="base.ua"/>
+    </record>
+</odoo>
