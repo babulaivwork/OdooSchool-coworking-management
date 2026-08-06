@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="os_coworking_view_location_list" model="ir.ui.view">
+        <field name="name">os.coworking.location.list</field>
+        <field name="model">os.coworking.location</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="city"/>
+                <field name="manager_id"/>
+                <field name="working_hour_from" widget="float_time"/>
+                <field name="working_hour_to" widget="float_time"/>
+                <field name="company_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_location_form" model="ir.ui.view">
+        <field name="name">os.coworking.location.form</field>
+        <field name="model">os.coworking.location</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="General Information">
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="company_id"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Management">
+                            <field name="manager_id"/>
+                            <field name="staff_user_ids" widget="many2many_tags"/>
+                            <field name="image_1920" widget="image" class="oe_avatar"/>
+                        </group>
+                    </group>
+                    <group string="Address">
+                        <group>
+                            <field name="street"/>
+                            <field name="street2"/>
+                        </group>
+                        <group>
+                            <field name="city"/>
+                            <field name="zip"/>
+                        </group>
+                    </group>
+                    <group string="Working Hours">
+                        <group>
+                            <field name="working_hour_from" widget="float_time"/>
+                            <field name="working_hour_to" widget="float_time"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_location_search" model="ir.ui.view">
+        <field name="name">os.coworking.location.search</field>
+        <field name="model">os.coworking.location</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="city"/>
+                <field name="manager_id"/>
+                <separator/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_company" string="Company" context="{'group_by': 'company_id'}"/>
+                    <filter name="group_by_manager" string="Manager" context="{'group_by': 'manager_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="os_coworking_action_location" model="ir.actions.act_window">
+        <field name="name">Locations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">os.coworking.location</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="os_coworking_view_location_search"/>
+    </record>
+</odoo>

@@ -17,6 +17,7 @@
         'security/os_coworking_groups.xml',
         'data/os_coworking_sequences.xml',
         'views/os_coworking_menu_views.xml',
+        'views/os_coworking_location_views.xml',
     ],
     'images': ['static/description/icon.png'],
     'installable': True,
