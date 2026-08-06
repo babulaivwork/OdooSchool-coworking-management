@@ -62,8 +62,11 @@ class OSCoworkingLocation(models.Model):
         :rtype: OSCoworkingLocation
         """
         for vals in vals_list:
-            if vals.get('code', self.env._('New')) == self.env._('New'):
-                vals['code'] = self.env['ir.sequence'].next_by_code('os.coworking.location') or self.env._('New')
+            if not vals.get('code') or vals['code'] == self.env._('New'):
+                sequence = self.env['ir.sequence'].next_by_code('os.coworking.location')
+                if not sequence:
+                    raise ValidationError(self.env._('The coworking location sequence is not configured.'))
+                vals['code'] = sequence
         return super().create(vals_list)
 
     @api.constrains('working_hour_from', 'working_hour_to')

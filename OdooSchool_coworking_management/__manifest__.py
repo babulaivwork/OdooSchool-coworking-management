@@ -21,6 +21,9 @@
         'views/os_coworking_menu_views.xml',
         'views/os_coworking_location_views.xml',
     ],
+    'demo': [
+        'demo/os_coworking_location_demo.xml',
+    ],
     'images': ['static/description/icon.png'],
     'installable': True,
     'application': True,
