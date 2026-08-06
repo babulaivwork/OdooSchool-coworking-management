@@ -9,6 +9,15 @@
         <field name="number_increment">1</field>
     </record>
 
+    <record id="os_coworking_sequence_resource" model="ir.sequence">
+        <field name="name">Coworking Resource</field>
+        <field name="code">os.coworking.resource</field>
+        <field name="prefix">RES/</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
     <record id="os_coworking_sequence_booking" model="ir.sequence">
         <field name="name">Coworking Booking</field>
         <field name="code">os.coworking.booking</field>

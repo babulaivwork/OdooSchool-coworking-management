@@ -21,4 +21,26 @@
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="True"/>
     </record>
+
+    <record id="os_coworking_rule_resource_user" model="ir.rule">
+        <field name="name">Resources: user can access assigned locations</field>
+        <field name="model_id" ref="model_os_coworking_resource"/>
+        <field name="groups" eval="[Command.link(ref('group_coworking_user'))]"/>
+        <field name="domain_force">['&amp;', ('active', '=', True), '|', ('location_id.manager_id', '=', user.id), ('location_id.staff_user_ids', 'in', [user.id])]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="os_coworking_rule_resource_admin" model="ir.rule">
+        <field name="name">Resources: administrator has full access</field>
+        <field name="model_id" ref="model_os_coworking_resource"/>
+        <field name="groups" eval="[Command.link(ref('group_coworking_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
 </odoo>
