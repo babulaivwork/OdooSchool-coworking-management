@@ -71,7 +71,7 @@
                 <field name="manager_id"/>
                 <separator/>
                 <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
-                <group expand="0" string="Group By">
+                <group>
                     <filter name="group_by_company" string="Company" context="{'group_by': 'company_id'}"/>
                     <filter name="group_by_manager" string="Manager" context="{'group_by': 'manager_id'}"/>
                 </group>
