@@ -1,3 +1,4 @@
+from . import test_availability_wizard
 from . import test_booking
 from . import test_location
 from . import test_membership
