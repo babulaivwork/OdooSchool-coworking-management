@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="os_coworking_view_membership_plan_list" model="ir.ui.view">
+        <field name="name">os.coworking.membership.plan.list</field>
+        <field name="model">os.coworking.membership.plan</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="usage_type"/>
+                <field name="duration_days"/>
+                <field name="included_hours" optional="hide"/>
+                <field name="included_visits" optional="hide"/>
+                <field name="price"/>
+                <field name="currency_id" optional="hide"/>
+                <field name="all_locations" optional="hide"/>
+                <field name="allow_auto_renew"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_membership_plan_form" model="ir.ui.view">
+        <field name="name">os.coworking.membership.plan.form</field>
+        <field name="model">os.coworking.membership.plan</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="Plan Details">
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="usage_type"/>
+                            <field name="duration_days"/>
+                            <field name="all_locations"/>
+                            <field
+                                name="active"
+                                groups="OdooSchool_coworking_management.group_coworking_admin"
+                            />
+                        </group>
+                        <group string="Pricing and Renewal">
+                            <field name="price"/>
+                            <field name="currency_id"/>
+                            <field name="allow_auto_renew"/>
+                        </group>
+                    </group>
+                    <group string="Usage Limits" invisible="usage_type == 'unlimited'">
+                        <group>
+                            <field
+                                name="included_hours"
+                                invisible="usage_type != 'hours'"
+                                required="usage_type == 'hours'"
+                            />
+                            <field
+                                name="included_visits"
+                                invisible="usage_type != 'visits'"
+                                required="usage_type == 'visits'"
+                            />
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1" colspan="2"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_membership_plan_search" model="ir.ui.view">
+        <field name="name">os.coworking.membership.plan.search</field>
+        <field name="model">os.coworking.membership.plan</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="usage_type"/>
+                <separator/>
+                <filter name="unlimited" string="Unlimited" domain="[('usage_type', '=', 'unlimited')]"/>
+                <filter name="hours" string="Hours" domain="[('usage_type', '=', 'hours')]"/>
+                <filter name="visits" string="Visits" domain="[('usage_type', '=', 'visits')]"/>
+                <filter name="auto_renew" string="Automatic Renewal" domain="[('allow_auto_renew', '=', True)]"/>
+                <separator/>
+                <filter
+                    name="archived"
+                    string="Archived"
+                    domain="[('active', '=', False)]"
+                    groups="OdooSchool_coworking_management.group_coworking_admin"
+                />
+                <group>
+                    <filter name="group_by_usage_type" string="Usage Type" context="{'group_by': 'usage_type'}"/>
+                    <filter name="group_by_auto_renew" string="Automatic Renewal" context="{'group_by': 'allow_auto_renew'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="os_coworking_action_membership_plan" model="ir.actions.act_window">
+        <field name="name">Membership Plans</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">os.coworking.membership.plan</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="os_coworking_view_membership_plan_search"/>
+    </record>
+
+    <menuitem
+        id="os_coworking_menu_memberships"
+        name="Memberships"
+        parent="os_coworking_menu_root"
+        sequence="20"
+    />
+
+    <menuitem
+        id="os_coworking_menu_membership_plan"
+        name="Membership Plans"
+        parent="os_coworking_menu_memberships"
+        action="os_coworking_action_membership_plan"
+        sequence="10"
+        groups="OdooSchool_coworking_management.group_coworking_user"
+    />
+</odoo>

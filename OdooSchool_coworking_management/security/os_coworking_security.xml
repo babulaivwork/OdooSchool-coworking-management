@@ -43,4 +43,26 @@
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="True"/>
     </record>
+
+    <record id="os_coworking_rule_membership_plan_user" model="ir.rule">
+        <field name="name">Membership plans: user can access active plans</field>
+        <field name="model_id" ref="model_os_coworking_membership_plan"/>
+        <field name="groups" eval="[Command.link(ref('group_coworking_user'))]"/>
+        <field name="domain_force">[('active', '=', True)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="os_coworking_rule_membership_plan_admin" model="ir.rule">
+        <field name="name">Membership plans: administrator has full access</field>
+        <field name="model_id" ref="model_os_coworking_membership_plan"/>
+        <field name="groups" eval="[Command.link(ref('group_coworking_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
 </odoo>

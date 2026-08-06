@@ -103,3 +103,12 @@ class OSCoworkingMembershipPlan(models.Model):
                 raise ValidationError(
                     self.env._('Visit-based plans require a positive number of included visits and no included hours.')
                 )
+
+    @api.onchange('usage_type')
+    def _onchange_usage_type(self):
+        """Clear limits that do not apply to the selected usage type."""
+        for plan in self:
+            if plan.usage_type != 'hours':
+                plan.included_hours = 0.0
+            if plan.usage_type != 'visits':
+                plan.included_visits = 0
