@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="os_coworking_module_category" model="ir.module.category">
+        <field name="name">Coworking Management</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="os_coworking_privilege" model="res.groups.privilege">
+        <field name="name">Coworking Management</field>
+        <field name="description">Access levels for the Coworking Management application.</field>
+        <field name="placeholder">No Access</field>
+        <field name="sequence">30</field>
+        <field name="category_id" ref="os_coworking_module_category"/>
+    </record>
+
+    <record id="group_coworking_user" model="res.groups">
+        <field name="name">Coworking User</field>
+        <field name="sequence">10</field>
+        <field name="comment">Can perform day-to-day coworking operations.</field>
+        <field name="privilege_id" ref="os_coworking_privilege"/>
+        <field name="implied_ids" eval="[Command.link(ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_coworking_admin" model="res.groups">
+        <field name="name">Coworking Admin</field>
+        <field name="sequence">20</field>
+        <field name="comment">Has full access to Coworking Management configuration and operations.</field>
+        <field name="privilege_id" ref="os_coworking_privilege"/>
+        <field name="implied_ids" eval="[Command.link(ref('group_coworking_user'))]"/>
+        <field name="user_ids" eval="[Command.link(ref('base.user_root')), Command.link(ref('base.user_admin'))]"/>
+    </record>
+</odoo>

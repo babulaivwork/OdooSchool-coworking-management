@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="os_coworking_menu_root"
+        name="Coworking"
+        sequence="30"
+        groups="OdooSchool_coworking_management.group_coworking_user"
+        web_icon="OdooSchool_coworking_management,static/description/icon.png"
+    />
+</odoo>
