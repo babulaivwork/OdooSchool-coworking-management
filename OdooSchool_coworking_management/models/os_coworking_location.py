@@ -9,7 +9,13 @@ class OSCoworkingLocation(models.Model):
     _description = 'Coworking Location'
 
     name = fields.Char(string='Name', required=True)
-    code = fields.Char(string='Code', required=True)
+    code = fields.Char(
+        string='Code',
+        required=True,
+        readonly=True,
+        copy=False,
+        default=lambda self: self.env._('New'),
+    )
     active = fields.Boolean(string='Active', default=True)
     company_id = fields.Many2one(
         comodel_name='res.company',
@@ -46,6 +52,19 @@ class OSCoworkingLocation(models.Model):
         'UNIQUE(company_id, code)',
         'The location code must be unique within the company.',
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Create locations and assign their sequence-generated codes.
+
+        :param list[dict] vals_list: Values for the locations to create.
+        :return: Newly created coworking locations.
+        :rtype: OSCoworkingLocation
+        """
+        for vals in vals_list:
+            if vals.get('code', self.env._('New')) == self.env._('New'):
+                vals['code'] = self.env['ir.sequence'].next_by_code('os.coworking.location') or self.env._('New')
+        return super().create(vals_list)
 
     @api.constrains('working_hour_from', 'working_hour_to')
     def _check_working_hours(self):
