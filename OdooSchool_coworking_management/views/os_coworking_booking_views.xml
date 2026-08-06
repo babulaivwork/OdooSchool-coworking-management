@@ -144,6 +144,25 @@
         </field>
     </record>
 
+    <record id="os_coworking_view_booking_calendar" model="ir.ui.view">
+        <field name="name">os.coworking.booking.calendar</field>
+        <field name="model">os.coworking.booking</field>
+        <field name="arch" type="xml">
+            <calendar
+                string="Bookings"
+                date_start="start_datetime"
+                date_stop="end_datetime"
+                color="resource_id"
+                quick_create="0"
+                event_open_popup="true"
+            >
+                <field name="resource_id" filters="1"/>
+                <field name="partner_id"/>
+                <field name="location_id" filters="1"/>
+            </calendar>
+        </field>
+    </record>
+
     <record id="os_coworking_view_booking_graph" model="ir.ui.view">
         <field name="name">os.coworking.booking.graph</field>
         <field name="model">os.coworking.booking</field>
@@ -176,7 +195,7 @@
         <field name="name">Bookings</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">os.coworking.booking</field>
-        <field name="view_mode">list,form,graph,pivot</field>
+        <field name="view_mode">list,form,calendar,graph,pivot</field>
         <field name="search_view_id" ref="os_coworking_view_booking_search"/>
     </record>
 
