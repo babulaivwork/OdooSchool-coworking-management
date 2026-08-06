@@ -13,15 +13,18 @@ class ProductTemplate(models.Model):
     coworking_service_type = fields.Selection(
         selection=[
             ('membership', 'Membership'),
-            ('one_time_booking', 'One-Time Booking'),
             ('additional_service', 'Additional Service'),
         ],
         string='Coworking Service Type',
     )
-    coworking_plan_ids = fields.Many2many(
+    coworking_plan_id = fields.Many2one(
         comodel_name='os.coworking.membership.plan',
-        relation='os_coworking_product_plan_rel',
-        column1='product_template_id',
-        column2='plan_id',
-        string='Coworking Membership Plans',
+        string='Coworking Membership Plan',
+        copy=False,
+        ondelete='restrict',
+    )
+
+    _coworking_plan_unique = models.Constraint(
+        'UNIQUE(coworking_plan_id)',
+        'A coworking membership plan can be linked to only one product.',
     )

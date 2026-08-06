@@ -10,7 +10,6 @@
         'base',
         'mail',
         'product',
-        'calendar',
         'web',
     ],
     'data': [

@@ -1,5 +1,7 @@
-from odoo import Command
+from psycopg2.errors import UniqueViolation
+
 from odoo.tests import TransactionCase
+from odoo.tools import mute_logger
 
 
 class TestCoworkingStandardModelExtensions(TransactionCase):
@@ -22,7 +24,6 @@ class TestCoworkingStandardModelExtensions(TransactionCase):
         """Verify coworking service types and membership plan linking."""
         expected_service_types = {
             'membership',
-            'one_time_booking',
             'additional_service',
         }
         service_type_field = self.env['product.template']._fields['coworking_service_type']
@@ -41,11 +42,26 @@ class TestCoworkingStandardModelExtensions(TransactionCase):
                 'type': 'service',
                 'is_coworking_service': True,
                 'coworking_service_type': 'membership',
-                'coworking_plan_ids': [Command.link(plan.id)],
+                'coworking_plan_id': plan.id,
             }
         )
 
         self.assertEqual(available_service_types, expected_service_types)
         self.assertTrue(product.is_coworking_service)
         self.assertEqual(product.coworking_service_type, 'membership')
-        self.assertEqual(product.coworking_plan_ids, plan)
+        self.assertEqual(product.coworking_plan_id, plan)
+
+        with (
+            mute_logger('odoo.sql_db'),
+            self.assertRaises(UniqueViolation),
+            self.cr.savepoint(),
+        ):
+            self.env['product.template'].create(
+                {
+                    'name': 'Duplicate Plan Membership Service',
+                    'type': 'service',
+                    'is_coworking_service': True,
+                    'coworking_service_type': 'membership',
+                    'coworking_plan_id': plan.id,
+                }
+            )

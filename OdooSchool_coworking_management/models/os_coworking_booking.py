@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class OSCoworkingBooking(models.Model):
@@ -47,6 +47,13 @@ class OSCoworkingBooking(models.Model):
         store=True,
         readonly=True,
     )
+    membership_id = fields.Many2one(
+        comodel_name='os.coworking.membership',
+        string='Membership',
+        required=True,
+        ondelete='restrict',
+        tracking=True,
+    )
     start_datetime = fields.Datetime(
         string='Start',
         required=True,
@@ -61,6 +68,19 @@ class OSCoworkingBooking(models.Model):
         string='Duration (Hours)',
         compute='_compute_duration_hours',
         store=True,
+    )
+    state = fields.Selection(
+        selection=[
+            ('draft', 'Draft'),
+            ('confirmed', 'Confirmed'),
+            ('done', 'Done'),
+            ('cancelled', 'Cancelled'),
+        ],
+        string='Status',
+        required=True,
+        default='draft',
+        copy=False,
+        tracking=True,
     )
 
     _booking_interval_valid = models.Constraint(
@@ -78,21 +98,155 @@ class OSCoworkingBooking(models.Model):
             else:
                 booking.duration_hours = 0.0
 
-    @api.constrains('start_datetime', 'end_datetime')
+    @api.constrains('resource_id', 'start_datetime', 'end_datetime')
     def _check_hourly_interval(self):
         """Ensure that booking boundaries follow the full-hour grid.
 
         :raises ValidationError: If a boundary contains minutes or seconds.
         """
         for booking in self:
-            boundaries = (booking.start_datetime, booking.end_datetime)
-            if any(
-                value and (value.minute or value.second or value.microsecond)
-                for value in boundaries
-            ):
-                raise ValidationError(
-                    self.env._('The booking start and end times must be set to full hours.')
+            for value in (booking.start_datetime, booking.end_datetime):
+                if not value:
+                    continue
+                local_value = booking._to_local_datetime(value)
+                if local_value.minute or local_value.second or local_value.microsecond:
+                    raise ValidationError(
+                        self.env._('The booking start and end times must be set to full hours.')
+                    )
+
+    @api.constrains('resource_id', 'start_datetime', 'end_datetime', 'state')
+    def _check_confirmed_booking(self):
+        """Validate resource availability and schedule for confirmed bookings."""
+        for booking in self.filtered(lambda item: item.state == 'confirmed'):
+            booking._validate_resource_availability()
+            booking._validate_working_hours()
+            booking._validate_no_overlap()
+
+    def _get_timezone_name(self):
+        """Return the common timezone used for coworking operations.
+
+        :return: Company timezone, with user timezone and UTC as fallbacks.
+        :rtype: str
+        """
+        self.ensure_one()
+        return self.company_id.partner_id.tz or self.env.user.tz or 'UTC'
+
+    def _to_local_datetime(self, value):
+        """Convert a stored UTC datetime to the coworking timezone.
+
+        :param datetime value: Naive UTC datetime stored by Odoo.
+        :return: Timezone-aware local datetime.
+        :rtype: datetime
+        """
+        self.ensure_one()
+        return fields.Datetime.context_timestamp(
+            self.with_context(tz=self._get_timezone_name()),
+            value,
+        )
+
+    def _validate_resource_availability(self):
+        """Ensure that the selected resource can accept a booking.
+
+        :raises ValidationError: If the resource is archived, inactive, or
+            under maintenance.
+        """
+        self.ensure_one()
+        if not self.resource_id.active or self.resource_id.state != 'available':
+            raise ValidationError(
+                self.env._('Only active and available resources can be booked.')
+            )
+
+    def _validate_working_hours(self):
+        """Ensure the booking fits one local working day of its location.
+
+        :raises ValidationError: If the interval crosses a local date or falls
+            outside the location working hours.
+        """
+        self.ensure_one()
+        start_local = self._to_local_datetime(self.start_datetime)
+        end_local = self._to_local_datetime(self.end_datetime)
+        start_hour = start_local.hour + start_local.minute / 60.0
+        end_hour = end_local.hour + end_local.minute / 60.0
+        location = self.location_id
+
+        if (
+            start_local.date() != end_local.date()
+            or start_hour < location.working_hour_from
+            or end_hour > location.working_hour_to
+        ):
+            raise ValidationError(
+                self.env._(
+                    'The booking must be within the location working hours and cannot cross a local calendar day.'
                 )
+            )
+
+    def _validate_no_overlap(self):
+        """Ensure the resource has no overlapping confirmed booking.
+
+        Adjacent bookings are allowed because strict inequalities are used.
+
+        :raises ValidationError: If another confirmed booking overlaps.
+        """
+        self.ensure_one()
+        overlapping_booking = self.search(
+            [
+                ('id', '!=', self.id),
+                ('resource_id', '=', self.resource_id.id),
+                ('state', '=', 'confirmed'),
+                ('start_datetime', '<', self.end_datetime),
+                ('end_datetime', '>', self.start_datetime),
+            ],
+            limit=1,
+        )
+        if overlapping_booking:
+            raise ValidationError(
+                self.env._('The resource already has a confirmed booking during this period.')
+            )
+
+    def action_confirm(self):
+        """Confirm draft bookings after validating operational constraints.
+
+        :return: ``True`` after all selected bookings are confirmed.
+        :rtype: bool
+        :raises UserError: If a booking is not in draft state.
+        """
+        if any(booking.state != 'draft' for booking in self):
+            raise UserError(self.env._('Only draft bookings can be confirmed.'))
+        for booking in self:
+            booking.state = 'confirmed'
+            booking.message_post(body=self.env._('Booking confirmed.'))
+        return True
+
+    def action_done(self):
+        """Complete confirmed bookings during the future check-out flow.
+
+        :return: ``True`` after all selected bookings are completed.
+        :rtype: bool
+        :raises UserError: If a booking is not confirmed.
+        """
+        if any(booking.state != 'confirmed' for booking in self):
+            raise UserError(self.env._('Only confirmed bookings can be completed.'))
+        self.write({'state': 'done'})
+        for booking in self:
+            booking.message_post(body=self.env._('Booking completed.'))
+        return True
+
+    def action_cancel(self):
+        """Cancel confirmed bookings.
+
+        Reserved membership limits will be returned in the membership booking
+        implementation step.
+
+        :return: ``True`` after all selected bookings are cancelled.
+        :rtype: bool
+        :raises UserError: If a booking is not confirmed.
+        """
+        if any(booking.state != 'confirmed' for booking in self):
+            raise UserError(self.env._('Only confirmed bookings can be cancelled.'))
+        self.write({'state': 'cancelled'})
+        for booking in self:
+            booking.message_post(body=self.env._('Booking cancelled.'))
+        return True
 
     @api.model_create_multi
     def create(self, vals_list):

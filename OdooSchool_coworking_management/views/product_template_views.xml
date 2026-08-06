@@ -19,9 +19,9 @@
                             required="is_coworking_service"
                         />
                         <field
-                            name="coworking_plan_ids"
-                            widget="many2many_tags"
+                            name="coworking_plan_id"
                             invisible="not is_coworking_service or coworking_service_type != 'membership'"
+                            required="is_coworking_service and coworking_service_type == 'membership'"
                             options="{'no_create': True}"
                         />
                     </group>
