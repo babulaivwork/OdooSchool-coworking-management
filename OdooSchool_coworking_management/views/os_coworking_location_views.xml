@@ -24,6 +24,15 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button
+                            name="action_view_bookings"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-calendar"
+                            groups="OdooSchool_coworking_management.group_coworking_user"
+                        >
+                            <field name="booking_count" widget="statinfo" string="Bookings"/>
+                        </button>
+                        <button
                             name="action_view_resources"
                             type="object"
                             class="oe_stat_button"

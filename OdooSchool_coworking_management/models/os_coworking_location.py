@@ -56,6 +56,15 @@ class OSCoworkingLocation(models.Model):
         string='Resource Count',
         compute='_compute_resource_count',
     )
+    booking_ids = fields.One2many(
+        comodel_name='os.coworking.booking',
+        inverse_name='location_id',
+        string='Bookings',
+    )
+    booking_count = fields.Integer(
+        string='Booking Count',
+        compute='_compute_booking_count',
+    )
 
     _code_company_unique = models.Constraint(
         'UNIQUE(company_id, code)',
@@ -99,6 +108,19 @@ class OSCoworkingLocation(models.Model):
         for location in self:
             location.resource_count = len(location.resource_ids.filtered('active'))
 
+    @api.depends('booking_ids')
+    def _compute_booking_count(self):
+        """Compute the number of accessible bookings for each location."""
+        count_by_location = dict(
+            self.env['os.coworking.booking']._read_group(
+                domain=[('location_id', 'in', self.ids)],
+                groupby=['location_id'],
+                aggregates=['__count'],
+            )
+        )
+        for location in self:
+            location.booking_count = count_by_location.get(location, 0)
+
     def action_view_resources(self):
         """Open the resources that belong to the selected location.
 
@@ -111,4 +133,17 @@ class OSCoworkingLocation(models.Model):
         )
         action['domain'] = [('location_id', '=', self.id)]
         action['context'] = {'default_location_id': self.id}
+        return action
+
+    def action_view_bookings(self):
+        """Open the bookings that belong to the selected location.
+
+        :return: Booking action filtered by the current location.
+        :rtype: dict
+        """
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id(
+            'OdooSchool_coworking_management.os_coworking_action_booking'
+        )
+        action['domain'] = [('location_id', '=', self.id)]
         return action

@@ -1,3 +1,4 @@
+from . import test_booking
 from . import test_location
 from . import test_membership
 from . import test_membership_plan
