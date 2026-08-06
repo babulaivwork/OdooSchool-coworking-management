@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="os_coworking_product_demo_unlimited_monthly" model="product.template">
+        <field name="name">Unlimited Monthly Membership</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">250.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">membership</field>
+        <field name="description_sale">Unlimited coworking access for thirty days.</field>
+    </record>
+
+    <record id="os_coworking_product_demo_flexible_hours" model="product.template">
+        <field name="name">Flexible 10-Hour Membership</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">80.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">membership</field>
+        <field name="description_sale">Ten flexible coworking hours available during thirty days.</field>
+    </record>
+
+    <record id="os_coworking_product_demo_hot_desk_day" model="product.template">
+        <field name="name">Hot Desk Day Booking</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">20.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">one_time_booking</field>
+        <field name="description_sale">One-day access to an available hot desk.</field>
+    </record>
+
+    <record id="os_coworking_product_demo_meeting_room_hour" model="product.template">
+        <field name="name">Meeting Room Hour Booking</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">18.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">one_time_booking</field>
+        <field name="description_sale">One hour of access to an available meeting room.</field>
+    </record>
+
+    <record id="os_coworking_product_demo_locker_rental" model="product.template">
+        <field name="name">Locker Rental</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">15.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">additional_service</field>
+        <field name="description_sale">Personal locker rental for thirty days.</field>
+    </record>
+
+    <record id="os_coworking_product_demo_printing_package" model="product.template">
+        <field name="name">Printing Package</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">10.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">additional_service</field>
+        <field name="description_sale">A prepaid package of coworking printing services.</field>
+    </record>
+</odoo>
