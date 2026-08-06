@@ -15,6 +15,7 @@
     ],
     'data': [
         'security/os_coworking_groups.xml',
+        'data/os_coworking_sequences.xml',
         'views/os_coworking_menu_views.xml',
     ],
     'images': ['static/description/icon.png'],
