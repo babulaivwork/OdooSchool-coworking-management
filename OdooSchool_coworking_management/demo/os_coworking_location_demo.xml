@@ -4,6 +4,7 @@
         <field name="name">Central Hub</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="manager_id" ref="base.user_admin"/>
+        <field name="staff_user_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo'))]"/>
         <field name="street">12 Soborna Street</field>
         <field name="city">Lutsk</field>
         <field name="zip">43000</field>
@@ -16,6 +17,7 @@
         <field name="name">Riverside Workspace</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="manager_id" ref="base.user_admin"/>
+        <field name="staff_user_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo'))]"/>
         <field name="street">8 Naberezhna Street</field>
         <field name="city">Lutsk</field>
         <field name="zip">43010</field>
@@ -28,6 +30,7 @@
         <field name="name">Business District Center</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="manager_id" ref="base.user_admin"/>
+        <field name="staff_user_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo'))]"/>
         <field name="street">25 Voli Avenue</field>
         <field name="city">Lutsk</field>
         <field name="zip">43025</field>
@@ -39,6 +42,7 @@
     <record id="os_coworking_location_demo_old_town" model="os.coworking.location">
         <field name="name">Old Town Office</field>
         <field name="company_id" ref="base.main_company"/>
+        <field name="staff_user_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo'))]"/>
         <field name="street">4 Drahomanova Street</field>
         <field name="city">Lutsk</field>
         <field name="zip">43016</field>
@@ -51,6 +55,7 @@
     <record id="os_coworking_location_demo_event_annex" model="os.coworking.location">
         <field name="name">Former Event Annex</field>
         <field name="company_id" ref="base.main_company"/>
+        <field name="staff_user_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo'))]"/>
         <field name="street">17 Hlushets Street</field>
         <field name="city">Lutsk</field>
         <field name="zip">43021</field>
