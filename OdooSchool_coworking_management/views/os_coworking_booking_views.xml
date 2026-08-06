@@ -143,4 +143,57 @@
             </search>
         </field>
     </record>
+
+    <record id="os_coworking_view_booking_graph" model="ir.ui.view">
+        <field name="name">os.coworking.booking.graph</field>
+        <field name="model">os.coworking.booking</field>
+        <field name="arch" type="xml">
+            <graph string="Booking Analysis" type="bar" stacked="1">
+                <field name="start_datetime" interval="month" type="row"/>
+                <field name="state" type="col"/>
+                <field name="duration_hours" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_booking_pivot" model="ir.ui.view">
+        <field name="name">os.coworking.booking.pivot</field>
+        <field name="model">os.coworking.booking</field>
+        <field name="arch" type="xml">
+            <pivot string="Booking Analysis" display_quantity="1">
+                <field name="location_id" type="row"/>
+                <field name="resource_id" type="row"/>
+                <field name="start_datetime" interval="month" type="col"/>
+                <field name="state" type="col"/>
+                <field name="duration_hours" type="measure"/>
+                <field name="reserved_hours" type="measure"/>
+                <field name="reserved_visits" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="os_coworking_action_booking" model="ir.actions.act_window">
+        <field name="name">Bookings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">os.coworking.booking</field>
+        <field name="view_mode">list,form,graph,pivot</field>
+        <field name="search_view_id" ref="os_coworking_view_booking_search"/>
+    </record>
+
+    <menuitem
+        id="os_coworking_menu_operations"
+        name="Operations"
+        parent="os_coworking_menu_root"
+        sequence="10"
+        groups="OdooSchool_coworking_management.group_coworking_user"
+    />
+
+    <menuitem
+        id="os_coworking_menu_booking"
+        name="Bookings"
+        parent="os_coworking_menu_operations"
+        action="os_coworking_action_booking"
+        sequence="10"
+        groups="OdooSchool_coworking_management.group_coworking_user"
+    />
 </odoo>
