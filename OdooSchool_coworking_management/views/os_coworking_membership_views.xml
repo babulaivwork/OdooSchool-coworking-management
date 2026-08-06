@@ -132,7 +132,7 @@
                 <separator/>
                 <filter name="start_date" string="Start Date" date="date_start"/>
                 <filter name="end_date" string="End Date" date="date_end"/>
-                <group expand="0" string="Group By">
+                <group>
                     <filter name="group_by_plan" string="Membership Plan" context="{'group_by': 'plan_id'}"/>
                     <filter name="group_by_location" string="Location" context="{'group_by': 'location_id'}"/>
                     <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
