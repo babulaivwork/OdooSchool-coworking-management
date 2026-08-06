@@ -20,6 +20,7 @@
         'data/os_coworking_sequences.xml',
         'views/os_coworking_menu_views.xml',
         'views/os_coworking_location_views.xml',
+        'views/os_coworking_resource_views.xml',
     ],
     'demo': [
         'demo/os_coworking_location_demo.xml',
