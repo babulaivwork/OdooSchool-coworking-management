@@ -1,3 +1,4 @@
 from . import test_location
 from . import test_membership_plan
 from . import test_resource
+from . import test_standard_model_extensions

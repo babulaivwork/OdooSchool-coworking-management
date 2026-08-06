@@ -22,6 +22,8 @@
         'views/os_coworking_location_views.xml',
         'views/os_coworking_resource_views.xml',
         'views/os_coworking_membership_plan_views.xml',
+        'views/res_partner_views.xml',
+        'views/product_template_views.xml',
     ],
     'demo': [
         'demo/os_coworking_partner_demo.xml',

@@ -7,6 +7,7 @@
         <field name="list_price">250.0</field>
         <field name="is_coworking_service" eval="True"/>
         <field name="coworking_service_type">membership</field>
+        <field name="coworking_plan_ids" eval="[Command.link(ref('os_coworking_membership_plan_demo_unlimited_month'))]"/>
         <field name="description_sale">Unlimited coworking access for thirty days.</field>
     </record>
 
@@ -17,7 +18,19 @@
         <field name="list_price">80.0</field>
         <field name="is_coworking_service" eval="True"/>
         <field name="coworking_service_type">membership</field>
+        <field name="coworking_plan_ids" eval="[Command.link(ref('os_coworking_membership_plan_demo_hours_starter'))]"/>
         <field name="description_sale">Ten flexible coworking hours available during thirty days.</field>
+    </record>
+
+    <record id="os_coworking_product_demo_regular_visits" model="product.template">
+        <field name="name">Regular 12-Visit Membership</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">95.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">membership</field>
+        <field name="coworking_plan_ids" eval="[Command.link(ref('os_coworking_membership_plan_demo_visits_regular'))]"/>
+        <field name="description_sale">Twelve coworking visits available during sixty days.</field>
     </record>
 
     <record id="os_coworking_product_demo_hot_desk_day" model="product.template">

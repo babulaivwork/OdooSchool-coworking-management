@@ -18,3 +18,10 @@ class ProductTemplate(models.Model):
         ],
         string='Coworking Service Type',
     )
+    coworking_plan_ids = fields.Many2many(
+        comodel_name='os.coworking.membership.plan',
+        relation='os_coworking_product_plan_rel',
+        column1='product_template_id',
+        column2='plan_id',
+        string='Coworking Membership Plans',
+    )
