@@ -23,6 +23,7 @@
         'views/os_coworking_resource_views.xml',
         'views/os_coworking_membership_plan_views.xml',
         'views/os_coworking_membership_views.xml',
+        'views/os_coworking_booking_views.xml',
         'views/res_partner_views.xml',
         'views/product_template_views.xml',
     ],
