@@ -113,7 +113,7 @@
         name="Membership Plans"
         parent="os_coworking_menu_memberships"
         action="os_coworking_action_membership_plan"
-        sequence="10"
+        sequence="20"
         groups="OdooSchool_coworking_management.group_coworking_user"
     />
 </odoo>

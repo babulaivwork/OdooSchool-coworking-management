@@ -33,6 +33,7 @@
         'demo/os_coworking_resource_demo.xml',
         'demo/os_coworking_membership_plan_demo.xml',
         'demo/os_coworking_product_demo.xml',
+        'demo/os_coworking_membership_demo.xml',
     ],
     'images': ['static/description/icon.png'],
     'installable': True,
