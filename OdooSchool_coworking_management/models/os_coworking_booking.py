@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class OSCoworkingBooking(models.Model):
@@ -82,10 +83,30 @@ class OSCoworkingBooking(models.Model):
         copy=False,
         tracking=True,
     )
+    reserved_hours = fields.Float(
+        string='Reserved Hours',
+        readonly=True,
+        copy=False,
+        default=0.0,
+    )
+    reserved_visits = fields.Integer(
+        string='Reserved Visits',
+        readonly=True,
+        copy=False,
+        default=0,
+    )
 
     _booking_interval_valid = models.Constraint(
         'CHECK(end_datetime > start_datetime)',
         'The booking end time must be later than the start time.',
+    )
+    _reserved_hours_non_negative = models.Constraint(
+        'CHECK(reserved_hours >= 0)',
+        'The reserved hours cannot be negative.',
+    )
+    _reserved_visits_non_negative = models.Constraint(
+        'CHECK(reserved_visits >= 0)',
+        'The reserved visits cannot be negative.',
     )
 
     @api.depends('start_datetime', 'end_datetime')
@@ -114,13 +135,26 @@ class OSCoworkingBooking(models.Model):
                         self.env._('The booking start and end times must be set to full hours.')
                     )
 
-    @api.constrains('resource_id', 'start_datetime', 'end_datetime', 'state')
+    @api.constrains(
+        'partner_id',
+        'resource_id',
+        'membership_id',
+        'start_datetime',
+        'end_datetime',
+        'state',
+    )
     def _check_confirmed_booking(self):
         """Validate resource availability and schedule for confirmed bookings."""
         for booking in self.filtered(lambda item: item.state == 'confirmed'):
-            booking._validate_resource_availability()
-            booking._validate_working_hours()
-            booking._validate_no_overlap()
+            booking._validate_confirmation()
+
+    def _validate_confirmation(self):
+        """Run all checks required before confirming a booking."""
+        self.ensure_one()
+        self._validate_membership_eligibility()
+        self._validate_resource_availability()
+        self._validate_working_hours()
+        self._validate_no_overlap()
 
     def _get_timezone_name(self):
         """Return the common timezone used for coworking operations.
@@ -155,6 +189,91 @@ class OSCoworkingBooking(models.Model):
             raise ValidationError(
                 self.env._('Only active and available resources can be booked.')
             )
+
+    def _validate_membership_eligibility(self):
+        """Ensure the membership can cover the booking.
+
+        :raises ValidationError: If the membership has a different owner, is
+            inactive, is outside its validity dates, or excludes the location.
+        """
+        self.ensure_one()
+        membership = self.membership_id
+        if membership.partner_id != self.partner_id:
+            raise ValidationError(
+                self.env._('The booking client must be the owner of the selected membership.')
+            )
+        if membership.state != 'active':
+            raise ValidationError(self.env._('Only an active membership can be used for booking.'))
+
+        start_date = self._to_local_datetime(self.start_datetime).date()
+        end_date = self._to_local_datetime(self.end_datetime).date()
+        if start_date < membership.date_start or end_date > membership.date_end:
+            raise ValidationError(
+                self.env._('The booking period must be within the membership validity dates.')
+            )
+        if (
+            not membership.plan_id.all_locations
+            and membership.location_id != self.location_id
+        ):
+            raise ValidationError(
+                self.env._('The membership is not valid at the selected location.')
+            )
+
+    def _reserve_membership_limit(self):
+        """Deduct and record the membership limit required by the booking.
+
+        :return: Values of the technical reservation fields.
+        :rtype: dict
+        :raises ValidationError: If the membership limit is insufficient.
+        """
+        self.ensure_one()
+        membership = self.membership_id
+        usage_type = membership.plan_id.usage_type
+        reservation_values = {
+            'reserved_hours': 0.0,
+            'reserved_visits': 0,
+        }
+
+        if usage_type == 'hours':
+            if (
+                float_compare(
+                    membership.remaining_hours,
+                    self.duration_hours,
+                    precision_digits=2,
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    self.env._('The membership does not have enough remaining hours.')
+                )
+            membership.remaining_hours -= self.duration_hours
+            reservation_values['reserved_hours'] = self.duration_hours
+        elif usage_type == 'visits':
+            if membership.remaining_visits < 1:
+                raise ValidationError(
+                    self.env._('The membership does not have enough remaining visits.')
+                )
+            membership.remaining_visits -= 1
+            reservation_values['reserved_visits'] = 1
+
+        return reservation_values
+
+    def _restore_membership_limit(self):
+        """Return a cancelled booking reservation to its membership."""
+        self.ensure_one()
+        membership = self.membership_id
+        membership.write(
+            {
+                'remaining_hours': membership.remaining_hours + self.reserved_hours,
+                'remaining_visits': membership.remaining_visits + self.reserved_visits,
+            }
+        )
+        self.write(
+            {
+                'reserved_hours': 0.0,
+                'reserved_visits': 0,
+            }
+        )
 
     def _validate_working_hours(self):
         """Ensure the booking fits one local working day of its location.
@@ -213,7 +332,14 @@ class OSCoworkingBooking(models.Model):
         if any(booking.state != 'draft' for booking in self):
             raise UserError(self.env._('Only draft bookings can be confirmed.'))
         for booking in self:
-            booking.state = 'confirmed'
+            booking._validate_confirmation()
+            reservation_values = booking._reserve_membership_limit()
+            booking.write(
+                {
+                    **reservation_values,
+                    'state': 'confirmed',
+                }
+            )
             booking.message_post(body=self.env._('Booking confirmed.'))
         return True
 
@@ -243,8 +369,9 @@ class OSCoworkingBooking(models.Model):
         """
         if any(booking.state != 'confirmed' for booking in self):
             raise UserError(self.env._('Only confirmed bookings can be cancelled.'))
-        self.write({'state': 'cancelled'})
         for booking in self:
+            booking._restore_membership_limit()
+            booking.state = 'cancelled'
             booking.message_post(body=self.env._('Booking cancelled.'))
         return True
 
