@@ -13,4 +13,22 @@
             </xpath>
         </field>
     </record>
+
+    <record id="os_coworking_action_client" model="ir.actions.act_window">
+        <field name="name">Coworking Clients</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_coworking_client', '=', True)]</field>
+        <field name="context">{'default_is_coworking_client': True}</field>
+    </record>
+
+    <menuitem
+        id="os_coworking_menu_client"
+        name="Clients"
+        parent="os_coworking_menu_root"
+        action="os_coworking_action_client"
+        sequence="10"
+        groups="OdooSchool_coworking_management.group_coworking_user"
+    />
 </odoo>

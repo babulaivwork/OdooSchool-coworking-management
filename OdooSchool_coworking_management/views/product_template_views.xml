@@ -29,4 +29,27 @@
             </xpath>
         </field>
     </record>
+
+    <record id="os_coworking_action_service" model="ir.actions.act_window">
+        <field name="name">Coworking Services</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_coworking_service', '=', True)]</field>
+        <field name="context">
+            {
+                'default_is_coworking_service': True,
+                'default_type': 'service',
+            }
+        </field>
+    </record>
+
+    <menuitem
+        id="os_coworking_menu_service"
+        name="Services"
+        parent="os_coworking_menu_root"
+        action="os_coworking_action_service"
+        sequence="40"
+        groups="OdooSchool_coworking_management.group_coworking_user"
+    />
 </odoo>
