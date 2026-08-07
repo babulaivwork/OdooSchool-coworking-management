@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class OSCoworkingVisit(models.Model):
@@ -93,6 +93,10 @@ class OSCoworkingVisit(models.Model):
         'CHECK(check_out IS NULL OR check_out >= check_in)',
         'The check-out time cannot be earlier than the check-in time.',
     )
+    _booking_unique = models.Constraint(
+        'UNIQUE(booking_id)',
+        'A visit already exists for this booking.',
+    )
 
     @api.depends('check_in', 'check_out')
     def _compute_duration_hours(self):
@@ -104,6 +108,51 @@ class OSCoworkingVisit(models.Model):
             else:
                 visit.duration_hours = 0.0
 
+    @api.constrains('partner_id', 'state')
+    def _check_no_other_open_visit(self):
+        """Ensure that a client has no other checked-in visit.
+
+        :raises ValidationError: If another open visit exists for the client.
+        """
+        for visit in self.filtered(lambda item: item.state == 'checked_in'):
+            other_open_visit = self.search(
+                [
+                    ('id', '!=', visit.id),
+                    ('partner_id', '=', visit.partner_id.id),
+                    ('state', '=', 'checked_in'),
+                ],
+                limit=1,
+            )
+            if other_open_visit:
+                raise ValidationError(
+                    self.env._('The client already has an open visit.')
+                )
+
+    def action_check_out(self):
+        """Check out an open visit and complete its confirmed booking.
+
+        :return: ``True`` after the visit and booking are completed.
+        :rtype: bool
+        :raises UserError: If the visit is not open or its booking is no
+            longer confirmed.
+        """
+        self.ensure_one()
+        if self.state != 'checked_in':
+            raise UserError(self.env._('Only a checked-in visit can be checked out.'))
+        if self.booking_id.state != 'confirmed':
+            raise UserError(
+                self.env._('Check-out is allowed only for a confirmed booking.')
+            )
+
+        self.write(
+            {
+                'check_out': fields.Datetime.now(),
+                'state': 'checked_out',
+            }
+        )
+        self.booking_id.action_done()
+        return True
+
     @api.model_create_multi
     def create(self, vals_list):
         """Create visits and assign their sequence-generated numbers.
@@ -112,7 +161,21 @@ class OSCoworkingVisit(models.Model):
         :return: Newly created coworking visits.
         :rtype: OSCoworkingVisit
         """
+        booking_ids = [vals.get('booking_id') for vals in vals_list if vals.get('booking_id')]
+        bookings_by_id = {
+            booking.id: booking
+            for booking in self.env['os.coworking.booking'].browse(booking_ids).exists()
+        }
         for vals in vals_list:
+            booking = bookings_by_id.get(vals.get('booking_id'))
+            if booking and booking.state != 'confirmed':
+                raise ValidationError(
+                    self.env._('A visit can be created only from a confirmed booking.')
+                )
+            if vals.get('state', 'checked_in') != 'checked_in' or vals.get('check_out'):
+                raise ValidationError(
+                    self.env._('A new visit must start in the Checked In state.')
+                )
             if not vals.get('name') or vals['name'] == self.env._('New'):
                 sequence = self.env['ir.sequence'].next_by_code('os.coworking.visit')
                 if not sequence:
@@ -120,4 +183,6 @@ class OSCoworkingVisit(models.Model):
                         self.env._('The coworking visit sequence is not configured.')
                     )
                 vals['name'] = sequence
-        return super().create(vals_list)
+        visits = super().create(vals_list)
+        visits._check_no_other_open_visit()
+        return visits

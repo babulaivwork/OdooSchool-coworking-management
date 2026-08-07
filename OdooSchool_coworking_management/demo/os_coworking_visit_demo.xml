@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="os_coworking_visit_demo_unlimited_completed" model="os.coworking.visit">
+        <field name="booking_id" ref="os_coworking_booking_demo_unlimited_done"/>
+        <field name="check_in" eval="(DateTime.now() - timedelta(days=2)).strftime('%Y-%m-%d 09:10:00')"/>
+        <field name="note">A completed desk visit covered by an unlimited membership.</field>
+    </record>
+    <record id="os_coworking_visit_demo_unlimited_completed" model="os.coworking.visit">
+        <field name="check_out" eval="(DateTime.now() - timedelta(days=2)).strftime('%Y-%m-%d 10:50:00')"/>
+        <field name="state">checked_out</field>
+    </record>
+    <record id="os_coworking_booking_demo_unlimited_done" model="os.coworking.booking">
+        <field name="state">done</field>
+    </record>
+
+    <record id="os_coworking_visit_demo_hours_completed" model="os.coworking.visit">
+        <field name="booking_id" ref="os_coworking_booking_demo_hours_done"/>
+        <field name="check_in" eval="(DateTime.now() - timedelta(days=4)).strftime('%Y-%m-%d 09:15:00')"/>
+        <field name="note">A completed private office visit covered by an hourly membership.</field>
+    </record>
+    <record id="os_coworking_visit_demo_hours_completed" model="os.coworking.visit">
+        <field name="check_out" eval="(DateTime.now() - timedelta(days=4)).strftime('%Y-%m-%d 11:45:00')"/>
+        <field name="state">checked_out</field>
+    </record>
+    <record id="os_coworking_booking_demo_hours_done" model="os.coworking.booking">
+        <field name="state">done</field>
+    </record>
+
+    <record id="os_coworking_visit_demo_visits_completed" model="os.coworking.visit">
+        <field name="booking_id" ref="os_coworking_booking_demo_visits_done"/>
+        <field name="check_in" eval="(DateTime.now() - timedelta(days=5)).strftime('%Y-%m-%d 11:05:00')"/>
+        <field name="note">A completed desk visit covered by a visit-based membership.</field>
+    </record>
+    <record id="os_coworking_visit_demo_visits_completed" model="os.coworking.visit">
+        <field name="check_out" eval="(DateTime.now() - timedelta(days=5)).strftime('%Y-%m-%d 12:40:00')"/>
+        <field name="state">checked_out</field>
+    </record>
+    <record id="os_coworking_booking_demo_visits_done" model="os.coworking.booking">
+        <field name="state">done</field>
+    </record>
+
+    <record id="os_coworking_visit_demo_event_completed" model="os.coworking.visit">
+        <field name="booking_id" ref="os_coworking_booking_demo_unlimited_visit_history"/>
+        <field name="check_in" eval="(DateTime.now() - timedelta(days=3)).strftime('%Y-%m-%d 14:20:00')"/>
+        <field name="note">A completed event space visit with an actual duration shorter than the booking.</field>
+    </record>
+    <record id="os_coworking_visit_demo_event_completed" model="os.coworking.visit">
+        <field name="check_out" eval="(DateTime.now() - timedelta(days=3)).strftime('%Y-%m-%d 16:50:00')"/>
+        <field name="state">checked_out</field>
+    </record>
+    <record id="os_coworking_booking_demo_unlimited_visit_history" model="os.coworking.booking">
+        <field name="state">done</field>
+    </record>
+
+    <record id="os_coworking_visit_demo_short_completed" model="os.coworking.visit">
+        <field name="booking_id" ref="os_coworking_booking_demo_hours_visit_history"/>
+        <field name="check_in" eval="(DateTime.now() - timedelta(days=6)).strftime('%Y-%m-%d 15:05:00')"/>
+        <field name="note">A short completed desk visit covered by an hourly membership.</field>
+    </record>
+    <record id="os_coworking_visit_demo_short_completed" model="os.coworking.visit">
+        <field name="check_out" eval="(DateTime.now() - timedelta(days=6)).strftime('%Y-%m-%d 15:55:00')"/>
+        <field name="state">checked_out</field>
+    </record>
+    <record id="os_coworking_booking_demo_hours_visit_history" model="os.coworking.booking">
+        <field name="state">done</field>
+    </record>
+
+    <record id="os_coworking_visit_demo_amelia_open" model="os.coworking.visit">
+        <field name="booking_id" ref="os_coworking_booking_demo_unlimited_confirmed"/>
+        <field name="check_in" eval="DateTime.now().strftime('%Y-%m-%d 08:10:00')"/>
+        <field name="note">An open desk visit showing a client currently checked in.</field>
+    </record>
+
+    <record id="os_coworking_visit_demo_noah_open" model="os.coworking.visit">
+        <field name="booking_id" ref="os_coworking_booking_demo_hours_confirmed"/>
+        <field name="check_in" eval="DateTime.now().strftime('%Y-%m-%d 10:10:00')"/>
+        <field name="note">An open meeting room visit covered by an hourly membership.</field>
+    </record>
+
+    <record id="os_coworking_visit_demo_sophia_open" model="os.coworking.visit">
+        <field name="booking_id" ref="os_coworking_booking_demo_visits_confirmed"/>
+        <field name="check_in" eval="DateTime.now().strftime('%Y-%m-%d 08:05:00')"/>
+        <field name="note">An open boardroom visit covered by a visit-based membership.</field>
+    </record>
+</odoo>

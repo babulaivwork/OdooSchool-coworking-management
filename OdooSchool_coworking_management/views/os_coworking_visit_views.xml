@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="os_coworking_view_visit_list" model="ir.ui.view">
+        <field name="name">os.coworking.visit.list</field>
+        <field name="model">os.coworking.visit</field>
+        <field name="arch" type="xml">
+            <list
+                create="0"
+                decoration-success="state == 'checked_in'"
+                decoration-muted="state == 'checked_out'"
+                decoration-danger="state == 'cancelled'"
+            >
+                <field name="name"/>
+                <field name="booking_id"/>
+                <field name="partner_id"/>
+                <field name="location_id"/>
+                <field name="resource_id"/>
+                <field name="check_in"/>
+                <field name="check_out"/>
+                <field name="duration_hours" optional="show"/>
+                <field name="registered_by_id" optional="hide"/>
+                <field
+                    name="company_id"
+                    optional="hide"
+                    groups="base.group_multi_company"
+                />
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_visit_form" model="ir.ui.view">
+        <field name="name">os.coworking.visit.form</field>
+        <field name="model">os.coworking.visit</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <header>
+                    <button
+                        name="action_check_out"
+                        string="Check Out"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state != 'checked_in'"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="checked_in,checked_out,cancelled"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Visit">
+                            <field name="booking_id" readonly="1"/>
+                            <field name="partner_id" readonly="1"/>
+                            <field name="membership_id" readonly="1"/>
+                            <field name="registered_by_id" readonly="1"/>
+                            <field
+                                name="company_id"
+                                groups="base.group_multi_company"
+                            />
+                        </group>
+                        <group string="Resource">
+                            <field name="location_id" readonly="1"/>
+                            <field name="resource_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Time">
+                        <group>
+                            <field name="check_in" readonly="1"/>
+                            <field name="check_out" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="duration_hours" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="note" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_visit_search" model="ir.ui.view">
+        <field name="name">os.coworking.visit.search</field>
+        <field name="model">os.coworking.visit</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="booking_id"/>
+                <field name="partner_id"/>
+                <field name="location_id"/>
+                <field name="resource_id"/>
+                <field name="registered_by_id"/>
+                <separator/>
+                <filter
+                    name="checked_in"
+                    string="Checked In"
+                    domain="[('state', '=', 'checked_in')]"
+                />
+                <filter
+                    name="checked_out"
+                    string="Checked Out"
+                    domain="[('state', '=', 'checked_out')]"
+                />
+                <filter
+                    name="cancelled"
+                    string="Cancelled"
+                    domain="[('state', '=', 'cancelled')]"
+                />
+                <separator/>
+                <filter name="check_in_date" string="Check-In" date="check_in"/>
+                <filter name="check_out_date" string="Check-Out" date="check_out"/>
+                <group>
+                    <filter
+                        name="group_by_location"
+                        string="Location"
+                        context="{'group_by': 'location_id'}"
+                    />
+                    <filter
+                        name="group_by_resource"
+                        string="Resource"
+                        context="{'group_by': 'resource_id'}"
+                    />
+                    <filter
+                        name="group_by_client"
+                        string="Client"
+                        context="{'group_by': 'partner_id'}"
+                    />
+                    <filter
+                        name="group_by_state"
+                        string="Status"
+                        context="{'group_by': 'state'}"
+                    />
+                    <filter
+                        name="group_by_check_in_month"
+                        string="Check-In Month"
+                        context="{'group_by': 'check_in:month'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_visit_graph" model="ir.ui.view">
+        <field name="name">os.coworking.visit.graph</field>
+        <field name="model">os.coworking.visit</field>
+        <field name="arch" type="xml">
+            <graph string="Visit Analysis" type="bar" stacked="1">
+                <field name="check_in" interval="month" type="row"/>
+                <field name="state" type="col"/>
+                <field name="duration_hours" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="os_coworking_view_visit_pivot" model="ir.ui.view">
+        <field name="name">os.coworking.visit.pivot</field>
+        <field name="model">os.coworking.visit</field>
+        <field name="arch" type="xml">
+            <pivot string="Visit Analysis" display_quantity="1">
+                <field name="location_id" type="row"/>
+                <field name="resource_id" type="row"/>
+                <field name="check_in" interval="month" type="col"/>
+                <field name="state" type="col"/>
+                <field name="duration_hours" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="os_coworking_action_visit" model="ir.actions.act_window">
+        <field name="name">Visits</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">os.coworking.visit</field>
+        <field name="view_mode">list,form,graph,pivot</field>
+        <field name="search_view_id" ref="os_coworking_view_visit_search"/>
+    </record>
+
+    <menuitem
+        id="os_coworking_menu_visit"
+        name="Visits"
+        parent="os_coworking_menu_operations"
+        action="os_coworking_action_visit"
+        sequence="20"
+        groups="OdooSchool_coworking_management.group_coworking_user"
+    />
+</odoo>

@@ -28,6 +28,15 @@ class ResPartner(models.Model):
         string='Bookings',
         compute='_compute_coworking_booking_count',
     )
+    coworking_visit_ids = fields.One2many(
+        comodel_name='os.coworking.visit',
+        inverse_name='partner_id',
+        string='Coworking Visits',
+    )
+    coworking_visit_count = fields.Integer(
+        string='Visits',
+        compute='_compute_coworking_visit_count',
+    )
 
     @api.depends('coworking_membership_ids')
     def _compute_coworking_membership_count(self):
@@ -55,6 +64,19 @@ class ResPartner(models.Model):
         for partner in self:
             partner.coworking_booking_count = count_by_partner.get(partner, 0)
 
+    @api.depends('coworking_visit_ids')
+    def _compute_coworking_visit_count(self):
+        """Compute the number of accessible visits for each contact."""
+        count_by_partner = dict(
+            self.env['os.coworking.visit']._read_group(
+                domain=[('partner_id', 'in', self.ids)],
+                groupby=['partner_id'],
+                aggregates=['__count'],
+            )
+        )
+        for partner in self:
+            partner.coworking_visit_count = count_by_partner.get(partner, 0)
+
     def action_view_coworking_memberships(self):
         """Open the coworking memberships of the selected contact.
 
@@ -81,4 +103,17 @@ class ResPartner(models.Model):
         )
         action['domain'] = [('partner_id', '=', self.id)]
         action['context'] = {'default_partner_id': self.id}
+        return action
+
+    def action_view_coworking_visits(self):
+        """Open the coworking visits of the selected contact.
+
+        :return: Visit action filtered by the current contact.
+        :rtype: dict
+        """
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id(
+            'OdooSchool_coworking_management.os_coworking_action_visit'
+        )
+        action['domain'] = [('partner_id', '=', self.id)]
         return action

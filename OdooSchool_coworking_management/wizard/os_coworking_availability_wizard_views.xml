@@ -70,7 +70,7 @@
         name="Find Available Resource"
         parent="os_coworking_menu_operations"
         action="os_coworking_action_availability_wizard"
-        sequence="20"
+        sequence="30"
         groups="OdooSchool_coworking_management.group_coworking_user"
     />
 </odoo>

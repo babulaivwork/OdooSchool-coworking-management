@@ -95,6 +95,11 @@ class OSCoworkingBooking(models.Model):
         copy=False,
         default=0,
     )
+    visit_ids = fields.One2many(
+        comodel_name='os.coworking.visit',
+        inverse_name='booking_id',
+        string='Visits',
+    )
 
     _booking_interval_valid = models.Constraint(
         'CHECK(end_datetime > start_datetime)',
@@ -355,6 +360,34 @@ class OSCoworkingBooking(models.Model):
         self.write({'state': 'done'})
         for booking in self:
             booking.message_post(body=self.env._('Booking completed.'))
+        return True
+
+    def action_check_in(self):
+        """Create a checked-in visit for one confirmed booking.
+
+        The booking intentionally remains confirmed until the visit is
+        checked out.
+
+        :return: ``True`` after the visit is created.
+        :rtype: bool
+        :raises UserError: If the booking is not confirmed or already has a
+            visit.
+        """
+        self.ensure_one()
+        if self.state != 'confirmed':
+            raise UserError(
+                self.env._('Check-in is allowed only for a confirmed booking.')
+            )
+        if self.visit_ids:
+            raise UserError(self.env._('A visit already exists for this booking.'))
+
+        self.env['os.coworking.visit'].create(
+            {
+                'booking_id': self.id,
+                'check_in': fields.Datetime.now(),
+                'registered_by_id': self.env.user.id,
+            }
+        )
         return True
 
     def action_cancel(self):

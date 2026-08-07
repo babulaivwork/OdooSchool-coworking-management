@@ -7,6 +7,20 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button
+                    name="action_view_coworking_visits"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-sign-in"
+                    invisible="not is_coworking_client"
+                    groups="OdooSchool_coworking_management.group_coworking_user"
+                >
+                    <field
+                        name="coworking_visit_count"
+                        string="Visits"
+                        widget="statinfo"
+                    />
+                </button>
+                <button
                     name="action_view_coworking_bookings"
                     type="object"
                     class="oe_stat_button"

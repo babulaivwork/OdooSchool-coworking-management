@@ -38,6 +38,13 @@
                         invisible="state != 'draft'"
                     />
                     <button
+                        name="action_check_in"
+                        string="Check In"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state != 'confirmed' or visit_ids"
+                    />
+                    <button
                         name="action_cancel"
                         string="Cancel"
                         type="object"
@@ -50,6 +57,7 @@
                     />
                 </header>
                 <sheet>
+                    <field name="visit_ids" invisible="1"/>
                     <div class="oe_title">
                         <label for="name"/>
                         <h1>
