@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="os_coworking_membership_invoice_paperformat" model="report.paperformat">
+        <field name="name">Membership Invoice A4</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">55</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">45</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="os_coworking_membership_invoice_report_action" model="ir.actions.report">
+        <field name="name">Membership Invoice</field>
+        <field name="model">os.coworking.membership</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">OdooSchool_coworking_management.os_coworking_membership_invoice_report</field>
+        <field name="report_file">OdooSchool_coworking_management.os_coworking_membership_invoice_report</field>
+        <field name="print_report_name">'Membership Invoice - %s' % (object.name or 'Membership')</field>
+        <field name="paperformat_id" ref="os_coworking_membership_invoice_paperformat"/>
+        <field name="binding_model_id" ref="model_os_coworking_membership"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+    <template id="os_coworking_membership_invoice_layout">
+        <div class="header">
+            <div class="row align-items-center border-bottom pb-2">
+                <div class="col-4">
+                    <img
+                        t-if="company.logo"
+                        t-att-src="image_data_uri(company.logo)"
+                        t-att-alt="company.name"
+                        style="max-height: 70px; max-width: 100%;"
+                    />
+                </div>
+                <div class="col-8 text-end">
+                    <h2 class="mb-1" t-out="company.name"/>
+                    <div class="d-inline-block text-start">
+                        <div
+                            t-field="company.partner_id"
+                            t-options='{
+                                "widget": "contact",
+                                "fields": ["address", "phone", "email", "website"],
+                                "no_marker": true
+                            }'
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="article"
+            t-att-data-oe-model="membership._name"
+            t-att-data-oe-id="membership.id"
+            t-att-data-oe-lang="membership.env.context.get('lang')"
+        >
+            <t t-out="0"/>
+        </div>
+
+        <div class="footer border-top pt-2">
+            <div class="row">
+                <div class="col-8">
+                    This document is an invoice for a coworking membership.
+                </div>
+                <div class="col-4 text-end">
+                    Page <span class="page"/> of <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="os_coworking_membership_invoice_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="membership">
+                <t t-set="product" t-value="membership._get_coworking_product()"/>
+                <t t-set="company" t-value="product.company_id or membership.env.company"/>
+                <t
+                    t-call="OdooSchool_coworking_management.os_coworking_membership_invoice_layout"
+                >
+                    <div class="page os_coworking_membership_invoice">
+                        <style>
+                            .os_coworking_membership_invoice th {
+                                font-weight: 700 !important;
+                            }
+                        </style>
+                        <div class="text-center mb-4">
+                            <h1>Membership Invoice</h1>
+                            <h3><span t-field="membership.name"/></h3>
+                        </div>
+
+                        <h3>Invoice Details</h3>
+                        <table class="table table-sm table-bordered mb-4">
+                            <tbody>
+                                <tr>
+                                    <th class="w-25">Invoice Date</th>
+                                    <td><span t-field="membership.create_date"/></td>
+                                    <th class="w-25">Payment Status</th>
+                                    <td><span t-field="membership.payment_status"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Payment Date</th>
+                                    <td colspan="3">
+                                        <span
+                                            t-if="membership.payment_date"
+                                            t-field="membership.payment_date"
+                                        />
+                                        <span t-else="">-</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <h3>Company</h3>
+                                <table class="table table-sm table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th>Name</th>
+                                            <td><span t-field="company.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone</th>
+                                            <td><span t-out="company.phone or '-'"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td><span t-out="company.email or '-'"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <h3>Client</h3>
+                                <table class="table table-sm table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th>Name</th>
+                                            <td><span t-field="membership.partner_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone</th>
+                                            <td><span t-out="membership.partner_id.phone or '-'"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td><span t-out="membership.partner_id.email or '-'"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <h3>Membership</h3>
+                        <table class="table table-sm table-bordered mb-4">
+                            <tbody>
+                                <tr>
+                                    <th class="w-25">Membership Plan</th>
+                                    <td><span t-field="membership.plan_id"/></td>
+                                    <th class="w-25">Coworking Product</th>
+                                    <td><span t-field="product.name"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Start Date</th>
+                                    <td><span t-field="membership.date_start"/></td>
+                                    <th>End Date</th>
+                                    <td><span t-field="membership.date_end"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Amount</th>
+                                    <td colspan="3">
+                                        <span
+                                            t-field="product.list_price"
+                                            t-options='{
+                                                "widget": "monetary",
+                                                "display_currency": product.currency_id
+                                            }'
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="border rounded p-3">
+                            This document is an invoice for the coworking membership shown above.
+                            The amount is based on the sales price of the linked coworking product.
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

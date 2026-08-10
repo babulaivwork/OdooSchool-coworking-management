@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="os_coworking_product_demo_unlimited_day" model="product.template">
+        <field name="name">Unlimited Day Membership</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">20.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">membership</field>
+        <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_unlimited_day"/>
+        <field name="description_sale">Unlimited coworking access for one day.</field>
+    </record>
+
     <record id="os_coworking_product_demo_unlimited_monthly" model="product.template">
         <field name="name">Unlimited Monthly Membership</field>
         <field name="type">service</field>
@@ -9,6 +20,17 @@
         <field name="coworking_service_type">membership</field>
         <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_unlimited_month"/>
         <field name="description_sale">Unlimited coworking access for thirty days.</field>
+    </record>
+
+    <record id="os_coworking_product_demo_unlimited_quarterly" model="product.template">
+        <field name="name">Unlimited Quarterly Membership</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">675.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">membership</field>
+        <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_unlimited_quarter"/>
+        <field name="description_sale">Unlimited coworking access at one location for ninety days.</field>
     </record>
 
     <record id="os_coworking_product_demo_flexible_hours" model="product.template">
@@ -22,6 +44,39 @@
         <field name="description_sale">Ten flexible coworking hours available during thirty days.</field>
     </record>
 
+    <record id="os_coworking_product_demo_professional_hours" model="product.template">
+        <field name="name">Professional 40-Hour Membership</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">260.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">membership</field>
+        <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_hours_professional"/>
+        <field name="description_sale">Forty flexible coworking hours available during thirty days.</field>
+    </record>
+
+    <record id="os_coworking_product_demo_team_hours" model="product.template">
+        <field name="name">Team 100-Hour Membership</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">600.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">membership</field>
+        <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_hours_team"/>
+        <field name="description_sale">One hundred coworking hours at one location for ninety days.</field>
+    </record>
+
+    <record id="os_coworking_product_demo_flexible_visits" model="product.template">
+        <field name="name">Flexible 5-Visit Membership</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">45.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">membership</field>
+        <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_visits_flex"/>
+        <field name="description_sale">Five coworking visits available during thirty days.</field>
+    </record>
+
     <record id="os_coworking_product_demo_regular_visits" model="product.template">
         <field name="name">Regular 12-Visit Membership</field>
         <field name="type">service</field>
@@ -31,6 +86,17 @@
         <field name="coworking_service_type">membership</field>
         <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_visits_regular"/>
         <field name="description_sale">Twelve coworking visits available during sixty days.</field>
+    </record>
+
+    <record id="os_coworking_product_demo_community_visits" model="product.template">
+        <field name="name">Community 30-Visit Membership</field>
+        <field name="type">service</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">210.0</field>
+        <field name="is_coworking_service" eval="True"/>
+        <field name="coworking_service_type">membership</field>
+        <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_visits_community"/>
+        <field name="description_sale">Thirty coworking visits at one location for ninety days.</field>
     </record>
 
     <record id="os_coworking_product_demo_locker_rental" model="product.template">

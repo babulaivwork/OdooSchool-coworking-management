@@ -19,6 +19,8 @@
                 <field name="remaining_hours" optional="show"/>
                 <field name="remaining_visits" optional="show"/>
                 <field name="auto_renew" optional="hide"/>
+                <field name="payment_status" widget="badge"/>
+                <field name="payment_date" optional="hide"/>
                 <field name="state" widget="badge"/>
             </list>
         </field>
@@ -30,6 +32,14 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button
+                        name="action_mark_as_paid"
+                        string="Mark as Paid"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state != 'draft' or payment_status != 'unpaid'"
+                        groups="OdooSchool_coworking_management.group_coworking_user"
+                    />
                     <button
                         name="action_activate"
                         string="Activate"
@@ -87,6 +97,17 @@
                             <field name="total_frozen_days"/>
                         </group>
                     </group>
+                    <group string="Payment">
+                        <group>
+                            <field name="payment_status" widget="badge"/>
+                        </group>
+                        <group>
+                            <field
+                                name="payment_date"
+                                invisible="payment_status != 'paid'"
+                            />
+                        </group>
+                    </group>
                     <group string="Remaining Limits">
                         <group>
                             <field name="remaining_hours" readonly="1"/>
@@ -136,12 +157,20 @@
                 <filter name="expired" string="Expired" domain="[('state', '=', 'expired')]"/>
                 <filter name="cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
                 <separator/>
+                <filter name="unpaid" string="Unpaid" domain="[('payment_status', '=', 'unpaid')]"/>
+                <filter name="paid" string="Paid" domain="[('payment_status', '=', 'paid')]"/>
+                <separator/>
                 <filter name="start_date" string="Start Date" date="date_start"/>
                 <filter name="end_date" string="End Date" date="date_end"/>
                 <group>
                     <filter name="group_by_plan" string="Membership Plan" context="{'group_by': 'plan_id'}"/>
                     <filter name="group_by_location" string="Location" context="{'group_by': 'location_id'}"/>
                     <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter
+                        name="group_by_payment_status"
+                        string="Payment Status"
+                        context="{'group_by': 'payment_status'}"
+                    />
                     <filter
                         name="group_by_start_month"
                         string="Start Month"

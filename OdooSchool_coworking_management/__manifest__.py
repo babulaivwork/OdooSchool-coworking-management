@@ -29,6 +29,7 @@
         'views/res_partner_views.xml',
         'views/product_template_views.xml',
         'report/os_coworking_booking_report.xml',
+        'report/os_coworking_membership_invoice_report.xml',
     ],
     'demo': [
         'demo/os_coworking_user_demo.xml',

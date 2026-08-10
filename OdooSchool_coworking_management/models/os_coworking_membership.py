@@ -74,6 +74,24 @@ class OSCoworkingMembership(models.Model):
         copy=False,
         tracking=True,
     )
+    payment_status = fields.Selection(
+        selection=[
+            ('unpaid', 'Unpaid'),
+            ('paid', 'Paid'),
+        ],
+        string='Payment Status',
+        required=True,
+        readonly=True,
+        default='unpaid',
+        copy=False,
+        tracking=True,
+    )
+    payment_date = fields.Date(
+        string='Payment Date',
+        readonly=True,
+        copy=False,
+        tracking=True,
+    )
     auto_renew = fields.Boolean(
         string='Automatic Renewal',
         default=False,
@@ -181,6 +199,60 @@ class OSCoworkingMembership(models.Model):
                     self.env._('Automatic renewal is not allowed for the selected membership plan.')
                 )
 
+    def _get_coworking_product(self):
+        """Return the product linked to the selected membership plan.
+
+        Archived products remain valid for historical memberships and invoices.
+
+        :return: Product that defines the membership invoice amount.
+        :rtype: product.template
+        :raises UserError: If the plan does not have a linked product.
+        """
+        self.ensure_one()
+        product = self.env['product.template'].with_context(active_test=False).search(
+            [('coworking_plan_id', '=', self.plan_id.id)],
+            limit=1,
+        )
+        if not product:
+            raise UserError(
+                self.env._(
+                    'Configure a coworking membership product for the selected '
+                    'plan before confirming payment or printing the invoice.'
+                )
+            )
+        return product
+
+    def action_mark_as_paid(self):
+        """Mark unpaid draft memberships as paid.
+
+        The linked product is checked before payment because its sales price is
+        the single source of the invoice amount.
+
+        :return: ``True`` after all selected memberships are marked as paid.
+        :rtype: bool
+        :raises UserError: If a membership cannot be marked as paid.
+        """
+        payment_date = fields.Date.context_today(self)
+        for membership in self:
+            if membership.state != 'draft' or membership.payment_status != 'unpaid':
+                raise UserError(
+                    self.env._('Only unpaid draft memberships can be marked as paid.')
+                )
+            membership._get_coworking_product()
+            membership.write(
+                {
+                    'payment_status': 'paid',
+                    'payment_date': payment_date,
+                }
+            )
+            membership.message_post(
+                body=self.env._(
+                    'Membership payment confirmed on %(date)s.',
+                    date=fields.Date.to_string(payment_date),
+                )
+            )
+        return True
+
     def action_activate(self):
         """Activate draft memberships and initialize their usage limits.
 
@@ -191,6 +263,8 @@ class OSCoworkingMembership(models.Model):
         for membership in self:
             if membership.state != 'draft':
                 raise UserError(self.env._('Only draft memberships can be activated.'))
+            if membership.payment_status != 'paid':
+                raise UserError(self.env._('Only a paid membership can be activated.'))
             if not membership.plan_id.all_locations and not membership.location_id:
                 raise UserError(
                     self.env._('A location is required for a membership plan limited to one location.')

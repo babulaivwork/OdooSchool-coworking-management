@@ -6,6 +6,8 @@
         <field name="date_start" eval="(DateTime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
         <field name="date_end" eval="(DateTime.now() + timedelta(days=24)).strftime('%Y-%m-%d')"/>
         <field name="state">active</field>
+        <field name="payment_status">paid</field>
+        <field name="payment_date" eval="(DateTime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
         <field name="auto_renew" eval="True"/>
         <field name="note">An active unlimited membership available at all coworking locations.</field>
     </record>
@@ -17,6 +19,8 @@
         <field name="date_end" eval="(DateTime.now() + timedelta(days=19)).strftime('%Y-%m-%d')"/>
         <field name="remaining_hours">22.5</field>
         <field name="state">active</field>
+        <field name="payment_status">paid</field>
+        <field name="payment_date" eval="(DateTime.now() - timedelta(days=10)).strftime('%Y-%m-%d')"/>
         <field name="auto_renew" eval="True"/>
         <field name="note">An active hourly membership with part of its limit already used.</field>
     </record>
@@ -28,6 +32,8 @@
         <field name="date_end" eval="(DateTime.now() + timedelta(days=44)).strftime('%Y-%m-%d')"/>
         <field name="remaining_visits">7</field>
         <field name="state">active</field>
+        <field name="payment_status">paid</field>
+        <field name="payment_date" eval="(DateTime.now() - timedelta(days=15)).strftime('%Y-%m-%d')"/>
         <field name="auto_renew" eval="True"/>
         <field name="note">An active visit-based membership with seven visits remaining.</field>
     </record>
@@ -36,6 +42,7 @@
         <field name="partner_id" ref="os_coworking_partner_demo_liam_brooks"/>
         <field name="plan_id" ref="os_coworking_membership_plan_demo_unlimited_day"/>
         <field name="date_start" eval="(DateTime.now() + timedelta(days=3)).strftime('%Y-%m-%d')"/>
+        <field name="payment_status">unpaid</field>
         <field name="note">A future unlimited day pass awaiting activation.</field>
     </record>
 
@@ -43,6 +50,7 @@
         <field name="partner_id" ref="os_coworking_partner_demo_brightpath_studio"/>
         <field name="plan_id" ref="os_coworking_membership_plan_demo_hours_starter"/>
         <field name="date_start" eval="(DateTime.now() + timedelta(days=5)).strftime('%Y-%m-%d')"/>
+        <field name="payment_status">unpaid</field>
         <field name="note">A future ten-hour membership awaiting activation.</field>
     </record>
 
@@ -50,6 +58,7 @@
         <field name="partner_id" ref="os_coworking_partner_demo_northstar_labs"/>
         <field name="plan_id" ref="os_coworking_membership_plan_demo_visits_flex"/>
         <field name="date_start" eval="(DateTime.now() + timedelta(days=7)).strftime('%Y-%m-%d')"/>
+        <field name="payment_status">unpaid</field>
         <field name="note">A future five-visit membership awaiting activation.</field>
     </record>
 
@@ -61,6 +70,8 @@
         <field name="date_end" eval="(DateTime.now() + timedelta(days=69)).strftime('%Y-%m-%d')"/>
         <field name="remaining_hours">64.0</field>
         <field name="state">frozen</field>
+        <field name="payment_status">paid</field>
+        <field name="payment_date" eval="(DateTime.now() - timedelta(days=20)).strftime('%Y-%m-%d')"/>
         <field name="auto_renew" eval="True"/>
         <field name="freeze_date" eval="(DateTime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
         <field name="total_frozen_days">2</field>
@@ -75,6 +86,8 @@
         <field name="date_end" eval="(DateTime.now() + timedelta(days=59)).strftime('%Y-%m-%d')"/>
         <field name="remaining_visits">18</field>
         <field name="state">frozen</field>
+        <field name="payment_status">paid</field>
+        <field name="payment_date" eval="(DateTime.now() - timedelta(days=30)).strftime('%Y-%m-%d')"/>
         <field name="auto_renew" eval="True"/>
         <field name="freeze_date" eval="(DateTime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
         <field name="total_frozen_days">4</field>
@@ -88,6 +101,8 @@
         <field name="date_start" eval="(DateTime.now() - timedelta(days=100)).strftime('%Y-%m-%d')"/>
         <field name="date_end" eval="(DateTime.now() - timedelta(days=11)).strftime('%Y-%m-%d')"/>
         <field name="state">expired</field>
+        <field name="payment_status">paid</field>
+        <field name="payment_date" eval="(DateTime.now() - timedelta(days=100)).strftime('%Y-%m-%d')"/>
         <field name="auto_renew" eval="True"/>
         <field name="note">An expired membership with a prepared renewal draft.</field>
     </record>
@@ -99,6 +114,7 @@
         <field name="date_start" eval="(DateTime.now() - timedelta(days=10)).strftime('%Y-%m-%d')"/>
         <field name="date_end" eval="(DateTime.now() + timedelta(days=79)).strftime('%Y-%m-%d')"/>
         <field name="auto_renew" eval="True"/>
+        <field name="payment_status">unpaid</field>
         <field name="previous_membership_id" ref="os_coworking_membership_demo_expired_unlimited"/>
         <field name="note">A draft renewal linked to the previous expired membership.</field>
     </record>
@@ -114,6 +130,8 @@
         <field name="date_end" eval="(DateTime.now() - timedelta(days=21)).strftime('%Y-%m-%d')"/>
         <field name="remaining_hours">4.0</field>
         <field name="state">cancelled</field>
+        <field name="payment_status">paid</field>
+        <field name="payment_date" eval="(DateTime.now() - timedelta(days=50)).strftime('%Y-%m-%d')"/>
         <field name="note">An hourly membership terminated before all hours were used.</field>
     </record>
 
@@ -124,6 +142,8 @@
         <field name="date_end" eval="(DateTime.now() + timedelta(days=19)).strftime('%Y-%m-%d')"/>
         <field name="remaining_visits">9</field>
         <field name="state">cancelled</field>
+        <field name="payment_status">paid</field>
+        <field name="payment_date" eval="(DateTime.now() - timedelta(days=40)).strftime('%Y-%m-%d')"/>
         <field name="note">A visit-based membership terminated before its planned end date.</field>
     </record>
 
@@ -133,6 +153,8 @@
         <field name="date_start">2026-08-01</field>
         <field name="date_end">2026-08-30</field>
         <field name="state">active</field>
+        <field name="payment_status">paid</field>
+        <field name="payment_date">2026-08-01</field>
         <field name="auto_renew" eval="True"/>
         <field name="note">Unlimited membership prepared for the course project presentation.</field>
     </record>
@@ -144,6 +166,8 @@
         <field name="date_end">2026-08-30</field>
         <field name="remaining_hours">36.0</field>
         <field name="state">active</field>
+        <field name="payment_status">paid</field>
+        <field name="payment_date">2026-08-01</field>
         <field name="auto_renew" eval="True"/>
         <field name="note">Hourly membership with four hours reserved by presentation bookings.</field>
     </record>
@@ -155,6 +179,8 @@
         <field name="date_end">2026-09-29</field>
         <field name="remaining_visits">11</field>
         <field name="state">active</field>
+        <field name="payment_status">paid</field>
+        <field name="payment_date">2026-08-01</field>
         <field name="auto_renew" eval="True"/>
         <field name="note">Visit-based membership with one visit reserved by a presentation booking.</field>
     </record>

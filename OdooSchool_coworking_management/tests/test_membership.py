@@ -8,7 +8,7 @@ from odoo.tools import mute_logger
 
 
 class TestOSCoworkingMembership(TransactionCase):
-    """Test membership lifecycle, limits, renewal, and constraints."""
+    """Test membership payment, lifecycle, limits, renewal, and constraints."""
 
     @classmethod
     def setUpClass(cls):
@@ -56,6 +56,37 @@ class TestOSCoworkingMembership(TransactionCase):
                 'allow_auto_renew': True,
             }
         )
+        cls.products = cls.env['product.template'].create(
+            [
+                {
+                    'name': 'Test Unlimited Membership Product',
+                    'type': 'service',
+                    'purchase_ok': False,
+                    'list_price': cls.unlimited_plan.price,
+                    'is_coworking_service': True,
+                    'coworking_service_type': 'membership',
+                    'coworking_plan_id': cls.unlimited_plan.id,
+                },
+                {
+                    'name': 'Test Hours Membership Product',
+                    'type': 'service',
+                    'purchase_ok': False,
+                    'list_price': cls.hours_plan.price,
+                    'is_coworking_service': True,
+                    'coworking_service_type': 'membership',
+                    'coworking_plan_id': cls.hours_plan.id,
+                },
+                {
+                    'name': 'Test Visits Membership Product',
+                    'type': 'service',
+                    'purchase_ok': False,
+                    'list_price': cls.visits_plan.price,
+                    'is_coworking_service': True,
+                    'coworking_service_type': 'membership',
+                    'coworking_plan_id': cls.visits_plan.id,
+                },
+            ]
+        )
 
     def _create_membership(self, plan=None, **values):
         """Create a membership with valid default test values."""
@@ -89,6 +120,7 @@ class TestOSCoworkingMembership(TransactionCase):
             with self.subTest(usage_type=plan.usage_type):
                 membership = self._create_membership(plan=plan)
 
+                membership.action_mark_as_paid()
                 membership.action_activate()
 
                 self.assertEqual(membership.state, 'active')
@@ -106,7 +138,19 @@ class TestOSCoworkingMembership(TransactionCase):
                 'all_locations': False,
             }
         )
+        self.env['product.template'].create(
+            {
+                'name': 'Test Location-Limited Membership Product',
+                'type': 'service',
+                'purchase_ok': False,
+                'list_price': plan.price,
+                'is_coworking_service': True,
+                'coworking_service_type': 'membership',
+                'coworking_plan_id': plan.id,
+            }
+        )
         membership = self._create_membership(plan=plan)
+        membership.action_mark_as_paid()
 
         with self.assertRaises(UserError):
             membership.action_activate()
@@ -119,6 +163,7 @@ class TestOSCoworkingMembership(TransactionCase):
     def test_freeze_and_unfreeze_extend_end_date(self):
         """Verify full frozen days extend the membership end date."""
         membership = self._create_membership(plan=self.hours_plan)
+        membership.action_mark_as_paid()
         membership.action_activate()
         original_end_date = membership.date_end
 
@@ -138,6 +183,7 @@ class TestOSCoworkingMembership(TransactionCase):
         with self.assertRaises(UserError):
             membership.action_cancel()
 
+        membership.action_mark_as_paid()
         membership.action_activate()
         membership.action_cancel()
 
@@ -151,6 +197,8 @@ class TestOSCoworkingMembership(TransactionCase):
             date_end=expired_end_date,
             state='active',
             auto_renew=True,
+            payment_status='paid',
+            payment_date=self.today - relativedelta(days=30),
         )
 
         self.membership_model._cron_expire_memberships()
@@ -180,6 +228,8 @@ class TestOSCoworkingMembership(TransactionCase):
             date_end=self.today - relativedelta(days=1),
             state='frozen',
             freeze_date=self.today - relativedelta(days=5),
+            payment_status='paid',
+            payment_date=self.today - relativedelta(days=30),
         )
 
         self.membership_model._cron_expire_memberships()
@@ -220,6 +270,72 @@ class TestOSCoworkingMembership(TransactionCase):
                     self.cr.savepoint(),
                 ):
                     self._create_membership(**values)
+
+    def test_payment_is_required_before_activation(self):
+        """Verify payment confirmation and the paid-only activation rule."""
+        membership = self._create_membership(plan=self.hours_plan)
+
+        self.assertEqual(membership.payment_status, 'unpaid')
+        self.assertFalse(membership.payment_date)
+        with self.assertRaises(UserError):
+            membership.action_activate()
+
+        membership.action_mark_as_paid()
+
+        self.assertEqual(membership.payment_status, 'paid')
+        self.assertEqual(membership.payment_date, self.today)
+        with self.assertRaises(UserError):
+            membership.action_mark_as_paid()
+
+        membership.action_activate()
+        self.assertEqual(membership.state, 'active')
+
+    def test_payment_requires_linked_product(self):
+        """Verify payment cannot be confirmed without a plan product."""
+        plan = self.env['os.coworking.membership.plan'].create(
+            {
+                'name': 'Test Plan Without Product',
+                'usage_type': 'unlimited',
+                'duration_days': 30,
+                'price': 75.0,
+            }
+        )
+        membership = self._create_membership(plan=plan)
+
+        with self.assertRaises(UserError):
+            membership.action_mark_as_paid()
+        with self.assertRaises(UserError):
+            membership._get_coworking_product()
+
+        self.assertEqual(membership.payment_status, 'unpaid')
+        self.assertFalse(membership.payment_date)
+
+    def test_membership_invoice_report_renders_pdf(self):
+        """Verify membership invoice data and PDF rendering."""
+        membership = self._create_membership(plan=self.hours_plan)
+        membership.action_mark_as_paid()
+        product = membership._get_coworking_product()
+        report = self.env.ref(
+            'OdooSchool_coworking_management.os_coworking_membership_invoice_report_action'
+        )
+
+        html_content, html_type = self.env['ir.actions.report']._render_qweb_html(
+            report.id,
+            membership.ids,
+        )
+        self.assertEqual(html_type, 'html')
+        self.assertIn(b'Membership Invoice', html_content)
+        self.assertIn(product.name.encode(), html_content)
+        self.assertIn(b'Paid', html_content)
+
+        with self.allow_pdf_render():
+            pdf_content, pdf_type = (
+                self.env['ir.actions.report']
+                .with_context(force_report_rendering=True)
+                ._render_qweb_pdf(report.id, membership.ids)
+            )
+        self.assertEqual(pdf_type, 'pdf')
+        self.assertTrue(pdf_content.startswith(b'%PDF'))
 
     def test_partner_membership_smart_button_action(self):
         """Verify the contact count and membership smart button action."""
