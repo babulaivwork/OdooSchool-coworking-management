@@ -122,8 +122,9 @@ Demo Data and Tests
 
 When demo data is enabled, the module creates sample locations, resources,
 plans, products, clients, memberships, bookings, visits, and users for both
-roles. Automated tests cover every custom model, security rules, constraints,
-sequences, the availability wizard, and report rendering.
+roles. Automated tests cover every custom model, the main constraints and
+business workflows, security rules, the availability wizard, and report
+rendering.
 
 Known Limitations
 =================

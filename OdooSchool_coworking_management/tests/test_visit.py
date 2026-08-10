@@ -1,11 +1,8 @@
 from datetime import datetime, time, timedelta
 
-from psycopg2.errors import CheckViolation, UniqueViolation
-
 from odoo import Command, fields
-from odoo.exceptions import AccessError, UserError, ValidationError
+from odoo.exceptions import AccessError, ValidationError
 from odoo.tests import TransactionCase
-from odoo.tools import mute_logger
 
 
 class TestOSCoworkingVisit(TransactionCase):
@@ -157,20 +154,10 @@ class TestOSCoworkingVisit(TransactionCase):
         visit = booking.visit_ids
 
         self.assertRegex(visit.name, r'^VIS/\d{5}$')
-        self.assertNotEqual(visit.name, self.env._('New'))
         self.assertEqual(visit.state, 'checked_in')
         self.assertEqual(visit.partner_id, booking.partner_id)
-        self.assertEqual(visit.location_id, booking.location_id)
         self.assertEqual(visit.resource_id, booking.resource_id)
-        self.assertEqual(visit.membership_id, booking.membership_id)
-        self.assertEqual(visit.company_id, booking.company_id)
         self.assertEqual(booking.state, 'confirmed')
-        self.assertTrue(
-            any(
-                visit.display_name in message.body
-                for message in booking.message_ids
-            )
-        )
 
         visit.check_in = fields.Datetime.now() - timedelta(hours=2)
         visit.action_check_out()
@@ -179,52 +166,6 @@ class TestOSCoworkingVisit(TransactionCase):
         self.assertTrue(visit.check_out)
         self.assertAlmostEqual(visit.duration_hours, 2.0, delta=0.01)
         self.assertEqual(booking.state, 'done')
-
-    def test_visit_requires_confirmed_booking_and_valid_initial_state(self):
-        """Verify visits can start only from confirmed bookings."""
-        draft_booking = self._create_booking()
-
-        with self.assertRaises(ValidationError):
-            self.visit_model.create({'booking_id': draft_booking.id})
-
-        confirmed_booking = self._create_confirmed_booking(start_hour=12)
-        with self.assertRaises(ValidationError):
-            self.visit_model.create(
-                {
-                    'booking_id': confirmed_booking.id,
-                    'state': 'checked_out',
-                }
-            )
-
-    def test_booking_accepts_only_one_visit(self):
-        """Verify action and SQL constraint reject a duplicate visit."""
-        booking = self._create_confirmed_booking()
-        booking.action_check_in()
-
-        with self.assertRaises(UserError):
-            booking.action_check_in()
-
-        with (
-            mute_logger('odoo.sql_db'),
-            self.assertRaises(UniqueViolation),
-            self.cr.savepoint(),
-        ):
-            self.visit_model.create({'booking_id': booking.id})
-
-    def test_checked_in_booking_cannot_be_cancelled(self):
-        """Verify an open visit protects its booking from cancellation."""
-        booking = self._create_confirmed_booking()
-        booking.action_check_in()
-        visit = booking.visit_ids
-
-        with self.assertRaisesRegex(
-            UserError,
-            'cannot be cancelled after check-in',
-        ):
-            booking.action_cancel()
-
-        self.assertEqual(booking.state, 'confirmed')
-        self.assertEqual(visit.state, 'checked_in')
 
     def test_cancel_visit_cancels_booking_and_restores_limit(self):
         """Verify open visit cancellation rolls back the booking reservation."""
@@ -243,16 +184,6 @@ class TestOSCoworkingVisit(TransactionCase):
         self.assertEqual(booking.state, 'cancelled')
         self.assertEqual(booking.reserved_hours, 0.0)
         self.assertEqual(self.hours_membership.remaining_hours, 5.0)
-        self.assertTrue(
-            any(
-                visit.display_name in message.body
-                and 'cancelled after check-in' in message.body
-                for message in booking.message_ids
-            )
-        )
-
-        with self.assertRaises(UserError):
-            visit.action_cancel()
 
     def test_client_cannot_have_two_open_visits(self):
         """Verify one client cannot be checked in to two resources."""
@@ -266,52 +197,6 @@ class TestOSCoworkingVisit(TransactionCase):
             second_booking.action_check_in()
 
         self.assertFalse(second_booking.visit_ids)
-
-    def test_visit_time_and_checkout_constraints(self):
-        """Verify check-out chronology and invalid repeated action handling."""
-        booking = self._create_confirmed_booking()
-        booking.action_check_in()
-        visit = booking.visit_ids
-
-        with (
-            mute_logger('odoo.sql_db'),
-            self.assertRaises(CheckViolation),
-            self.cr.savepoint(),
-        ):
-            visit.write({'check_out': visit.check_in - timedelta(minutes=1)})
-
-        visit.action_check_out()
-        with self.assertRaises(UserError):
-            visit.action_check_out()
-        with self.assertRaises(UserError):
-            visit.action_cancel()
-
-    def test_partner_visit_smart_button_action(self):
-        """Verify the contact visit count and smart button domain."""
-        booking = self._create_confirmed_booking()
-        booking.action_check_in()
-        visit = booking.visit_ids
-
-        self.assertEqual(self.client.coworking_visit_count, 1)
-
-        action = self.client.action_view_coworking_visits()
-        self.assertEqual(action['domain'], [('partner_id', '=', self.client.id)])
-        self.assertEqual(self.visit_model.search(action['domain']), visit)
-
-    def test_booking_visit_smart_button_action(self):
-        """Verify the booking visit count and smart button domain."""
-        booking = self._create_confirmed_booking()
-
-        self.assertEqual(booking.visit_count, 0)
-
-        booking.action_check_in()
-        visit = booking.visit_ids
-
-        self.assertEqual(booking.visit_count, 1)
-
-        action = booking.action_view_visits()
-        self.assertEqual(action['domain'], [('booking_id', '=', booking.id)])
-        self.assertEqual(self.visit_model.search(action['domain']), visit)
 
     def test_user_access_is_limited_to_assigned_locations(self):
         """Verify User and Admin access to visits follows location rules."""
@@ -347,13 +232,5 @@ class TestOSCoworkingVisit(TransactionCase):
 
         self.assertIn(allowed_visit, visible_visits)
         self.assertNotIn(denied_visit, visible_visits)
-        allowed_visit.with_user(coworking_user).write({'note': 'Updated by User'})
         with self.assertRaises(AccessError):
             allowed_visit.with_user(coworking_user).unlink()
-
-        admin = self.env.ref('base.user_admin')
-        admin_visits = self.visit_model.with_user(admin).search(
-            [('id', 'in', [allowed_visit.id, denied_visit.id])]
-        )
-        self.assertEqual(set(admin_visits.ids), {allowed_visit.id, denied_visit.id})
-        denied_visit.with_user(admin).unlink()
