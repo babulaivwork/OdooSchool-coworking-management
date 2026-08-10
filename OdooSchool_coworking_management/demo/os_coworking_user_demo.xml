@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="os_coworking_user_demo" model="res.users">
+        <field name="name">Coworking Demo User</field>
+        <field name="login">coworking_user</field>
+        <field name="password">demo</field>
+        <field name="company_id" ref="base.main_company"/>
+        <field
+            name="company_ids"
+            eval="[Command.link(ref('base.main_company'))]"
+        />
+        <field
+            name="group_ids"
+            eval="[Command.link(ref('group_coworking_user'))]"
+        />
+    </record>
+
+    <record id="os_coworking_admin_demo" model="res.users">
+        <field name="name">Coworking Demo Admin</field>
+        <field name="login">coworking_admin</field>
+        <field name="password">demo</field>
+        <field name="company_id" ref="base.main_company"/>
+        <field
+            name="company_ids"
+            eval="[Command.link(ref('base.main_company'))]"
+        />
+        <field
+            name="group_ids"
+            eval="[Command.link(ref('group_coworking_admin'))]"
+        />
+    </record>
+</odoo>
