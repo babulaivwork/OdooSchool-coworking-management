@@ -81,7 +81,12 @@
                 <t
                     t-call="OdooSchool_coworking_management.os_coworking_booking_confirmation_layout"
                 >
-                    <div class="page">
+                    <div class="page os_coworking_booking_report">
+                        <style>
+                            .os_coworking_booking_report th {
+                                font-weight: 700 !important;
+                            }
+                        </style>
                         <div class="text-center mb-4">
                             <h1>Booking Confirmation</h1>
                             <h3>
