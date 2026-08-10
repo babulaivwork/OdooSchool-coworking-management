@@ -42,6 +42,13 @@
                         class="btn-primary"
                         invisible="state != 'checked_in'"
                     />
+                    <button
+                        name="action_cancel"
+                        string="Cancel"
+                        type="object"
+                        invisible="state != 'checked_in'"
+                        confirm="Cancel this visit and the related booking? The reserved membership limit will be returned."
+                    />
                     <field
                         name="state"
                         widget="statusbar"
@@ -60,7 +67,9 @@
                         role="alert"
                         invisible="state != 'checked_in'"
                     >
-                        Check Out will complete the related booking.
+                        Check Out will complete the related booking. Cancel
+                        will cancel the related booking and return its reserved
+                        membership limit.
                     </div>
                     <group>
                         <group string="Visit">

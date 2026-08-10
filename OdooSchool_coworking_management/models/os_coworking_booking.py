@@ -436,22 +436,26 @@ class OSCoworkingBooking(models.Model):
         return action
 
     def action_cancel(self):
-        """Cancel confirmed bookings.
+        """Cancel confirmed bookings and return their reserved limits.
 
-        Reserved membership limits will be returned in the membership booking
-        implementation step.
+        A cancelled visit does not block this action because visit cancellation
+        coordinates both lifecycle changes in one transaction.
 
         :return: ``True`` after all selected bookings are cancelled.
         :rtype: bool
-        :raises UserError: If a booking is not confirmed.
+        :raises UserError: If a booking is not confirmed or has a visit that
+            has not been cancelled.
         """
         if any(booking.state != 'confirmed' for booking in self):
             raise UserError(self.env._('Only confirmed bookings can be cancelled.'))
-        if any(booking.visit_ids for booking in self):
+        if any(
+            booking.visit_ids.filtered(lambda visit: visit.state != 'cancelled')
+            for booking in self
+        ):
             raise UserError(
                 self.env._(
                     'A booking cannot be cancelled after check-in. '
-                    'Complete the visit by checking out.'
+                    'Check out or cancel the related visit first.'
                 )
             )
         for booking in self:

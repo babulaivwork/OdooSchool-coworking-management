@@ -81,6 +81,15 @@ class TestOSCoworkingVisit(TransactionCase):
                 'price': 100.0,
             }
         )
+        cls.hours_plan = cls.env['os.coworking.membership.plan'].create(
+            {
+                'name': 'Hourly Visit Test Plan',
+                'usage_type': 'hours',
+                'duration_days': 30,
+                'included_hours': 5.0,
+                'price': 80.0,
+            }
+        )
 
         today = fields.Date.today()
         cls.booking_date = today + timedelta(days=1)
@@ -100,6 +109,14 @@ class TestOSCoworkingVisit(TransactionCase):
             {
                 **membership_values,
                 'partner_id': cls.other_client.id,
+            }
+        )
+        cls.hours_membership = cls.env['os.coworking.membership'].create(
+            {
+                **membership_values,
+                'partner_id': cls.client.id,
+                'plan_id': cls.hours_plan.id,
+                'remaining_hours': 5.0,
             }
         )
 
@@ -211,6 +228,34 @@ class TestOSCoworkingVisit(TransactionCase):
         self.assertEqual(booking.state, 'confirmed')
         self.assertEqual(visit.state, 'checked_in')
 
+    def test_cancel_visit_cancels_booking_and_restores_limit(self):
+        """Verify open visit cancellation rolls back the booking reservation."""
+        booking = self._create_confirmed_booking(
+            membership=self.hours_membership,
+        )
+        self.assertEqual(self.hours_membership.remaining_hours, 4.0)
+
+        booking.action_check_in()
+        visit = booking.visit_ids
+        visit.action_cancel()
+
+        self.assertEqual(visit.state, 'cancelled')
+        self.assertFalse(visit.check_out)
+        self.assertEqual(visit.duration_hours, 0.0)
+        self.assertEqual(booking.state, 'cancelled')
+        self.assertEqual(booking.reserved_hours, 0.0)
+        self.assertEqual(self.hours_membership.remaining_hours, 5.0)
+        self.assertTrue(
+            any(
+                visit.display_name in message.body
+                and 'cancelled after check-in' in message.body
+                for message in booking.message_ids
+            )
+        )
+
+        with self.assertRaises(UserError):
+            visit.action_cancel()
+
     def test_client_cannot_have_two_open_visits(self):
         """Verify one client cannot be checked in to two resources."""
         first_booking = self._create_confirmed_booking()
@@ -240,6 +285,8 @@ class TestOSCoworkingVisit(TransactionCase):
         visit.action_check_out()
         with self.assertRaises(UserError):
             visit.action_check_out()
+        with self.assertRaises(UserError):
+            visit.action_cancel()
 
     def test_partner_visit_smart_button_action(self):
         """Verify the contact visit count and smart button domain."""

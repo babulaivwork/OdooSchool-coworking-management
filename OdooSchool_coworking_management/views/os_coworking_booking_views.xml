@@ -81,8 +81,8 @@
                         role="alert"
                         invisible="state != 'confirmed' or not visit_ids"
                     >
-                        The client is checked in. Open Visits to complete the
-                        check-out.
+                        The client is checked in. Open Visits to check out or
+                        cancel the visit and related booking.
                     </div>
                     <div class="oe_title">
                         <label for="name"/>

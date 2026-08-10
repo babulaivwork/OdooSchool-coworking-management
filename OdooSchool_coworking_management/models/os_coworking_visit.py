@@ -70,6 +70,7 @@ class OSCoworkingVisit(models.Model):
         ],
         string='Status',
         required=True,
+        readonly=True,
         default='checked_in',
         copy=False,
     )
@@ -151,6 +152,45 @@ class OSCoworkingVisit(models.Model):
             }
         )
         self.booking_id.action_done()
+        return True
+
+    def action_cancel(self):
+        """Cancel an open visit together with its related booking.
+
+        The booking cancellation returns any reserved membership limit. The
+        operation is atomic, so a failure rolls back both state changes.
+
+        :return: ``True`` after the visit and booking are cancelled.
+        :rtype: bool
+        :raises UserError: If the visit is not checked in or its booking is
+            no longer confirmed.
+        """
+        self.ensure_one()
+        if self.state != 'checked_in':
+            raise UserError(
+                self.env._('Only a checked-in visit can be cancelled.')
+            )
+        if self.booking_id.state != 'confirmed':
+            raise UserError(
+                self.env._(
+                    'A visit can be cancelled only while its booking is confirmed.'
+                )
+            )
+
+        self.write(
+            {
+                'check_out': False,
+                'state': 'cancelled',
+            }
+        )
+        self.booking_id.action_cancel()
+        self.booking_id.message_post(
+            body=self.env._(
+                'Visit %(visit)s was cancelled after check-in. '
+                'Any reserved membership limit was returned.',
+                visit=self.display_name,
+            )
+        )
         return True
 
     @api.model_create_multi
