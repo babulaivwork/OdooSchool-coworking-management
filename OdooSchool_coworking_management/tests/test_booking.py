@@ -148,6 +148,31 @@ class TestOSCoworkingBooking(TransactionCase):
         self.assertEqual(booking.location_id, self.location)
         self.assertEqual(booking.note, 'A booking test note.')
 
+    def test_booking_confirmation_report_renders_pdf(self):
+        """Verify the booking confirmation content and PDF rendering."""
+        booking = self._create_booking(note='Prepare the requested equipment.')
+        report = self.env.ref(
+            'OdooSchool_coworking_management.os_coworking_booking_report_action'
+        )
+
+        html_content, html_type = self.env['ir.actions.report']._render_qweb_html(
+            report.id,
+            booking.ids,
+        )
+        self.assertEqual(html_type, 'html')
+        self.assertIn(b'Booking Confirmation', html_content)
+        self.assertIn(b'Draft', html_content)
+        self.assertIn(b'General Coworking Rules', html_content)
+
+        with self.allow_pdf_render():
+            pdf_content, pdf_type = (
+                self.env['ir.actions.report']
+                .with_context(force_report_rendering=True)
+                ._render_qweb_pdf(report.id, booking.ids)
+            )
+        self.assertEqual(pdf_type, 'pdf')
+        self.assertTrue(pdf_content.startswith(b'%PDF'))
+
     def test_hourly_membership_reservation_is_restored_on_cancel(self):
         """Verify hourly limit reservation and restoration on cancellation."""
         booking = self._create_booking(membership_id=self.hours_membership.id)

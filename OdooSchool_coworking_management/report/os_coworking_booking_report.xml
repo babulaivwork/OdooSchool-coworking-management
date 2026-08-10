@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="os_coworking_booking_report_paperformat" model="report.paperformat">
+        <field name="name">Booking Confirmation A4</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">55</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">45</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="os_coworking_booking_report_action" model="ir.actions.report">
+        <field name="name">Booking Confirmation</field>
+        <field name="model">os.coworking.booking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">OdooSchool_coworking_management.os_coworking_booking_confirmation_report</field>
+        <field name="report_file">OdooSchool_coworking_management.os_coworking_booking_confirmation_report</field>
+        <field name="print_report_name">'Booking Confirmation - %s' % (object.name or 'Booking')</field>
+        <field name="paperformat_id" ref="os_coworking_booking_report_paperformat"/>
+        <field name="binding_model_id" ref="model_os_coworking_booking"/>
+        <field name="binding_type">report</field>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+    <template id="os_coworking_booking_confirmation_layout">
+        <div class="header">
+            <div class="row align-items-center border-bottom pb-2">
+                <div class="col-4">
+                    <img
+                        t-if="company.logo"
+                        t-att-src="image_data_uri(company.logo)"
+                        t-att-alt="company.name"
+                        style="max-height: 70px; max-width: 100%;"
+                    />
+                </div>
+                <div class="col-8 text-end">
+                    <h2 class="mb-1" t-out="company.name"/>
+                    <div class="d-inline-block text-start">
+                        <div
+                            t-field="company.partner_id"
+                            t-options='{
+                                "widget": "contact",
+                                "fields": ["address", "phone", "email", "website"],
+                                "no_marker": true
+                            }'
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="article"
+            t-att-data-oe-model="booking._name"
+            t-att-data-oe-id="booking.id"
+            t-att-data-oe-lang="booking.env.context.get('lang')"
+        >
+            <t t-out="0"/>
+        </div>
+
+        <div class="footer border-top pt-2">
+            <div class="row">
+                <div class="col-8">
+                    This document reflects the booking status at the time of printing.
+                </div>
+                <div class="col-4 text-end">
+                    Page <span class="page"/> of <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="os_coworking_booking_confirmation_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="booking">
+                <t t-set="company" t-value="booking.company_id"/>
+                <t
+                    t-call="OdooSchool_coworking_management.os_coworking_booking_confirmation_layout"
+                >
+                    <div class="page">
+                        <div class="text-center mb-4">
+                            <h1>Booking Confirmation</h1>
+                            <h3>
+                                <span t-field="booking.name"/>
+                            </h3>
+                        </div>
+
+                        <h3>Booking Details</h3>
+                        <table class="table table-sm table-bordered mb-4">
+                            <tbody>
+                                <tr>
+                                    <th class="w-25">Booking Date</th>
+                                    <td><span t-field="booking.create_date"/></td>
+                                    <th class="w-25">Status</th>
+                                    <td><span t-field="booking.state"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Start</th>
+                                    <td><span t-field="booking.start_datetime"/></td>
+                                    <th>End</th>
+                                    <td><span t-field="booking.end_datetime"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Duration</th>
+                                    <td colspan="3">
+                                        <span t-field="booking.duration_hours"/> hours
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <h3>Client</h3>
+                                <table class="table table-sm table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th>Name</th>
+                                            <td><span t-field="booking.partner_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone</th>
+                                            <td>
+                                                <span
+                                                    t-out="booking.partner_id.phone or '-'"
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td>
+                                                <span
+                                                    t-out="booking.partner_id.email or '-'"
+                                                />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <h3>Location</h3>
+                                <table class="table table-sm table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th>Name</th>
+                                            <td><span t-field="booking.location_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Address</th>
+                                            <td>
+                                                <t t-if="booking.location_id.street">
+                                                    <span
+                                                        t-field="booking.location_id.street"
+                                                    />
+                                                </t>
+                                                <t t-if="booking.location_id.street2">
+                                                    <br/>
+                                                    <span
+                                                        t-field="booking.location_id.street2"
+                                                    />
+                                                </t>
+                                                <t
+                                                    t-if="booking.location_id.city or booking.location_id.zip"
+                                                >
+                                                    <br/>
+                                                    <span
+                                                        t-if="booking.location_id.zip"
+                                                        t-field="booking.location_id.zip"
+                                                    />
+                                                    <span
+                                                        t-if="booking.location_id.zip and booking.location_id.city"
+                                                    > </span>
+                                                    <span
+                                                        t-if="booking.location_id.city"
+                                                        t-field="booking.location_id.city"
+                                                    />
+                                                </t>
+                                                <span
+                                                    t-if="not booking.location_id.street and not booking.location_id.street2 and not booking.location_id.city and not booking.location_id.zip"
+                                                >-</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <h3>Resource</h3>
+                        <table class="table table-sm table-bordered mb-4">
+                            <tbody>
+                                <tr>
+                                    <th>Name</th>
+                                    <td><span t-field="booking.resource_id"/></td>
+                                    <th>Type</th>
+                                    <td>
+                                        <span t-field="booking.resource_id.resource_type"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Capacity</th>
+                                    <td colspan="3">
+                                        <span t-field="booking.resource_id.capacity"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Membership</h3>
+                        <table class="table table-sm table-bordered mb-4">
+                            <tbody>
+                                <tr>
+                                    <th>Membership</th>
+                                    <td><span t-field="booking.membership_id"/></td>
+                                    <th>Membership Plan</th>
+                                    <td>
+                                        <span t-field="booking.membership_id.plan_id"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Plan Price</th>
+                                    <td colspan="3">
+                                        <span
+                                            t-field="booking.membership_id.plan_id.price"
+                                            t-options='{
+                                                "widget": "monetary",
+                                                "display_currency": booking.membership_id.plan_id.currency_id
+                                            }'
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div t-if="booking.note" class="mb-4">
+                            <h3>Notes</h3>
+                            <div class="border rounded p-2">
+                                <span t-field="booking.note"/>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3>General Coworking Rules</h3>
+                            <ul>
+                                <li>Use the resource only during the booked period.</li>
+                                <li>Follow coworking safety rules and staff instructions.</li>
+                                <li>Keep shared areas and equipment clean.</li>
+                                <li>Report any damage to coworking staff.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

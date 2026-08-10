@@ -28,6 +28,7 @@
         'wizard/os_coworking_availability_wizard_views.xml',
         'views/res_partner_views.xml',
         'views/product_template_views.xml',
+        'report/os_coworking_booking_report.xml',
     ],
     'demo': [
         'demo/os_coworking_partner_demo.xml',
