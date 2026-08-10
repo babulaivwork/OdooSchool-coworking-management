@@ -8,7 +8,7 @@ class OSCoworkingLocation(models.Model):
     _name = 'os.coworking.location'
     _description = 'Coworking Location'
 
-    name = fields.Char(string='Name', required=True)
+    name = fields.Char(string='Name', required=True, translate=True)
     code = fields.Char(
         string='Code',
         required=True,
@@ -46,7 +46,7 @@ class OSCoworkingLocation(models.Model):
         default=18.0,
     )
     image_1920 = fields.Image(string='Image')
-    description = fields.Text(string='Description')
+    description = fields.Text(string='Description', translate=True)
     resource_ids = fields.One2many(
         comodel_name='os.coworking.resource',
         inverse_name='location_id',

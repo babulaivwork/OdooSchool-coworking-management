@@ -9,7 +9,7 @@ class OSCoworkingMembershipPlan(models.Model):
     _name = 'os.coworking.membership.plan'
     _description = 'Coworking Membership Plan'
 
-    name = fields.Char(string='Name', required=True)
+    name = fields.Char(string='Name', required=True, translate=True)
     code = fields.Char(
         string='Code',
         required=True,
@@ -57,7 +57,7 @@ class OSCoworkingMembershipPlan(models.Model):
             'after expiry.'
         ),
     )
-    description = fields.Text(string='Description')
+    description = fields.Text(string='Description', translate=True)
 
     _code_unique = models.Constraint(
         'UNIQUE(code)',

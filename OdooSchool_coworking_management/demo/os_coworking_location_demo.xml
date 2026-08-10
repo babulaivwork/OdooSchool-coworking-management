@@ -2,6 +2,7 @@
 <odoo>
     <record id="os_coworking_location_demo_central_hub" model="os.coworking.location">
         <field name="name">Central Hub</field>
+        <field name="name@uk_UA">Центральний хаб</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="manager_id" ref="base.user_admin"/>
         <field name="staff_user_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo')), Command.link(ref('os_coworking_user_demo'))]"/>
@@ -11,10 +12,12 @@
         <field name="working_hour_from">8.0</field>
         <field name="working_hour_to">20.0</field>
         <field name="description">A central coworking location for individual work and team meetings.</field>
+        <field name="description@uk_UA">Центральна локація коворкінгу для індивідуальної роботи та командних зустрічей.</field>
     </record>
 
     <record id="os_coworking_location_demo_riverside" model="os.coworking.location">
         <field name="name">Riverside Workspace</field>
+        <field name="name@uk_UA">Робочий простір біля річки</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="manager_id" ref="base.user_admin"/>
         <field name="staff_user_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo')), Command.link(ref('os_coworking_user_demo'))]"/>
@@ -24,10 +27,12 @@
         <field name="working_hour_from">9.0</field>
         <field name="working_hour_to">19.0</field>
         <field name="description">A quiet workspace near the river with flexible working hours.</field>
+        <field name="description@uk_UA">Тихий робочий простір біля річки з гнучким графіком роботи.</field>
     </record>
 
     <record id="os_coworking_location_demo_business_center" model="os.coworking.location">
         <field name="name">Business District Center</field>
+        <field name="name@uk_UA">Центр ділового району</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="manager_id" ref="base.user_admin"/>
         <field name="staff_user_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo'))]"/>
@@ -37,10 +42,12 @@
         <field name="working_hour_from">8.0</field>
         <field name="working_hour_to">18.0</field>
         <field name="description">A business-focused coworking location for professionals and small teams.</field>
+        <field name="description@uk_UA">Орієнтована на бізнес локація коворкінгу для професіоналів і невеликих команд.</field>
     </record>
 
     <record id="os_coworking_location_demo_old_town" model="os.coworking.location">
         <field name="name">Old Town Office</field>
+        <field name="name@uk_UA">Офіс у Старому місті</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="staff_user_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo'))]"/>
         <field name="street">4 Drahomanova Street</field>
@@ -49,11 +56,13 @@
         <field name="working_hour_from">9.0</field>
         <field name="working_hour_to">17.0</field>
         <field name="description">A former coworking office retained for historical records.</field>
+        <field name="description@uk_UA">Колишній офіс коворкінгу, збережений для історичних записів.</field>
         <field name="active" eval="False"/>
     </record>
 
     <record id="os_coworking_location_demo_event_annex" model="os.coworking.location">
         <field name="name">Former Event Annex</field>
+        <field name="name@uk_UA">Колишній простір для подій</field>
         <field name="company_id" ref="base.main_company"/>
         <field name="staff_user_ids" eval="[Command.link(ref('base.user_admin')), Command.link(ref('base.user_demo'))]"/>
         <field name="street">17 Hlushets Street</field>
@@ -62,6 +71,7 @@
         <field name="working_hour_from">10.0</field>
         <field name="working_hour_to">22.0</field>
         <field name="description">A discontinued event space kept as an archived location.</field>
+        <field name="description@uk_UA">Закритий простір для подій, збережений як архівна локація.</field>
         <field name="active" eval="False"/>
     </record>
 </odoo>

@@ -8,7 +8,7 @@ class OSCoworkingResource(models.Model):
     _name = 'os.coworking.resource'
     _description = 'Coworking Resource'
 
-    name = fields.Char(string='Name', required=True)
+    name = fields.Char(string='Name', required=True, translate=True)
     code = fields.Char(
         string='Code',
         required=True,
@@ -81,7 +81,7 @@ class OSCoworkingResource(models.Model):
         ),
     )
     image_1920 = fields.Image(string='Image')
-    description = fields.Text(string='Description')
+    description = fields.Text(string='Description', translate=True)
 
     _code_location_unique = models.Constraint(
         'UNIQUE(location_id, code)',

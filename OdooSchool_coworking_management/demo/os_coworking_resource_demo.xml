@@ -2,165 +2,197 @@
 <odoo>
     <record id="os_coworking_resource_demo_central_desk" model="os.coworking.resource">
         <field name="name">Central Dedicated Desk</field>
+        <field name="name@uk_UA">Центральне виділене робоче місце</field>
         <field name="location_id" ref="os_coworking_location_demo_central_hub"/>
         <field name="resource_type">desk</field>
         <field name="capacity">1</field>
         <field name="hourly_rate">8.0</field>
         <field name="state">available</field>
         <field name="description">A dedicated desk for focused individual work.</field>
+        <field name="description@uk_UA">Виділене робоче місце для зосередженої індивідуальної роботи.</field>
     </record>
 
     <record id="os_coworking_resource_demo_central_meeting_room" model="os.coworking.resource">
         <field name="name">Central Team Meeting Room</field>
+        <field name="name@uk_UA">Центральна командна переговорна кімната</field>
         <field name="location_id" ref="os_coworking_location_demo_central_hub"/>
         <field name="resource_type">meeting_room</field>
         <field name="capacity">8</field>
         <field name="hourly_rate">25.0</field>
         <field name="state">available</field>
         <field name="description">A meeting room for team discussions and client presentations.</field>
+        <field name="description@uk_UA">Переговорна кімната для командних обговорень і презентацій для клієнтів.</field>
     </record>
 
     <record id="os_coworking_resource_demo_central_office" model="os.coworking.resource">
         <field name="name">Central Focus Office</field>
+        <field name="name@uk_UA">Центральний офіс для зосередженої роботи</field>
         <field name="location_id" ref="os_coworking_location_demo_central_hub"/>
         <field name="resource_type">private_office</field>
         <field name="capacity">4</field>
         <field name="hourly_rate">40.0</field>
         <field name="state">maintenance</field>
         <field name="description">A private office temporarily unavailable during equipment maintenance.</field>
+        <field name="description@uk_UA">Приватний офіс, тимчасово недоступний через технічне обслуговування обладнання.</field>
     </record>
 
     <record id="os_coworking_resource_demo_central_event_space" model="os.coworking.resource">
         <field name="name">Central Main Event Hall</field>
+        <field name="name@uk_UA">Центральна головна зала для подій</field>
         <field name="location_id" ref="os_coworking_location_demo_central_hub"/>
         <field name="resource_type">event_space</field>
         <field name="capacity">60</field>
         <field name="hourly_rate">120.0</field>
         <field name="state">available</field>
         <field name="description">A large hall for presentations, workshops, and community events.</field>
+        <field name="description@uk_UA">Велика зала для презентацій, воркшопів і подій спільноти.</field>
     </record>
 
     <record id="os_coworking_resource_demo_riverside_desk" model="os.coworking.resource">
         <field name="name">Riverside Window Desk</field>
+        <field name="name@uk_UA">Робоче місце біля вікна з видом на річку</field>
         <field name="location_id" ref="os_coworking_location_demo_riverside"/>
         <field name="resource_type">desk</field>
         <field name="capacity">1</field>
         <field name="hourly_rate">7.5</field>
         <field name="state">available</field>
         <field name="description">A quiet desk near a window for individual daily work.</field>
+        <field name="description@uk_UA">Тихе робоче місце біля вікна для щоденної індивідуальної роботи.</field>
     </record>
 
     <record id="os_coworking_resource_demo_riverside_meeting_room" model="os.coworking.resource">
         <field name="name">Riverside Meeting Room</field>
+        <field name="name@uk_UA">Переговорна кімната біля річки</field>
         <field name="location_id" ref="os_coworking_location_demo_riverside"/>
         <field name="resource_type">meeting_room</field>
         <field name="capacity">6</field>
         <field name="hourly_rate">22.5</field>
         <field name="state">maintenance</field>
         <field name="description">A compact meeting room currently undergoing scheduled maintenance.</field>
+        <field name="description@uk_UA">Компактна переговорна кімната, у якій зараз проводиться планове технічне обслуговування.</field>
     </record>
 
     <record id="os_coworking_resource_demo_riverside_office" model="os.coworking.resource">
         <field name="name">Riverside Project Office</field>
+        <field name="name@uk_UA">Проєктний офіс біля річки</field>
         <field name="location_id" ref="os_coworking_location_demo_riverside"/>
         <field name="resource_type">private_office</field>
         <field name="capacity">6</field>
         <field name="hourly_rate">45.0</field>
         <field name="state">available</field>
         <field name="description">A private office suitable for project teams and short-term assignments.</field>
+        <field name="description@uk_UA">Приватний офіс для проєктних команд і короткострокових завдань.</field>
     </record>
 
     <record id="os_coworking_resource_demo_riverside_event_space" model="os.coworking.resource">
         <field name="name">Riverside Workshop Studio</field>
+        <field name="name@uk_UA">Студія для воркшопів біля річки</field>
         <field name="location_id" ref="os_coworking_location_demo_riverside"/>
         <field name="resource_type">event_space</field>
         <field name="capacity">30</field>
         <field name="hourly_rate">80.0</field>
         <field name="state">inactive</field>
         <field name="description">A workshop studio retained in the catalog but currently unavailable.</field>
+        <field name="description@uk_UA">Студія для воркшопів, яка залишена в каталозі, але наразі недоступна.</field>
     </record>
 
     <record id="os_coworking_resource_demo_business_desk" model="os.coworking.resource">
         <field name="name">Business Executive Desk</field>
+        <field name="name@uk_UA">Представницьке робоче місце</field>
         <field name="location_id" ref="os_coworking_location_demo_business_center"/>
         <field name="resource_type">desk</field>
         <field name="capacity">1</field>
         <field name="hourly_rate">12.0</field>
         <field name="state">available</field>
         <field name="description">A premium desk intended for business travelers and executives.</field>
+        <field name="description@uk_UA">Робоче місце преміумкласу для ділових мандрівників і керівників.</field>
     </record>
 
     <record id="os_coworking_resource_demo_business_boardroom" model="os.coworking.resource">
         <field name="name">Business Boardroom</field>
+        <field name="name@uk_UA">Бізнес-зала для нарад</field>
         <field name="location_id" ref="os_coworking_location_demo_business_center"/>
         <field name="resource_type">meeting_room</field>
         <field name="capacity">12</field>
         <field name="hourly_rate">55.0</field>
         <field name="state">available</field>
         <field name="description">A formal boardroom for negotiations and management meetings.</field>
+        <field name="description@uk_UA">Офіційна зала для переговорів і зустрічей керівництва.</field>
     </record>
 
     <record id="os_coworking_resource_demo_business_office" model="os.coworking.resource">
         <field name="name">Business Startup Office</field>
+        <field name="name@uk_UA">Офіс для стартапу</field>
         <field name="location_id" ref="os_coworking_location_demo_business_center"/>
         <field name="resource_type">private_office</field>
         <field name="capacity">8</field>
         <field name="hourly_rate">65.0</field>
         <field name="state">available</field>
         <field name="description">A furnished private office for a growing startup team.</field>
+        <field name="description@uk_UA">Мебльований приватний офіс для команди стартапу, що розвивається.</field>
     </record>
 
     <record id="os_coworking_resource_demo_business_event_space" model="os.coworking.resource">
         <field name="name">Business Conference Hall</field>
+        <field name="name@uk_UA">Конференц-зала бізнес-центру</field>
         <field name="location_id" ref="os_coworking_location_demo_business_center"/>
         <field name="resource_type">event_space</field>
         <field name="capacity">100</field>
         <field name="hourly_rate">180.0</field>
         <field name="state">maintenance</field>
         <field name="description">A conference hall temporarily closed for audiovisual system maintenance.</field>
+        <field name="description@uk_UA">Конференц-зала, тимчасово закрита для обслуговування аудіовізуальної системи.</field>
     </record>
 
     <record id="os_coworking_resource_demo_archived_central_desk" model="os.coworking.resource">
         <field name="name">Retired Central Desk</field>
+        <field name="name@uk_UA">Виведене з експлуатації центральне робоче місце</field>
         <field name="location_id" ref="os_coworking_location_demo_central_hub"/>
         <field name="resource_type">desk</field>
         <field name="capacity">1</field>
         <field name="hourly_rate">6.0</field>
         <field name="state">inactive</field>
         <field name="description">A retired desk retained as an archived resource record.</field>
+        <field name="description@uk_UA">Виведене з експлуатації робоче місце, збережене як архівний запис ресурсу.</field>
         <field name="active" eval="False"/>
     </record>
 
     <record id="os_coworking_resource_demo_archived_riverside_room" model="os.coworking.resource">
         <field name="name">Legacy Riverside Meeting Room</field>
+        <field name="name@uk_UA">Колишня переговорна кімната біля річки</field>
         <field name="location_id" ref="os_coworking_location_demo_riverside"/>
         <field name="resource_type">meeting_room</field>
         <field name="capacity">4</field>
         <field name="hourly_rate">18.0</field>
         <field name="state">inactive</field>
         <field name="description">A former meeting room preserved for historical reporting.</field>
+        <field name="description@uk_UA">Колишня переговорна кімната, збережена для історичної звітності.</field>
         <field name="active" eval="False"/>
     </record>
 
     <record id="os_coworking_resource_demo_archived_old_town_office" model="os.coworking.resource">
         <field name="name">Former Old Town Private Office</field>
+        <field name="name@uk_UA">Колишній приватний офіс у Старому місті</field>
         <field name="location_id" ref="os_coworking_location_demo_old_town"/>
         <field name="resource_type">private_office</field>
         <field name="capacity">5</field>
         <field name="hourly_rate">35.0</field>
         <field name="state">maintenance</field>
         <field name="description">An archived private office from the closed Old Town location.</field>
+        <field name="description@uk_UA">Архівний приватний офіс із закритої локації у Старому місті.</field>
         <field name="active" eval="False"/>
     </record>
 
     <record id="os_coworking_resource_demo_archived_event_hall" model="os.coworking.resource">
         <field name="name">Retired Event Annex Hall</field>
+        <field name="name@uk_UA">Виведена з експлуатації зала простору для подій</field>
         <field name="location_id" ref="os_coworking_location_demo_event_annex"/>
         <field name="resource_type">event_space</field>
         <field name="capacity">45</field>
         <field name="hourly_rate">95.0</field>
         <field name="state">inactive</field>
         <field name="description">An archived event hall from the discontinued Event Annex.</field>
+        <field name="description@uk_UA">Архівна зала для подій із закритого простору для подій.</field>
         <field name="active" eval="False"/>
     </record>
 </odoo>

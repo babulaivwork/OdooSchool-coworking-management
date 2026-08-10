@@ -2,6 +2,7 @@
 <odoo>
     <record id="os_coworking_product_demo_unlimited_day" model="product.template">
         <field name="name">Unlimited Day Membership</field>
+        <field name="name@uk_UA">Безлімітний денний абонемент</field>
         <field name="type">service</field>
         <field name="purchase_ok" eval="False"/>
         <field name="list_price">20.0</field>
@@ -9,10 +10,12 @@
         <field name="coworking_service_type">membership</field>
         <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_unlimited_day"/>
         <field name="description_sale">Unlimited coworking access for one day.</field>
+        <field name="description_sale@uk_UA">Безлімітний доступ до коворкінгу на один день.</field>
     </record>
 
     <record id="os_coworking_product_demo_unlimited_monthly" model="product.template">
         <field name="name">Unlimited Monthly Membership</field>
+        <field name="name@uk_UA">Безлімітний місячний абонемент</field>
         <field name="type">service</field>
         <field name="purchase_ok" eval="False"/>
         <field name="list_price">250.0</field>
@@ -20,10 +23,12 @@
         <field name="coworking_service_type">membership</field>
         <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_unlimited_month"/>
         <field name="description_sale">Unlimited coworking access for thirty days.</field>
+        <field name="description_sale@uk_UA">Безлімітний доступ до коворкінгу протягом тридцяти днів.</field>
     </record>
 
     <record id="os_coworking_product_demo_unlimited_quarterly" model="product.template">
         <field name="name">Unlimited Quarterly Membership</field>
+        <field name="name@uk_UA">Безлімітний квартальний абонемент</field>
         <field name="type">service</field>
         <field name="purchase_ok" eval="False"/>
         <field name="list_price">675.0</field>
@@ -31,10 +36,12 @@
         <field name="coworking_service_type">membership</field>
         <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_unlimited_quarter"/>
         <field name="description_sale">Unlimited coworking access at one location for ninety days.</field>
+        <field name="description_sale@uk_UA">Безлімітний доступ до коворкінгу в одній локації протягом дев'яноста днів.</field>
     </record>
 
     <record id="os_coworking_product_demo_flexible_hours" model="product.template">
         <field name="name">Flexible 10-Hour Membership</field>
+        <field name="name@uk_UA">Гнучкий абонемент на 10 годин</field>
         <field name="type">service</field>
         <field name="purchase_ok" eval="False"/>
         <field name="list_price">80.0</field>
@@ -42,10 +49,12 @@
         <field name="coworking_service_type">membership</field>
         <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_hours_starter"/>
         <field name="description_sale">Ten flexible coworking hours available during thirty days.</field>
+        <field name="description_sale@uk_UA">Десять гнучких годин коворкінгу, доступних протягом тридцяти днів.</field>
     </record>
 
     <record id="os_coworking_product_demo_professional_hours" model="product.template">
         <field name="name">Professional 40-Hour Membership</field>
+        <field name="name@uk_UA">Професійний абонемент на 40 годин</field>
         <field name="type">service</field>
         <field name="purchase_ok" eval="False"/>
         <field name="list_price">260.0</field>
@@ -53,10 +62,12 @@
         <field name="coworking_service_type">membership</field>
         <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_hours_professional"/>
         <field name="description_sale">Forty flexible coworking hours available during thirty days.</field>
+        <field name="description_sale@uk_UA">Сорок гнучких годин коворкінгу, доступних протягом тридцяти днів.</field>
     </record>
 
     <record id="os_coworking_product_demo_team_hours" model="product.template">
         <field name="name">Team 100-Hour Membership</field>
+        <field name="name@uk_UA">Командний абонемент на 100 годин</field>
         <field name="type">service</field>
         <field name="purchase_ok" eval="False"/>
         <field name="list_price">600.0</field>
@@ -64,10 +75,12 @@
         <field name="coworking_service_type">membership</field>
         <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_hours_team"/>
         <field name="description_sale">One hundred coworking hours at one location for ninety days.</field>
+        <field name="description_sale@uk_UA">Сто годин коворкінгу в одній локації протягом дев'яноста днів.</field>
     </record>
 
     <record id="os_coworking_product_demo_flexible_visits" model="product.template">
         <field name="name">Flexible 5-Visit Membership</field>
+        <field name="name@uk_UA">Гнучкий абонемент на 5 відвідувань</field>
         <field name="type">service</field>
         <field name="purchase_ok" eval="False"/>
         <field name="list_price">45.0</field>
@@ -75,10 +88,12 @@
         <field name="coworking_service_type">membership</field>
         <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_visits_flex"/>
         <field name="description_sale">Five coworking visits available during thirty days.</field>
+        <field name="description_sale@uk_UA">П'ять відвідувань коворкінгу, доступних протягом тридцяти днів.</field>
     </record>
 
     <record id="os_coworking_product_demo_regular_visits" model="product.template">
         <field name="name">Regular 12-Visit Membership</field>
+        <field name="name@uk_UA">Регулярний абонемент на 12 відвідувань</field>
         <field name="type">service</field>
         <field name="purchase_ok" eval="False"/>
         <field name="list_price">95.0</field>
@@ -86,10 +101,12 @@
         <field name="coworking_service_type">membership</field>
         <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_visits_regular"/>
         <field name="description_sale">Twelve coworking visits available during sixty days.</field>
+        <field name="description_sale@uk_UA">Дванадцять відвідувань коворкінгу, доступних протягом шістдесяти днів.</field>
     </record>
 
     <record id="os_coworking_product_demo_community_visits" model="product.template">
         <field name="name">Community 30-Visit Membership</field>
+        <field name="name@uk_UA">Абонемент для спільноти на 30 відвідувань</field>
         <field name="type">service</field>
         <field name="purchase_ok" eval="False"/>
         <field name="list_price">210.0</field>
@@ -97,25 +114,30 @@
         <field name="coworking_service_type">membership</field>
         <field name="coworking_plan_id" ref="os_coworking_membership_plan_demo_visits_community"/>
         <field name="description_sale">Thirty coworking visits at one location for ninety days.</field>
+        <field name="description_sale@uk_UA">Тридцять відвідувань коворкінгу в одній локації протягом дев'яноста днів.</field>
     </record>
 
     <record id="os_coworking_product_demo_locker_rental" model="product.template">
         <field name="name">Locker Rental</field>
+        <field name="name@uk_UA">Оренда шафки</field>
         <field name="type">service</field>
         <field name="purchase_ok" eval="False"/>
         <field name="list_price">15.0</field>
         <field name="is_coworking_service" eval="True"/>
         <field name="coworking_service_type">additional_service</field>
         <field name="description_sale">Personal locker rental for thirty days.</field>
+        <field name="description_sale@uk_UA">Оренда персональної шафки на тридцять днів.</field>
     </record>
 
     <record id="os_coworking_product_demo_printing_package" model="product.template">
         <field name="name">Printing Package</field>
+        <field name="name@uk_UA">Пакет друку</field>
         <field name="type">service</field>
         <field name="purchase_ok" eval="False"/>
         <field name="list_price">10.0</field>
         <field name="is_coworking_service" eval="True"/>
         <field name="coworking_service_type">additional_service</field>
         <field name="description_sale">A prepaid package of coworking printing services.</field>
+        <field name="description_sale@uk_UA">Передплачений пакет послуг друку в коворкінгу.</field>
     </record>
 </odoo>
