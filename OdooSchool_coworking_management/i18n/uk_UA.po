@@ -340,8 +340,6 @@ msgstr "Час закриття"
 msgid "Code"
 msgstr "Код"
 
-#. module…12885 tokens truncated…онемент? Цю дію неможливо скасувати."
-
 #. module: OdooSchool_coworking_management
 #: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__description
 #: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__description
