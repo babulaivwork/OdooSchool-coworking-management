@@ -166,9 +166,7 @@ class TestOSCoworkingMembership(TransactionCase):
         membership = self._create_membership(plan=self.hours_plan)
         membership.action_mark_as_paid()
         product = membership._get_coworking_product()
-        report = self.env.ref(
-            'OdooSchool_coworking_management.os_coworking_membership_invoice_report_action'
-        )
+        report = self.env.ref('OdooSchool_coworking_management.os_coworking_membership_invoice_report_action')
 
         html_content, html_type = self.env['ir.actions.report']._render_qweb_html(
             report.id,

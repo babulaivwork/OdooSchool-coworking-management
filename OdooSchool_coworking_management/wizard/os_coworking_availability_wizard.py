@@ -69,9 +69,7 @@ class OSCoworkingAvailabilityWizard(models.TransientModel):
         """
         for wizard in self:
             if wizard.capacity <= 0:
-                raise ValidationError(
-                    self.env._('Minimum capacity must be greater than zero.')
-                )
+                raise ValidationError(self.env._('Minimum capacity must be greater than zero.'))
 
     @api.constrains('location_id', 'start_datetime', 'end_datetime')
     def _check_search_period(self):
@@ -123,17 +121,13 @@ class OSCoworkingAvailabilityWizard(models.TransientModel):
         """
         self.ensure_one()
         if self.end_datetime <= self.start_datetime:
-            raise ValidationError(
-                self.env._('The end time must be later than the start time.')
-            )
+            raise ValidationError(self.env._('The end time must be later than the start time.'))
 
         start_local = self._to_local_datetime(self.start_datetime)
         end_local = self._to_local_datetime(self.end_datetime)
         for value in (start_local, end_local):
             if value.minute or value.second or value.microsecond:
-                raise ValidationError(
-                    self.env._('The start and end times must be set to full hours.')
-                )
+                raise ValidationError(self.env._('The start and end times must be set to full hours.'))
 
         location = self.location_id
         start_hour = start_local.hour + start_local.minute / 60.0
@@ -214,9 +208,7 @@ class OSCoworkingAvailabilityWizard(models.TransientModel):
 
         available_resources = self._get_available_resources()
         if self.selected_resource_id not in available_resources:
-            raise ValidationError(
-                self.env._('The selected resource is no longer available for this period.')
-            )
+            raise ValidationError(self.env._('The selected resource is no longer available for this period.'))
 
         context = {
             'default_resource_id': self.selected_resource_id.id,
@@ -235,9 +227,7 @@ class OSCoworkingAvailabilityWizard(models.TransientModel):
                 'view_mode': 'form',
                 'views': [
                     (
-                        self.env.ref(
-                            'OdooSchool_coworking_management.os_coworking_view_booking_form'
-                        ).id,
+                        self.env.ref('OdooSchool_coworking_management.os_coworking_view_booking_form').id,
                         'form',
                     )
                 ],

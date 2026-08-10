@@ -112,8 +112,6 @@ class ResPartner(models.Model):
         :rtype: dict
         """
         self.ensure_one()
-        action = self.env['ir.actions.actions']._for_xml_id(
-            'OdooSchool_coworking_management.os_coworking_action_visit'
-        )
+        action = self.env['ir.actions.actions']._for_xml_id('OdooSchool_coworking_management.os_coworking_action_visit')
         action['domain'] = [('partner_id', '=', self.id)]
         return action

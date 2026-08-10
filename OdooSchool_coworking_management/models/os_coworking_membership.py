@@ -96,10 +96,7 @@ class OSCoworkingMembership(models.Model):
         string='Automatic Renewal',
         default=False,
         tracking=True,
-        help=(
-            'Creates a draft renewal after expiry. The renewal is not '
-            'activated automatically.'
-        ),
+        help=('Creates a draft renewal after expiry. The renewal is not activated automatically.'),
     )
     freeze_date = fields.Date(
         string='Freeze Date',
@@ -200,30 +197,17 @@ class OSCoworkingMembership(models.Model):
         :raises UserError: If paid membership commercial details are changed.
         """
         payment_fields = {'payment_status', 'payment_date'}
-        if payment_fields.intersection(vals) and not self.env.context.get(
-            'coworking_confirm_payment'
-        ):
-            raise UserError(
-                self.env._(
-                    'Payment status and date can be changed only by the Mark '
-                    'as Paid action.'
-                )
-            )
+        if payment_fields.intersection(vals) and not self.env.context.get('coworking_confirm_payment'):
+            raise UserError(self.env._('Payment status and date can be changed only by the Mark as Paid action.'))
 
         locked_fields = {'partner_id', 'plan_id', 'location_id', 'date_start'}
         if locked_fields.intersection(vals):
             paid_memberships = self.filtered(
-                lambda membership: (
-                    membership.payment_status == 'paid'
-                    or vals.get('payment_status') == 'paid'
-                )
+                lambda membership: membership.payment_status == 'paid' or vals.get('payment_status') == 'paid'
             )
             if paid_memberships:
                 raise UserError(
-                    self.env._(
-                        'Client, membership plan, location, and start date '
-                        'cannot be changed after payment.'
-                    )
+                    self.env._('Client, membership plan, location, and start date cannot be changed after payment.')
                 )
         return super().write(vals)
 
@@ -275,9 +259,7 @@ class OSCoworkingMembership(models.Model):
         """
         for membership in self:
             if membership.auto_renew and not membership.plan_id.allow_auto_renew:
-                raise ValidationError(
-                    self.env._('Automatic renewal is not allowed for the selected membership plan.')
-                )
+                raise ValidationError(self.env._('Automatic renewal is not allowed for the selected membership plan.'))
 
     def _get_coworking_product(self):
         """Return the product linked to the selected membership plan.
@@ -289,14 +271,18 @@ class OSCoworkingMembership(models.Model):
         :raises UserError: If the plan does not have a linked product.
         """
         self.ensure_one()
-        product = self.env['product.template'].with_context(active_test=False).search(
-            [
-                ('coworking_plan_id', '=', self.plan_id.id),
-                ('is_coworking_service', '=', True),
-                ('coworking_service_type', '=', 'membership'),
-                ('type', '=', 'service'),
-            ],
-            limit=1,
+        product = (
+            self.env['product.template']
+            .with_context(active_test=False)
+            .search(
+                [
+                    ('coworking_plan_id', '=', self.plan_id.id),
+                    ('is_coworking_service', '=', True),
+                    ('coworking_service_type', '=', 'membership'),
+                    ('type', '=', 'service'),
+                ],
+                limit=1,
+            )
         )
         if not product:
             raise UserError(
@@ -320,16 +306,9 @@ class OSCoworkingMembership(models.Model):
         payment_date = fields.Date.context_today(self)
         for membership in self:
             if membership.state != 'draft' or membership.payment_status != 'unpaid':
-                raise UserError(
-                    self.env._('Only unpaid draft memberships can be marked as paid.')
-                )
+                raise UserError(self.env._('Only unpaid draft memberships can be marked as paid.'))
             if not membership.plan_id.all_locations and not membership.location_id:
-                raise UserError(
-                    self.env._(
-                        'A location is required for a membership plan limited '
-                        'to one location.'
-                    )
-                )
+                raise UserError(self.env._('A location is required for a membership plan limited to one location.'))
             membership._get_coworking_product()
             membership.with_context(coworking_confirm_payment=True).write(
                 {
@@ -353,12 +332,16 @@ class OSCoworkingMembership(models.Model):
 
         :raises UserError: If a membership has a confirmed booking.
         """
-        confirmed_booking = self.env['os.coworking.booking'].sudo().search(
-            [
-                ('membership_id', 'in', self.ids),
-                ('state', '=', 'confirmed'),
-            ],
-            limit=1,
+        confirmed_booking = (
+            self.env['os.coworking.booking']
+            .sudo()
+            .search(
+                [
+                    ('membership_id', 'in', self.ids),
+                    ('state', '=', 'confirmed'),
+                ],
+                limit=1,
+            )
         )
         if confirmed_booking:
             raise UserError(
@@ -381,13 +364,9 @@ class OSCoworkingMembership(models.Model):
             if membership.payment_status != 'paid':
                 raise UserError(self.env._('Only a paid membership can be activated.'))
             if not membership.plan_id.all_locations and not membership.location_id:
-                raise UserError(
-                    self.env._('A location is required for a membership plan limited to one location.')
-                )
+                raise UserError(self.env._('A location is required for a membership plan limited to one location.'))
             if membership.auto_renew and not membership.plan_id.allow_auto_renew:
-                raise UserError(
-                    self.env._('Automatic renewal is not allowed for the selected membership plan.')
-                )
+                raise UserError(self.env._('Automatic renewal is not allowed for the selected membership plan.'))
 
             values = {
                 'state': 'active',
@@ -500,9 +479,7 @@ class OSCoworkingMembership(models.Model):
         :rtype: dict
         """
         self.ensure_one()
-        action = self.env['ir.actions.actions']._for_xml_id(
-            'OdooSchool_coworking_management.os_coworking_action_visit'
-        )
+        action = self.env['ir.actions.actions']._for_xml_id('OdooSchool_coworking_management.os_coworking_action_visit')
         action['domain'] = [('membership_id', '=', self.id)]
         return action
 
@@ -565,9 +542,5 @@ class OSCoworkingMembership(models.Model):
                     date=fields.Date.to_string(membership.date_end),
                 )
             )
-            if (
-                membership.auto_renew
-                and membership.plan_id.allow_auto_renew
-                and not membership.renewed_membership_id
-            ):
+            if membership.auto_renew and membership.plan_id.allow_auto_renew and not membership.renewed_membership_id:
                 membership._create_renewal()

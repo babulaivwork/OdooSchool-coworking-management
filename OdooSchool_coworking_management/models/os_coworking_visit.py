@@ -125,9 +125,7 @@ class OSCoworkingVisit(models.Model):
                 limit=1,
             )
             if other_open_visit:
-                raise ValidationError(
-                    self.env._('The client already has an open visit.')
-                )
+                raise ValidationError(self.env._('The client already has an open visit.'))
 
     def action_check_out(self):
         """Check out an open visit and complete its confirmed booking.
@@ -141,9 +139,7 @@ class OSCoworkingVisit(models.Model):
         if self.state != 'checked_in':
             raise UserError(self.env._('Only a checked-in visit can be checked out.'))
         if self.booking_id.state != 'confirmed':
-            raise UserError(
-                self.env._('Check-out is allowed only for a confirmed booking.')
-            )
+            raise UserError(self.env._('Check-out is allowed only for a confirmed booking.'))
 
         self.write(
             {
@@ -167,15 +163,9 @@ class OSCoworkingVisit(models.Model):
         """
         self.ensure_one()
         if self.state != 'checked_in':
-            raise UserError(
-                self.env._('Only a checked-in visit can be cancelled.')
-            )
+            raise UserError(self.env._('Only a checked-in visit can be cancelled.'))
         if self.booking_id.state != 'confirmed':
-            raise UserError(
-                self.env._(
-                    'A visit can be cancelled only while its booking is confirmed.'
-                )
-            )
+            raise UserError(self.env._('A visit can be cancelled only while its booking is confirmed.'))
 
         self.write(
             {
@@ -186,8 +176,7 @@ class OSCoworkingVisit(models.Model):
         self.booking_id.action_cancel()
         self.booking_id.message_post(
             body=self.env._(
-                'Visit %(visit)s was cancelled after check-in. '
-                'Any reserved membership limit was returned.',
+                'Visit %(visit)s was cancelled after check-in. Any reserved membership limit was returned.',
                 visit=self.display_name,
             )
         )
@@ -203,25 +192,18 @@ class OSCoworkingVisit(models.Model):
         """
         booking_ids = [vals.get('booking_id') for vals in vals_list if vals.get('booking_id')]
         bookings_by_id = {
-            booking.id: booking
-            for booking in self.env['os.coworking.booking'].browse(booking_ids).exists()
+            booking.id: booking for booking in self.env['os.coworking.booking'].browse(booking_ids).exists()
         }
         for vals in vals_list:
             booking = bookings_by_id.get(vals.get('booking_id'))
             if booking and booking.state != 'confirmed':
-                raise ValidationError(
-                    self.env._('A visit can be created only from a confirmed booking.')
-                )
+                raise ValidationError(self.env._('A visit can be created only from a confirmed booking.'))
             if vals.get('state', 'checked_in') != 'checked_in' or vals.get('check_out'):
-                raise ValidationError(
-                    self.env._('A new visit must start in the Checked In state.')
-                )
+                raise ValidationError(self.env._('A new visit must start in the Checked In state.'))
             if not vals.get('name') or vals['name'] == self.env._('New'):
                 sequence = self.env['ir.sequence'].next_by_code('os.coworking.visit')
                 if not sequence:
-                    raise ValidationError(
-                        self.env._('The coworking visit sequence is not configured.')
-                    )
+                    raise ValidationError(self.env._('The coworking visit sequence is not configured.'))
                 vals['name'] = sequence
         visits = super().create(vals_list)
         visits._check_no_other_open_visit()

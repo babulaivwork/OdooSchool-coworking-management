@@ -121,6 +121,7 @@ class TestOSCoworkingBooking(TransactionCase):
                 'remaining_hours': 10.0,
             }
         )
+
     def _create_booking(self, **values):
         """Create a draft booking with valid reusable default values."""
         booking_values = {
@@ -136,9 +137,7 @@ class TestOSCoworkingBooking(TransactionCase):
     def test_booking_sequence_and_report(self):
         """Verify booking basics and PDF confirmation rendering."""
         booking = self._create_booking(note='Prepare the requested equipment.')
-        report = self.env.ref(
-            'OdooSchool_coworking_management.os_coworking_booking_report_action'
-        )
+        report = self.env.ref('OdooSchool_coworking_management.os_coworking_booking_report_action')
 
         self.assertRegex(booking.name, r'^BKG/\d{5}$')
         self.assertEqual(booking.duration_hours, 2.0)
@@ -222,18 +221,20 @@ class TestOSCoworkingBooking(TransactionCase):
 
     def test_user_access_is_limited_to_assigned_locations(self):
         """Verify User ACL and record rules for location-based booking access."""
-        coworking_user = self.env['res.users'].with_context(no_reset_password=True).create(
-            {
-                'name': 'Booking Access Test User',
-                'login': 'booking_access_test_user',
-            }
+        coworking_user = (
+            self.env['res.users']
+            .with_context(no_reset_password=True)
+            .create(
+                {
+                    'name': 'Booking Access Test User',
+                    'login': 'booking_access_test_user',
+                }
+            )
         )
-        self.env.ref(
-            'OdooSchool_coworking_management.group_coworking_user'
-        ).write({'user_ids': [Command.link(coworking_user.id)]})
-        self.location.write(
-            {'staff_user_ids': [Command.link(coworking_user.id)]}
+        self.env.ref('OdooSchool_coworking_management.group_coworking_user').write(
+            {'user_ids': [Command.link(coworking_user.id)]}
         )
+        self.location.write({'staff_user_ids': [Command.link(coworking_user.id)]})
         allowed_booking = self._create_booking()
         denied_booking = self._create_booking(
             resource_id=self.other_resource.id,

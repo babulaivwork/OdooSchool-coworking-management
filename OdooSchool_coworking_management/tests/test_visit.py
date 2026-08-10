@@ -211,20 +211,20 @@ class TestOSCoworkingVisit(TransactionCase):
         allowed_visit = allowed_booking.visit_ids
         denied_visit = denied_booking.visit_ids
 
-        coworking_user = self.env['res.users'].with_context(
-            no_reset_password=True
-        ).create(
-            {
-                'name': 'Visit Access Test User',
-                'login': 'visit_access_test_user',
-            }
+        coworking_user = (
+            self.env['res.users']
+            .with_context(no_reset_password=True)
+            .create(
+                {
+                    'name': 'Visit Access Test User',
+                    'login': 'visit_access_test_user',
+                }
+            )
         )
-        self.env.ref(
-            'OdooSchool_coworking_management.group_coworking_user'
-        ).write({'user_ids': [Command.link(coworking_user.id)]})
-        self.location.write(
-            {'staff_user_ids': [Command.link(coworking_user.id)]}
+        self.env.ref('OdooSchool_coworking_management.group_coworking_user').write(
+            {'user_ids': [Command.link(coworking_user.id)]}
         )
+        self.location.write({'staff_user_ids': [Command.link(coworking_user.id)]})
 
         visible_visits = self.visit_model.with_user(coworking_user).search(
             [('id', 'in', [allowed_visit.id, denied_visit.id])]

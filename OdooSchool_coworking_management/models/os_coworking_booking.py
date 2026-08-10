@@ -162,9 +162,7 @@ class OSCoworkingBooking(models.Model):
                     continue
                 local_value = booking._to_local_datetime(value)
                 if local_value.minute or local_value.second or local_value.microsecond:
-                    raise ValidationError(
-                        self.env._('The booking start and end times must be set to full hours.')
-                    )
+                    raise ValidationError(self.env._('The booking start and end times must be set to full hours.'))
 
     @api.constrains(
         'partner_id',
@@ -219,13 +217,9 @@ class OSCoworkingBooking(models.Model):
         """
         self.ensure_one()
         if not self.location_id.active:
-            raise ValidationError(
-                self.env._('Only resources in active coworking locations can be booked.')
-            )
+            raise ValidationError(self.env._('Only resources in active coworking locations can be booked.'))
         if not self.resource_id.active or self.resource_id.state != 'available':
-            raise ValidationError(
-                self.env._('Only active and available resources can be booked.')
-            )
+            raise ValidationError(self.env._('Only active and available resources can be booked.'))
 
     def _validate_membership_eligibility(self):
         """Ensure the membership can cover the booking.
@@ -236,25 +230,16 @@ class OSCoworkingBooking(models.Model):
         self.ensure_one()
         membership = self.membership_id
         if membership.partner_id != self.partner_id:
-            raise ValidationError(
-                self.env._('The booking client must be the owner of the selected membership.')
-            )
+            raise ValidationError(self.env._('The booking client must be the owner of the selected membership.'))
         if membership.state != 'active':
             raise ValidationError(self.env._('Only an active membership can be used for booking.'))
 
         start_date = self._to_local_datetime(self.start_datetime).date()
         end_date = self._to_local_datetime(self.end_datetime).date()
         if start_date < membership.date_start or end_date > membership.date_end:
-            raise ValidationError(
-                self.env._('The booking period must be within the membership validity dates.')
-            )
-        if (
-            not membership.plan_id.all_locations
-            and membership.location_id != self.location_id
-        ):
-            raise ValidationError(
-                self.env._('The membership is not valid at the selected location.')
-            )
+            raise ValidationError(self.env._('The booking period must be within the membership validity dates.'))
+        if not membership.plan_id.all_locations and membership.location_id != self.location_id:
+            raise ValidationError(self.env._('The membership is not valid at the selected location.'))
 
     def _reserve_membership_limit(self):
         """Deduct and record the membership limit required by the booking.
@@ -282,16 +267,12 @@ class OSCoworkingBooking(models.Model):
                 )
                 < 0
             ):
-                raise ValidationError(
-                    self.env._('The membership does not have enough remaining hours.')
-                )
+                raise ValidationError(self.env._('The membership does not have enough remaining hours.'))
             membership.remaining_hours -= self.duration_hours
             reservation_values['reserved_hours'] = self.duration_hours
         elif usage_type == 'visits':
             if membership.remaining_visits < 1:
-                raise ValidationError(
-                    self.env._('The membership does not have enough remaining visits.')
-                )
+                raise ValidationError(self.env._('The membership does not have enough remaining visits.'))
             membership.remaining_visits -= 1
             reservation_values['reserved_visits'] = 1
 
@@ -361,9 +342,7 @@ class OSCoworkingBooking(models.Model):
             limit=1,
         )
         if overlapping_booking:
-            raise ValidationError(
-                self.env._('The resource already has a confirmed booking during this period.')
-            )
+            raise ValidationError(self.env._('The resource already has a confirmed booking during this period.'))
 
     def action_confirm(self):
         """Confirm draft bookings after validating operational constraints.
@@ -396,15 +375,8 @@ class OSCoworkingBooking(models.Model):
         """
         if any(booking.state != 'confirmed' for booking in self):
             raise UserError(self.env._('Only confirmed bookings can be completed.'))
-        if any(
-            not booking.visit_ids.filtered(lambda visit: visit.state == 'checked_out')
-            for booking in self
-        ):
-            raise UserError(
-                self.env._(
-                    'A booking can be completed only after its visit is checked out.'
-                )
-            )
+        if any(not booking.visit_ids.filtered(lambda visit: visit.state == 'checked_out') for booking in self):
+            raise UserError(self.env._('A booking can be completed only after its visit is checked out.'))
         self.write({'state': 'done'})
         for booking in self:
             booking.message_post(body=self.env._('Booking completed.'))
@@ -425,9 +397,7 @@ class OSCoworkingBooking(models.Model):
         """
         self.ensure_one()
         if self.state != 'confirmed':
-            raise UserError(
-                self.env._('Check-in is allowed only for a confirmed booking.')
-            )
+            raise UserError(self.env._('Check-in is allowed only for a confirmed booking.'))
         if self.visit_ids:
             raise UserError(self.env._('A visit already exists for this booking.'))
 
@@ -458,9 +428,7 @@ class OSCoworkingBooking(models.Model):
         :rtype: dict
         """
         self.ensure_one()
-        action = self.env['ir.actions.actions']._for_xml_id(
-            'OdooSchool_coworking_management.os_coworking_action_visit'
-        )
+        action = self.env['ir.actions.actions']._for_xml_id('OdooSchool_coworking_management.os_coworking_action_visit')
         action['domain'] = [('booking_id', '=', self.id)]
         return action
 
@@ -477,15 +445,9 @@ class OSCoworkingBooking(models.Model):
         """
         if any(booking.state != 'confirmed' for booking in self):
             raise UserError(self.env._('Only confirmed bookings can be cancelled.'))
-        if any(
-            booking.visit_ids.filtered(lambda visit: visit.state != 'cancelled')
-            for booking in self
-        ):
+        if any(booking.visit_ids.filtered(lambda visit: visit.state != 'cancelled') for booking in self):
             raise UserError(
-                self.env._(
-                    'A booking cannot be cancelled after check-in. '
-                    'Check out or cancel the related visit first.'
-                )
+                self.env._('A booking cannot be cancelled after check-in. Check out or cancel the related visit first.')
             )
         for booking in self:
             booking._restore_membership_limit()

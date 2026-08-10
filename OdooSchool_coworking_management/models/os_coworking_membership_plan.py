@@ -61,10 +61,7 @@ class OSCoworkingMembershipPlan(models.Model):
     allow_auto_renew = fields.Boolean(
         string='Allow Automatic Renewal',
         default=False,
-        help=(
-            'Allows memberships using this plan to create a draft renewal '
-            'after expiry.'
-        ),
+        help=('Allows memberships using this plan to create a draft renewal after expiry.'),
     )
     description = fields.Text(string='Description', translate=True)
 

@@ -47,38 +47,20 @@ class ProductTemplate(models.Model):
             if not product.is_coworking_service:
                 if product.coworking_service_type or product.coworking_plan_id:
                     raise ValidationError(
-                        self.env._(
-                            'A non-coworking product cannot define a coworking '
-                            'service type or membership plan.'
-                        )
+                        self.env._('A non-coworking product cannot define a coworking service type or membership plan.')
                     )
                 continue
             if product.type != 'service':
-                raise ValidationError(
-                    self.env._('A coworking product must use the Service product type.')
-                )
+                raise ValidationError(self.env._('A coworking product must use the Service product type.'))
             if not product.coworking_service_type:
-                raise ValidationError(
-                    self.env._('A coworking service type is required.')
-                )
+                raise ValidationError(self.env._('A coworking service type is required.'))
             if product.coworking_service_type == 'membership':
                 if not product.coworking_plan_id:
-                    raise ValidationError(
-                        self.env._(
-                            'A coworking membership service requires a membership plan.'
-                        )
-                    )
+                    raise ValidationError(self.env._('A coworking membership service requires a membership plan.'))
                 if product.list_price < 0.0:
-                    raise ValidationError(
-                        self.env._('A coworking membership price cannot be negative.')
-                    )
+                    raise ValidationError(self.env._('A coworking membership price cannot be negative.'))
             elif product.coworking_plan_id:
-                raise ValidationError(
-                    self.env._(
-                        'Only a coworking membership service can define a '
-                        'membership plan.'
-                    )
-                )
+                raise ValidationError(self.env._('Only a coworking membership service can define a membership plan.'))
 
     @api.onchange('is_coworking_service', 'coworking_service_type')
     def _onchange_coworking_service_configuration(self):
