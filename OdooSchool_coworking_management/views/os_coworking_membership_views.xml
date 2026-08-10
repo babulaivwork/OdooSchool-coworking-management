@@ -74,6 +74,34 @@
                     />
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_bookings"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-calendar"
+                            groups="OdooSchool_coworking_management.group_coworking_user"
+                        >
+                            <field
+                                name="booking_count"
+                                string="Bookings"
+                                widget="statinfo"
+                            />
+                        </button>
+                        <button
+                            name="action_view_visits"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-sign-in"
+                            groups="OdooSchool_coworking_management.group_coworking_user"
+                        >
+                            <field
+                                name="visit_count"
+                                string="Visits"
+                                widget="statinfo"
+                            />
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <label for="name"/>
                         <h1>
@@ -82,16 +110,28 @@
                     </div>
                     <group>
                         <group string="Membership">
-                            <field name="partner_id" readonly="state != 'draft'"/>
-                            <field name="plan_id" readonly="state != 'draft'"/>
-                            <field name="location_id" readonly="state != 'draft'"/>
+                            <field
+                                name="partner_id"
+                                readonly="state != 'draft' or payment_status == 'paid'"
+                            />
+                            <field
+                                name="plan_id"
+                                readonly="state != 'draft' or payment_status == 'paid'"
+                            />
+                            <field
+                                name="location_id"
+                                readonly="state != 'draft' or payment_status == 'paid'"
+                            />
                             <field
                                 name="auto_renew"
                                 readonly="state in ['expired', 'cancelled']"
                             />
                         </group>
                         <group string="Validity">
-                            <field name="date_start" readonly="state != 'draft'"/>
+                            <field
+                                name="date_start"
+                                readonly="state != 'draft' or payment_status == 'paid'"
+                            />
                             <field name="date_end" readonly="1" force_save="1"/>
                             <field name="freeze_date" invisible="state != 'frozen'"/>
                             <field name="total_frozen_days"/>

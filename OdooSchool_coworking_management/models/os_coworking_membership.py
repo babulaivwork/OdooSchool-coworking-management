@@ -126,6 +126,24 @@ class OSCoworkingMembership(models.Model):
         copy=False,
         ondelete='set null',
     )
+    booking_ids = fields.One2many(
+        comodel_name='os.coworking.booking',
+        inverse_name='membership_id',
+        string='Bookings',
+    )
+    booking_count = fields.Integer(
+        string='Bookings',
+        compute='_compute_booking_count',
+    )
+    visit_ids = fields.One2many(
+        comodel_name='os.coworking.visit',
+        inverse_name='membership_id',
+        string='Visits',
+    )
+    visit_count = fields.Integer(
+        string='Visits',
+        compute='_compute_visit_count',
+    )
     note = fields.Text(string='Notes')
 
     _date_range_valid = models.Constraint(
@@ -173,6 +191,68 @@ class OSCoworkingMembership(models.Model):
                 vals['date_end'] = self._calculate_end_date(vals['date_start'], plan.duration_days)
         return super().create(vals_list)
 
+    def write(self, vals):
+        """Protect payment data and paid membership commercial details.
+
+        :param dict vals: Values to update on the memberships.
+        :return: Result of the standard write operation.
+        :rtype: bool
+        :raises UserError: If paid membership commercial details are changed.
+        """
+        payment_fields = {'payment_status', 'payment_date'}
+        if payment_fields.intersection(vals) and not self.env.context.get(
+            'coworking_confirm_payment'
+        ):
+            raise UserError(
+                self.env._(
+                    'Payment status and date can be changed only by the Mark '
+                    'as Paid action.'
+                )
+            )
+
+        locked_fields = {'partner_id', 'plan_id', 'location_id', 'date_start'}
+        if locked_fields.intersection(vals):
+            paid_memberships = self.filtered(
+                lambda membership: (
+                    membership.payment_status == 'paid'
+                    or vals.get('payment_status') == 'paid'
+                )
+            )
+            if paid_memberships:
+                raise UserError(
+                    self.env._(
+                        'Client, membership plan, location, and start date '
+                        'cannot be changed after payment.'
+                    )
+                )
+        return super().write(vals)
+
+    @api.depends('booking_ids')
+    def _compute_booking_count(self):
+        """Compute the number of accessible bookings for each membership."""
+        count_by_membership = dict(
+            self.env['os.coworking.booking']._read_group(
+                domain=[('membership_id', 'in', self.ids)],
+                groupby=['membership_id'],
+                aggregates=['__count'],
+            )
+        )
+        for membership in self:
+            membership.booking_count = count_by_membership.get(membership, 0)
+
+    @api.depends('visit_ids')
+    def _compute_visit_count(self):
+        """Compute the number of accessible visits for each membership."""
+        count_by_membership = dict(
+            self.env['os.coworking.visit']._read_group(
+                domain=[('membership_id', 'in', self.ids)],
+                groupby=['membership_id'],
+                aggregates=['__count'],
+            )
+        )
+        for membership in self:
+            membership.visit_count = count_by_membership.get(membership, 0)
+
     @api.onchange('plan_id', 'date_start')
     def _onchange_plan_or_start_date(self):
         """Update the end date and renewal option from the selected plan."""
@@ -210,7 +290,12 @@ class OSCoworkingMembership(models.Model):
         """
         self.ensure_one()
         product = self.env['product.template'].with_context(active_test=False).search(
-            [('coworking_plan_id', '=', self.plan_id.id)],
+            [
+                ('coworking_plan_id', '=', self.plan_id.id),
+                ('is_coworking_service', '=', True),
+                ('coworking_service_type', '=', 'membership'),
+                ('type', '=', 'service'),
+            ],
             limit=1,
         )
         if not product:
@@ -238,8 +323,15 @@ class OSCoworkingMembership(models.Model):
                 raise UserError(
                     self.env._('Only unpaid draft memberships can be marked as paid.')
                 )
+            if not membership.plan_id.all_locations and not membership.location_id:
+                raise UserError(
+                    self.env._(
+                        'A location is required for a membership plan limited '
+                        'to one location.'
+                    )
+                )
             membership._get_coworking_product()
-            membership.write(
+            membership.with_context(coworking_confirm_payment=True).write(
                 {
                     'payment_status': 'paid',
                     'payment_date': payment_date,
@@ -252,6 +344,29 @@ class OSCoworkingMembership(models.Model):
                 )
             )
         return True
+
+    def _check_no_confirmed_bookings(self):
+        """Block membership changes while confirmed bookings still exist.
+
+        The search uses elevated access so an all-location membership cannot
+        be changed while it has a booking at a location hidden by record rules.
+
+        :raises UserError: If a membership has a confirmed booking.
+        """
+        confirmed_booking = self.env['os.coworking.booking'].sudo().search(
+            [
+                ('membership_id', 'in', self.ids),
+                ('state', '=', 'confirmed'),
+            ],
+            limit=1,
+        )
+        if confirmed_booking:
+            raise UserError(
+                self.env._(
+                    'A membership with confirmed bookings cannot be frozen or '
+                    'terminated. Complete or cancel the bookings first.'
+                )
+            )
 
     def action_activate(self):
         """Activate draft memberships and initialize their usage limits.
@@ -294,6 +409,7 @@ class OSCoworkingMembership(models.Model):
         :rtype: bool
         :raises UserError: If a membership is not active.
         """
+        self._check_no_confirmed_bookings()
         today = fields.Date.context_today(self)
         for membership in self:
             if membership.state != 'active':
@@ -347,6 +463,7 @@ class OSCoworkingMembership(models.Model):
         :rtype: bool
         :raises UserError: If a membership cannot be cancelled.
         """
+        self._check_no_confirmed_bookings()
         for membership in self:
             if membership.state not in ('active', 'frozen'):
                 raise UserError(self.env._('Only active or frozen memberships can be terminated.'))
@@ -358,6 +475,36 @@ class OSCoworkingMembership(models.Model):
             )
             membership.message_post(body=self.env._('Membership terminated early.'))
         return True
+
+    def action_view_bookings(self):
+        """Open bookings linked to the selected membership.
+
+        :return: Booking action filtered by the current membership.
+        :rtype: dict
+        """
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id(
+            'OdooSchool_coworking_management.os_coworking_action_booking'
+        )
+        action['domain'] = [('membership_id', '=', self.id)]
+        action['context'] = {
+            'default_partner_id': self.partner_id.id,
+            'default_membership_id': self.id,
+        }
+        return action
+
+    def action_view_visits(self):
+        """Open visits linked to the selected membership.
+
+        :return: Visit action filtered by the current membership.
+        :rtype: dict
+        """
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id(
+            'OdooSchool_coworking_management.os_coworking_action_visit'
+        )
+        action['domain'] = [('membership_id', '=', self.id)]
+        return action
 
     def _prepare_renewal_values(self):
         """Prepare values for a draft membership renewal.

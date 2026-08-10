@@ -1,5 +1,6 @@
 from psycopg2.errors import UniqueViolation
 
+from odoo.exceptions import ValidationError
 from odoo.tests import TransactionCase
 from odoo.tools import mute_logger
 
@@ -33,13 +34,13 @@ class TestCoworkingStandardModelExtensions(TransactionCase):
                 'name': 'Linked Test Plan',
                 'usage_type': 'unlimited',
                 'duration_days': 30,
-                'price': 100.0,
             }
         )
         product = self.env['product.template'].create(
             {
                 'name': 'Linked Membership Service',
                 'type': 'service',
+                'list_price': 100.0,
                 'is_coworking_service': True,
                 'coworking_service_type': 'membership',
                 'coworking_plan_id': plan.id,
@@ -50,6 +51,8 @@ class TestCoworkingStandardModelExtensions(TransactionCase):
         self.assertTrue(product.is_coworking_service)
         self.assertEqual(product.coworking_service_type, 'membership')
         self.assertEqual(product.coworking_plan_id, plan)
+        self.assertEqual(plan.product_id, product)
+        self.assertEqual(plan.price, product.list_price)
 
         with (
             mute_logger('odoo.sql_db'),
@@ -65,3 +68,74 @@ class TestCoworkingStandardModelExtensions(TransactionCase):
                     'coworking_plan_id': plan.id,
                 }
             )
+
+    def test_product_rejects_inconsistent_coworking_configuration(self):
+        """Verify coworking products remain valid service configurations."""
+        plan = self.env['os.coworking.membership.plan'].create(
+            {
+                'name': 'Product Constraint Test Plan',
+                'usage_type': 'unlimited',
+                'duration_days': 30,
+            }
+        )
+        invalid_values = [
+            {
+                'name': 'Non-Service Coworking Product',
+                'type': 'consu',
+                'is_coworking_service': True,
+                'coworking_service_type': 'membership',
+                'coworking_plan_id': plan.id,
+            },
+            {
+                'name': 'Membership Without Plan',
+                'type': 'service',
+                'is_coworking_service': True,
+                'coworking_service_type': 'membership',
+            },
+            {
+                'name': 'Additional Service With Plan',
+                'type': 'service',
+                'is_coworking_service': True,
+                'coworking_service_type': 'additional_service',
+                'coworking_plan_id': plan.id,
+            },
+            {
+                'name': 'Negative Membership Price',
+                'type': 'service',
+                'list_price': -1.0,
+                'is_coworking_service': True,
+                'coworking_service_type': 'membership',
+                'coworking_plan_id': plan.id,
+            },
+        ]
+        for values in invalid_values:
+            with self.subTest(values=values):
+                with self.assertRaises(ValidationError), self.cr.savepoint():
+                    self.env['product.template'].create(values)
+
+    def test_product_onchange_clears_incompatible_coworking_fields(self):
+        """Verify the product onchange clears fields that no longer apply."""
+        plan = self.env['os.coworking.membership.plan'].create(
+            {
+                'name': 'Product Onchange Test Plan',
+                'usage_type': 'unlimited',
+                'duration_days': 30,
+            }
+        )
+        product = self.env['product.template'].new(
+            {
+                'is_coworking_service': True,
+                'coworking_service_type': 'additional_service',
+                'coworking_plan_id': plan.id,
+            }
+        )
+
+        product._onchange_coworking_service_configuration()
+        self.assertFalse(product.coworking_plan_id)
+
+        product.coworking_service_type = 'membership'
+        product.coworking_plan_id = plan
+        product.is_coworking_service = False
+        product._onchange_coworking_service_configuration()
+        self.assertFalse(product.coworking_service_type)
+        self.assertFalse(product.coworking_plan_id)

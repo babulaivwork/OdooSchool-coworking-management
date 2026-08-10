@@ -14,10 +14,22 @@ class TestOSCoworkingMembershipPlan(TransactionCase):
             'name': 'Test Membership Plan',
             'usage_type': 'unlimited',
             'duration_days': 30,
-            'price': 100.0,
         }
         plan_values.update(values)
         return self.env['os.coworking.membership.plan'].create(plan_values)
+
+    def _create_product(self, plan, list_price=100.0):
+        """Create a valid membership product linked to a test plan."""
+        return self.env['product.template'].create(
+            {
+                'name': 'Test Membership Product',
+                'type': 'service',
+                'list_price': list_price,
+                'is_coworking_service': True,
+                'coworking_service_type': 'membership',
+                'coworking_plan_id': plan.id,
+            }
+        )
 
     def test_membership_plan_code_is_generated(self):
         """Verify that a new plan receives a sequence-generated code."""
@@ -51,18 +63,19 @@ class TestOSCoworkingMembershipPlan(TransactionCase):
                         duration_days=duration_days,
                     )
 
-    def test_membership_plan_price_constraint(self):
-        """Verify that zero is valid and negative plan prices are rejected."""
-        free_plan = self._create_plan(name='Free Plan', price=0.0)
+    def test_membership_plan_uses_product_reference_price(self):
+        """Verify that plan pricing is read from its linked product."""
+        plan = self._create_plan(name='Product Price Plan')
 
-        self.assertEqual(free_plan.price, 0.0)
+        self.assertFalse(plan.product_id)
+        self.assertEqual(plan.price, 0.0)
+        self.assertFalse(plan.currency_id)
 
-        with (
-            mute_logger('odoo.sql_db'),
-            self.assertRaises(CheckViolation),
-            self.cr.savepoint(),
-        ):
-            self._create_plan(name='Negative Price Plan', price=-1.0)
+        product = self._create_product(plan, list_price=125.0)
+
+        self.assertEqual(plan.product_id, product)
+        self.assertEqual(plan.price, 125.0)
+        self.assertEqual(plan.currency_id, product.currency_id)
 
     def test_membership_plan_valid_usage_limits(self):
         """Verify valid limits for unlimited, hourly, and visit plans."""
@@ -136,13 +149,14 @@ class TestOSCoworkingMembershipPlan(TransactionCase):
         )
 
     def test_membership_plan_options_and_currency(self):
-        """Verify location, renewal, and company currency defaults."""
+        """Verify location, renewal, and linked product currency values."""
         plan = self._create_plan(
             name='Location Renewal Plan',
             all_locations=False,
             allow_auto_renew=True,
         )
+        product = self._create_product(plan)
 
         self.assertFalse(plan.all_locations)
         self.assertTrue(plan.allow_auto_renew)
-        self.assertEqual(plan.currency_id, self.env.company.currency_id)
+        self.assertEqual(plan.currency_id, product.currency_id)

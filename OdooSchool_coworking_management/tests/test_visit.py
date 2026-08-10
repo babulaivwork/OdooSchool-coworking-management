@@ -78,7 +78,6 @@ class TestOSCoworkingVisit(TransactionCase):
                 'name': 'Unlimited Visit Test Plan',
                 'usage_type': 'unlimited',
                 'duration_days': 30,
-                'price': 100.0,
             }
         )
         cls.hours_plan = cls.env['os.coworking.membership.plan'].create(
@@ -87,7 +86,6 @@ class TestOSCoworkingVisit(TransactionCase):
                 'usage_type': 'hours',
                 'duration_days': 30,
                 'included_hours': 5.0,
-                'price': 80.0,
             }
         )
 

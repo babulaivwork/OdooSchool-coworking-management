@@ -5,7 +5,6 @@
         <field name="name@uk_UA">Безлімітний денний абонемент</field>
         <field name="usage_type">unlimited</field>
         <field name="duration_days">1</field>
-        <field name="price">20.0</field>
         <field name="description">Unlimited coworking access for one day without automatic renewal.</field>
         <field name="description@uk_UA">Безлімітний доступ до коворкінгу на один день без автоматичного продовження.</field>
     </record>
@@ -15,7 +14,6 @@
         <field name="name@uk_UA">Місячний безліміт</field>
         <field name="usage_type">unlimited</field>
         <field name="duration_days">30</field>
-        <field name="price">250.0</field>
         <field name="allow_auto_renew" eval="True"/>
         <field name="description">Unlimited access to all coworking locations for thirty days.</field>
         <field name="description@uk_UA">Безлімітний доступ до всіх локацій коворкінгу протягом тридцяти днів.</field>
@@ -26,7 +24,6 @@
         <field name="name@uk_UA">Квартальний безліміт</field>
         <field name="usage_type">unlimited</field>
         <field name="duration_days">90</field>
-        <field name="price">675.0</field>
         <field name="all_locations" eval="False"/>
         <field name="allow_auto_renew" eval="True"/>
         <field name="description">Unlimited access for ninety days within one selected location.</field>
@@ -39,7 +36,6 @@
         <field name="usage_type">hours</field>
         <field name="duration_days">30</field>
         <field name="included_hours">10.0</field>
-        <field name="price">80.0</field>
         <field name="description">Ten coworking hours available during a thirty-day period.</field>
         <field name="description@uk_UA">Десять годин коворкінгу, доступних протягом тридцяти днів.</field>
     </record>
@@ -50,7 +46,6 @@
         <field name="usage_type">hours</field>
         <field name="duration_days">30</field>
         <field name="included_hours">40.0</field>
-        <field name="price">260.0</field>
         <field name="allow_auto_renew" eval="True"/>
         <field name="description">Forty flexible coworking hours with optional monthly renewal.</field>
         <field name="description@uk_UA">Сорок гнучких годин коворкінгу з можливістю щомісячного продовження.</field>
@@ -62,7 +57,6 @@
         <field name="usage_type">hours</field>
         <field name="duration_days">90</field>
         <field name="included_hours">100.0</field>
-        <field name="price">600.0</field>
         <field name="all_locations" eval="False"/>
         <field name="allow_auto_renew" eval="True"/>
         <field name="description">One hundred hours for use at one selected location during ninety days.</field>
@@ -75,7 +69,6 @@
         <field name="usage_type">visits</field>
         <field name="duration_days">30</field>
         <field name="included_visits">5</field>
-        <field name="price">45.0</field>
         <field name="description">Five coworking visits available within thirty days.</field>
         <field name="description@uk_UA">П'ять відвідувань коворкінгу, доступних протягом тридцяти днів.</field>
     </record>
@@ -86,7 +79,6 @@
         <field name="usage_type">visits</field>
         <field name="duration_days">60</field>
         <field name="included_visits">12</field>
-        <field name="price">95.0</field>
         <field name="allow_auto_renew" eval="True"/>
         <field name="description">Twelve visits across all locations during a sixty-day period.</field>
         <field name="description@uk_UA">Дванадцять відвідувань усіх локацій протягом шістдесяти днів.</field>
@@ -98,7 +90,6 @@
         <field name="usage_type">visits</field>
         <field name="duration_days">90</field>
         <field name="included_visits">30</field>
-        <field name="price">210.0</field>
         <field name="all_locations" eval="False"/>
         <field name="allow_auto_renew" eval="True"/>
         <field name="description">Thirty visits at one selected location during ninety days.</field>
@@ -110,7 +101,6 @@
         <field name="name@uk_UA">Архівний місячний безліміт</field>
         <field name="usage_type">unlimited</field>
         <field name="duration_days">30</field>
-        <field name="price">180.0</field>
         <field name="description">A discontinued unlimited monthly plan retained for historical records.</field>
         <field name="description@uk_UA">Закритий місячний безлімітний тариф, збережений для історичних записів.</field>
         <field name="active" eval="False"/>
@@ -122,7 +112,6 @@
         <field name="usage_type">hours</field>
         <field name="duration_days">60</field>
         <field name="included_hours">20.0</field>
-        <field name="price">140.0</field>
         <field name="description">A discontinued twenty-hour plan retained for historical records.</field>
         <field name="description@uk_UA">Закритий тариф на двадцять годин, збережений для історичних записів.</field>
         <field name="active" eval="False"/>
@@ -134,7 +123,6 @@
         <field name="usage_type">visits</field>
         <field name="duration_days">45</field>
         <field name="included_visits">8</field>
-        <field name="price">65.0</field>
         <field name="description">A discontinued eight-visit plan retained for historical records.</field>
         <field name="description@uk_UA">Закритий тариф на вісім відвідувань, збережений для історичних записів.</field>
         <field name="active" eval="False"/>

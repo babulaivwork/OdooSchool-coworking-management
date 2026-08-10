@@ -79,7 +79,6 @@ class TestOSCoworkingAvailabilityWizard(TransactionCase):
                 'name': 'Availability Test Unlimited Plan',
                 'usage_type': 'unlimited',
                 'duration_days': 30,
-                'price': 100.0,
             }
         )
         today = fields.Date.today()

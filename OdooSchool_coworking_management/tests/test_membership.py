@@ -1,3 +1,5 @@
+from datetime import datetime, time, timedelta
+
 from dateutil.relativedelta import relativedelta
 from psycopg2.errors import CheckViolation
 
@@ -16,6 +18,7 @@ class TestOSCoworkingMembership(TransactionCase):
         super().setUpClass()
         cls.membership_model = cls.env['os.coworking.membership']
         cls.today = fields.Date.context_today(cls.membership_model)
+        cls.env.company.partner_id.tz = 'UTC'
         cls.client = cls.env['res.partner'].create(
             {
                 'name': 'Membership Test Client',
@@ -27,12 +30,20 @@ class TestOSCoworkingMembership(TransactionCase):
                 'name': 'Membership Test Location',
             }
         )
+        cls.resource = cls.env['os.coworking.resource'].create(
+            {
+                'name': 'Membership Test Desk',
+                'location_id': cls.location.id,
+                'resource_type': 'desk',
+                'capacity': 1,
+                'hourly_rate': 10.0,
+            }
+        )
         cls.unlimited_plan = cls.env['os.coworking.membership.plan'].create(
             {
                 'name': 'Test Unlimited Plan',
                 'usage_type': 'unlimited',
                 'duration_days': 30,
-                'price': 100.0,
                 'allow_auto_renew': True,
             }
         )
@@ -42,7 +53,6 @@ class TestOSCoworkingMembership(TransactionCase):
                 'usage_type': 'hours',
                 'duration_days': 30,
                 'included_hours': 10.0,
-                'price': 80.0,
                 'allow_auto_renew': True,
             }
         )
@@ -52,7 +62,6 @@ class TestOSCoworkingMembership(TransactionCase):
                 'usage_type': 'visits',
                 'duration_days': 30,
                 'included_visits': 5,
-                'price': 45.0,
                 'allow_auto_renew': True,
             }
         )
@@ -62,7 +71,7 @@ class TestOSCoworkingMembership(TransactionCase):
                     'name': 'Test Unlimited Membership Product',
                     'type': 'service',
                     'purchase_ok': False,
-                    'list_price': cls.unlimited_plan.price,
+                    'list_price': 100.0,
                     'is_coworking_service': True,
                     'coworking_service_type': 'membership',
                     'coworking_plan_id': cls.unlimited_plan.id,
@@ -71,7 +80,7 @@ class TestOSCoworkingMembership(TransactionCase):
                     'name': 'Test Hours Membership Product',
                     'type': 'service',
                     'purchase_ok': False,
-                    'list_price': cls.hours_plan.price,
+                    'list_price': 80.0,
                     'is_coworking_service': True,
                     'coworking_service_type': 'membership',
                     'coworking_plan_id': cls.hours_plan.id,
@@ -80,7 +89,7 @@ class TestOSCoworkingMembership(TransactionCase):
                     'name': 'Test Visits Membership Product',
                     'type': 'service',
                     'purchase_ok': False,
-                    'list_price': cls.visits_plan.price,
+                    'list_price': 45.0,
                     'is_coworking_service': True,
                     'coworking_service_type': 'membership',
                     'coworking_plan_id': cls.visits_plan.id,
@@ -134,7 +143,6 @@ class TestOSCoworkingMembership(TransactionCase):
                 'name': 'Test Location-Limited Plan',
                 'usage_type': 'unlimited',
                 'duration_days': 30,
-                'price': 100.0,
                 'all_locations': False,
             }
         )
@@ -143,19 +151,19 @@ class TestOSCoworkingMembership(TransactionCase):
                 'name': 'Test Location-Limited Membership Product',
                 'type': 'service',
                 'purchase_ok': False,
-                'list_price': plan.price,
+                'list_price': 100.0,
                 'is_coworking_service': True,
                 'coworking_service_type': 'membership',
                 'coworking_plan_id': plan.id,
             }
         )
         membership = self._create_membership(plan=plan)
-        membership.action_mark_as_paid()
 
         with self.assertRaises(UserError):
-            membership.action_activate()
+            membership.action_mark_as_paid()
 
         membership.location_id = self.location
+        membership.action_mark_as_paid()
         membership.action_activate()
 
         self.assertEqual(membership.state, 'active')
@@ -244,7 +252,6 @@ class TestOSCoworkingMembership(TransactionCase):
                 'name': 'Test Non-Renewable Plan',
                 'usage_type': 'unlimited',
                 'duration_days': 30,
-                'price': 50.0,
                 'allow_auto_renew': False,
             }
         )
@@ -286,9 +293,56 @@ class TestOSCoworkingMembership(TransactionCase):
         self.assertEqual(membership.payment_date, self.today)
         with self.assertRaises(UserError):
             membership.action_mark_as_paid()
+        with self.assertRaises(UserError):
+            membership.write({'payment_status': 'unpaid', 'payment_date': False})
 
         membership.action_activate()
         self.assertEqual(membership.state, 'active')
+
+    def test_paid_membership_commercial_fields_are_locked(self):
+        """Verify paid membership commercial details cannot be changed."""
+        membership = self._create_membership(plan=self.hours_plan)
+        membership.action_mark_as_paid()
+
+        locked_values = [
+            {'partner_id': self.env['res.partner'].create({'name': 'Other Client'}).id},
+            {'plan_id': self.visits_plan.id},
+            {'location_id': self.location.id},
+            {'date_start': self.today + relativedelta(days=1)},
+        ]
+        for values in locked_values:
+            with self.subTest(values=values):
+                with self.assertRaises(UserError), self.cr.savepoint():
+                    membership.write(values)
+
+        membership.write({'note': 'Non-commercial details remain editable.'})
+        self.assertEqual(membership.note, 'Non-commercial details remain editable.')
+
+    def test_confirmed_booking_blocks_freeze_and_termination(self):
+        """Verify confirmed bookings block disruptive membership actions."""
+        membership = self._create_membership(plan=self.hours_plan)
+        membership.action_mark_as_paid()
+        membership.action_activate()
+        booking_date = self.today + timedelta(days=1)
+        booking = self.env['os.coworking.booking'].create(
+            {
+                'partner_id': self.client.id,
+                'membership_id': membership.id,
+                'resource_id': self.resource.id,
+                'start_datetime': datetime.combine(booking_date, time(10)),
+                'end_datetime': datetime.combine(booking_date, time(12)),
+            }
+        )
+        booking.action_confirm()
+
+        with self.assertRaises(UserError):
+            membership.action_freeze()
+        with self.assertRaises(UserError):
+            membership.action_cancel()
+
+        booking.action_cancel()
+        membership.action_freeze()
+        self.assertEqual(membership.state, 'frozen')
 
     def test_payment_requires_linked_product(self):
         """Verify payment cannot be confirmed without a plan product."""
@@ -297,7 +351,6 @@ class TestOSCoworkingMembership(TransactionCase):
                 'name': 'Test Plan Without Product',
                 'usage_type': 'unlimited',
                 'duration_days': 30,
-                'price': 75.0,
             }
         )
         membership = self._create_membership(plan=plan)
@@ -327,6 +380,7 @@ class TestOSCoworkingMembership(TransactionCase):
         self.assertIn(b'Membership Invoice', html_content)
         self.assertIn(product.name.encode(), html_content)
         self.assertIn(b'Paid', html_content)
+        self.assertIn(b'80.00', html_content)
 
         with self.allow_pdf_render():
             pdf_content, pdf_type = (
@@ -348,3 +402,36 @@ class TestOSCoworkingMembership(TransactionCase):
         self.assertEqual(action['context'], {'default_partner_id': self.client.id})
         action_memberships = self.membership_model.search(action['domain'])
         self.assertEqual(action_memberships, membership)
+
+    def test_membership_booking_and_visit_smart_buttons(self):
+        """Verify membership operation counts and smart button actions."""
+        membership = self._create_membership(plan=self.unlimited_plan)
+        membership.action_mark_as_paid()
+        membership.action_activate()
+        booking_date = self.today + timedelta(days=1)
+        booking = self.env['os.coworking.booking'].create(
+            {
+                'partner_id': self.client.id,
+                'membership_id': membership.id,
+                'resource_id': self.resource.id,
+                'start_datetime': datetime.combine(booking_date, time(14)),
+                'end_datetime': datetime.combine(booking_date, time(15)),
+            }
+        )
+        booking.action_confirm()
+        booking.action_check_in()
+
+        self.assertEqual(membership.booking_count, 1)
+        self.assertEqual(membership.visit_count, 1)
+
+        booking_action = membership.action_view_bookings()
+        self.assertEqual(booking_action['domain'], [('membership_id', '=', membership.id)])
+        self.assertEqual(
+            booking_action['context'],
+            {
+                'default_partner_id': self.client.id,
+                'default_membership_id': membership.id,
+            },
+        )
+        visit_action = membership.action_view_visits()
+        self.assertEqual(visit_action['domain'], [('membership_id', '=', membership.id)])

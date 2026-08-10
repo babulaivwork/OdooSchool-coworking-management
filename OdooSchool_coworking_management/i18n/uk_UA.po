@@ -873,8 +873,8 @@ msgstr "Дані тарифу"
 
 #. module: OdooSchool_coworking_management
 #: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
-msgid "Plan Price"
-msgstr "Ціна тарифу"
+msgid "Product Price"
+msgstr "Ціна продукту"
 
 #. module: OdooSchool_coworking_management
 #. odoo-python
@@ -1276,11 +1276,6 @@ msgid "Image"
 msgstr "Зображення"
 
 #. module: OdooSchool_coworking_management
-#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__price
-msgid "Price"
-msgstr "Ціна"
-
-#. module: OdooSchool_coworking_management
 #. odoo-python
 #: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
 msgid "The booking client must be the owner of the selected membership."
@@ -1409,11 +1404,6 @@ msgstr "Код тарифного плану має бути унікальни�
 #: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_membership_plan_duration_days_positive
 msgid "The membership plan duration must be greater than zero."
 msgstr "Тривалість тарифного плану має бути більшою за нуль."
-
-#. module: OdooSchool_coworking_management
-#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_membership_plan_price_non_negative
-msgid "The membership plan price cannot be negative."
-msgstr "Ціна тарифного плану не може бути від’ємною."
 
 #. module: OdooSchool_coworking_management
 #. odoo-python
@@ -1610,3 +1600,84 @@ msgstr "Індекс"
 #: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_kanban
 msgid "· Capacity:"
 msgstr "· Місткість:"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/product_template.py:0
+msgid "A non-coworking product cannot define a coworking service type or membership plan."
+msgstr "Для продукту, що не є послугою коворкінгу, не можна вказувати тип послуги коворкінгу або тарифний план."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/product_template.py:0
+msgid "A coworking product must use the Service product type."
+msgstr "Продукт коворкінгу повинен мати тип продукту «Послуга»."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/product_template.py:0
+msgid "A coworking service type is required."
+msgstr "Потрібно вказати тип послуги коворкінгу."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/product_template.py:0
+msgid "A coworking membership service requires a membership plan."
+msgstr "Для послуги абонемента коворкінгу потрібно вказати тарифний план."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/product_template.py:0
+msgid "A coworking membership price cannot be negative."
+msgstr "Ціна абонемента коворкінгу не може бути від’ємною."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/product_template.py:0
+msgid "Only a coworking membership service can define a membership plan."
+msgstr "Тарифний план можна вказувати лише для послуги абонемента коворкінгу."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Client, membership plan, location, and start date cannot be changed after payment."
+msgstr "Після оплати не можна змінювати клієнта, тарифний план, локацію та дату початку."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "A membership with confirmed bookings cannot be frozen or terminated. Complete or cancel the bookings first."
+msgstr "Абонемент із підтвердженими бронюваннями не можна заморозити або достроково завершити. Спочатку завершіть або скасуйте бронювання."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "Only resources in active coworking locations can be booked."
+msgstr "Бронювати можна лише ресурси в активних локаціях коворкінгу."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "A booking can be completed only after its visit is checked out."
+msgstr "Бронювання можна завершити лише після реєстрації виходу для пов’язаного відвідування."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__product_ids
+msgid "Coworking Products"
+msgstr "Продукти коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__price
+msgid "Reference Price"
+msgstr "Довідкова ціна"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,help:OdooSchool_coworking_management.field_os_coworking_membership_plan__price
+msgid "Read-only reference to the sales price of the linked coworking product."
+msgstr "Довідкове значення ціни продажу пов’язаного продукту коворкінгу, доступне лише для читання."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Payment status and date can be changed only by the Mark as Paid action."
+msgstr "Статус і дату оплати можна змінити лише дією «Позначити як оплачений»."

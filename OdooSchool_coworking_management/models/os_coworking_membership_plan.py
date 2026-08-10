@@ -35,18 +35,27 @@ class OSCoworkingMembershipPlan(models.Model):
     )
     included_hours = fields.Float(string='Included Hours', default=0.0)
     included_visits = fields.Integer(string='Included Visits', default=0)
+    product_ids = fields.One2many(
+        comodel_name='product.template',
+        inverse_name='coworking_plan_id',
+        string='Coworking Products',
+        context={'active_test': False},
+    )
+    product_id = fields.Many2one(
+        comodel_name='product.template',
+        string='Coworking Product',
+        compute='_compute_product_reference',
+    )
     price = fields.Monetary(
-        string='Price',
-        required=True,
-        default=0.0,
+        string='Reference Price',
+        compute='_compute_product_reference',
         currency_field='currency_id',
+        help='Read-only reference to the sales price of the linked coworking product.',
     )
     currency_id = fields.Many2one(
         comodel_name='res.currency',
         string='Currency',
-        required=True,
-        readonly=True,
-        default=lambda self: self.env.company.currency_id,
+        compute='_compute_product_reference',
     )
     all_locations = fields.Boolean(string='All Locations', default=True)
     allow_auto_renew = fields.Boolean(
@@ -67,10 +76,6 @@ class OSCoworkingMembershipPlan(models.Model):
         'CHECK(duration_days > 0)',
         'The membership plan duration must be greater than zero.',
     )
-    _price_non_negative = models.Constraint(
-        'CHECK(price >= 0)',
-        'The membership plan price cannot be negative.',
-    )
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -87,6 +92,20 @@ class OSCoworkingMembershipPlan(models.Model):
                     raise ValidationError(self.env._('The coworking membership plan sequence is not configured.'))
                 vals['code'] = sequence
         return super().create(vals_list)
+
+    @api.depends(
+        'product_ids',
+        'product_ids.active',
+        'product_ids.list_price',
+        'product_ids.currency_id',
+    )
+    def _compute_product_reference(self):
+        """Show the linked product and its current price as reference data."""
+        for plan in self:
+            product = plan.product_ids[:1]
+            plan.product_id = product
+            plan.price = product.list_price if product else 0.0
+            plan.currency_id = product.currency_id if product else False
 
     @api.constrains('usage_type', 'included_hours', 'included_visits')
     def _check_usage_limits(self):

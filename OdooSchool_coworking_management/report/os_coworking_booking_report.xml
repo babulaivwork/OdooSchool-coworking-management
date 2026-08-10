@@ -79,6 +79,10 @@
             <t t-foreach="docs" t-as="booking">
                 <t t-set="company" t-value="booking.company_id"/>
                 <t
+                    t-set="product"
+                    t-value="booking.membership_id._get_coworking_product()"
+                />
+                <t
                     t-call="OdooSchool_coworking_management.os_coworking_booking_confirmation_layout"
                 >
                     <div class="page os_coworking_booking_report">
@@ -226,13 +230,13 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Plan Price</th>
+                                    <th>Product Price</th>
                                     <td colspan="3">
                                         <span
-                                            t-field="booking.membership_id.plan_id.price"
+                                            t-field="product.list_price"
                                             t-options='{
                                                 "widget": "monetary",
-                                                "display_currency": booking.membership_id.plan_id.currency_id
+                                                "display_currency": product.currency_id
                                             }'
                                         />
                                     </td>

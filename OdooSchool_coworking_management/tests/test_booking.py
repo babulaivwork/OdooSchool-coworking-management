@@ -76,7 +76,6 @@ class TestOSCoworkingBooking(TransactionCase):
                 'name': 'Unlimited Booking Test Plan',
                 'usage_type': 'unlimited',
                 'duration_days': 30,
-                'price': 100.0,
             }
         )
         cls.hours_plan = cls.env['os.coworking.membership.plan'].create(
@@ -85,7 +84,6 @@ class TestOSCoworkingBooking(TransactionCase):
                 'usage_type': 'hours',
                 'duration_days': 30,
                 'included_hours': 10.0,
-                'price': 80.0,
             }
         )
         cls.visits_plan = cls.env['os.coworking.membership.plan'].create(
@@ -94,8 +92,35 @@ class TestOSCoworkingBooking(TransactionCase):
                 'usage_type': 'visits',
                 'duration_days': 30,
                 'included_visits': 4,
-                'price': 60.0,
             }
+        )
+        cls.env['product.template'].create(
+            [
+                {
+                    'name': 'Unlimited Booking Test Product',
+                    'type': 'service',
+                    'list_price': 100.0,
+                    'is_coworking_service': True,
+                    'coworking_service_type': 'membership',
+                    'coworking_plan_id': cls.unlimited_plan.id,
+                },
+                {
+                    'name': 'Hourly Booking Test Product',
+                    'type': 'service',
+                    'list_price': 80.0,
+                    'is_coworking_service': True,
+                    'coworking_service_type': 'membership',
+                    'coworking_plan_id': cls.hours_plan.id,
+                },
+                {
+                    'name': 'Visit Booking Test Product',
+                    'type': 'service',
+                    'list_price': 60.0,
+                    'is_coworking_service': True,
+                    'coworking_service_type': 'membership',
+                    'coworking_plan_id': cls.visits_plan.id,
+                },
+            ]
         )
 
         today = fields.Date.today()
@@ -162,6 +187,7 @@ class TestOSCoworkingBooking(TransactionCase):
         self.assertEqual(html_type, 'html')
         self.assertIn(b'Booking Confirmation', html_content)
         self.assertIn(b'Draft', html_content)
+        self.assertIn(b'Product Price', html_content)
         self.assertIn(b'General Coworking Rules', html_content)
 
         with self.allow_pdf_render():
@@ -194,7 +220,8 @@ class TestOSCoworkingBooking(TransactionCase):
         booking = self._create_booking(membership_id=self.visits_membership.id)
 
         booking.action_confirm()
-        booking.action_done()
+        booking.action_check_in()
+        booking.visit_ids.action_check_out()
 
         self.assertEqual(booking.state, 'done')
         self.assertEqual(booking.reserved_visits, 1)
@@ -213,6 +240,14 @@ class TestOSCoworkingBooking(TransactionCase):
     def test_booking_rejects_unavailable_resource(self):
         """Verify a resource under maintenance cannot be confirmed."""
         booking = self._create_booking(resource_id=self.maintenance_resource.id)
+
+        with self.assertRaises(ValidationError):
+            booking.action_confirm()
+
+    def test_booking_rejects_archived_location(self):
+        """Verify resources at archived locations cannot be confirmed."""
+        booking = self._create_booking()
+        self.location.active = False
 
         with self.assertRaises(ValidationError):
             booking.action_confirm()
@@ -287,7 +322,6 @@ class TestOSCoworkingBooking(TransactionCase):
                 'name': 'Location Booking Test Plan',
                 'usage_type': 'unlimited',
                 'duration_days': 30,
-                'price': 90.0,
                 'all_locations': False,
             }
         )
@@ -320,6 +354,27 @@ class TestOSCoworkingBooking(TransactionCase):
         booking.action_confirm()
         with self.assertRaises(UserError):
             booking.action_confirm()
+        with self.assertRaises(UserError):
+            booking.action_done()
+
+    def test_check_in_revalidates_membership_resource_and_location(self):
+        """Verify check-in repeats mutable availability validations."""
+        booking = self._create_booking()
+        booking.action_confirm()
+
+        self.resource.state = 'maintenance'
+        with self.assertRaises(ValidationError):
+            booking.action_check_in()
+
+        self.resource.state = 'available'
+        self.unlimited_membership.state = 'frozen'
+        with self.assertRaises(ValidationError):
+            booking.action_check_in()
+
+        self.unlimited_membership.state = 'active'
+        self.location.active = False
+        with self.assertRaises(ValidationError):
+            booking.action_check_in()
 
     def test_location_and_partner_booking_smart_buttons(self):
         """Verify smart button counts, domains, and partner default values."""

@@ -214,10 +214,14 @@ class OSCoworkingBooking(models.Model):
     def _validate_resource_availability(self):
         """Ensure that the selected resource can accept a booking.
 
-        :raises ValidationError: If the resource is archived, inactive, or
-            under maintenance.
+        :raises ValidationError: If the location is archived or the resource
+            is archived, inactive, or under maintenance.
         """
         self.ensure_one()
+        if not self.location_id.active:
+            raise ValidationError(
+                self.env._('Only resources in active coworking locations can be booked.')
+            )
         if not self.resource_id.active or self.resource_id.state != 'available':
             raise ValidationError(
                 self.env._('Only active and available resources can be booked.')
@@ -383,14 +387,24 @@ class OSCoworkingBooking(models.Model):
         return True
 
     def action_done(self):
-        """Complete confirmed bookings during the future check-out flow.
+        """Complete confirmed bookings only after their visit is checked out.
 
         :return: ``True`` after all selected bookings are completed.
         :rtype: bool
-        :raises UserError: If a booking is not confirmed.
+        :raises UserError: If a booking is not confirmed or does not have a
+            checked-out visit.
         """
         if any(booking.state != 'confirmed' for booking in self):
             raise UserError(self.env._('Only confirmed bookings can be completed.'))
+        if any(
+            not booking.visit_ids.filtered(lambda visit: visit.state == 'checked_out')
+            for booking in self
+        ):
+            raise UserError(
+                self.env._(
+                    'A booking can be completed only after its visit is checked out.'
+                )
+            )
         self.write({'state': 'done'})
         for booking in self:
             booking.message_post(body=self.env._('Booking completed.'))
@@ -406,6 +420,8 @@ class OSCoworkingBooking(models.Model):
         :rtype: bool
         :raises UserError: If the booking is not confirmed or already has a
             visit.
+        :raises ValidationError: If the membership, location, or resource is
+            no longer eligible for check-in.
         """
         self.ensure_one()
         if self.state != 'confirmed':
@@ -414,6 +430,11 @@ class OSCoworkingBooking(models.Model):
             )
         if self.visit_ids:
             raise UserError(self.env._('A visit already exists for this booking.'))
+
+        # Operational data may change after confirmation, so check the
+        # membership, resource, and location again immediately before entry.
+        self._validate_membership_eligibility()
+        self._validate_resource_availability()
 
         visit = self.env['os.coworking.visit'].create(
             {

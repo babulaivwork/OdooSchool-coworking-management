@@ -13,7 +13,8 @@ Features
 * Maintain desks, meeting rooms, private offices, and event spaces.
 * Track available, maintenance, inactive, and archived resources.
 * Configure unlimited, hourly, and visit-based membership plans.
-* Link each membership plan to one coworking product.
+* Link each membership plan to one coworking product and use the product sales
+  price as the single stored membership price.
 * Track client memberships, validity periods, usage limits, renewals, and
   simplified payment status.
 * Reserve membership hours or visits when a booking is confirmed.
@@ -86,7 +87,10 @@ Membership Workflow
 Only a paid draft membership can be activated. Automatic renewal creates a
 new unpaid draft and never activates it automatically. The simplified payment
 workflow records only payment status and date; it does not create accounting
-entries or online payment transactions.
+entries or online payment transactions. After payment, the client, plan,
+location, and start date are locked. A membership with confirmed bookings
+cannot be frozen or terminated until those bookings are completed or
+cancelled.
 
 Booking and Visit Workflow
 --------------------------
@@ -100,7 +104,9 @@ Booking and Visit Workflow
 
 Check-out completes the booking. Cancelling a confirmed booking before
 check-in returns its reserved limit. Cancelling an open visit also cancels the
-related booking and returns the reservation.
+related booking and returns the reservation. Check-in revalidates the current
+membership, resource, and location state. A booking cannot be completed by a
+direct action before its related visit is checked out.
 
 Reports
 =======
