@@ -140,12 +140,13 @@ class TestOSCoworkingBooking(TransactionCase):
         return self.booking_model.create(booking_values)
 
     def test_booking_sequence_and_duration(self):
-        """Verify the generated booking number and computed duration."""
-        booking = self._create_booking()
+        """Verify the generated number, duration, location, and notes."""
+        booking = self._create_booking(note='A booking test note.')
 
         self.assertRegex(booking.name, r'^BKG/\d{5}$')
         self.assertEqual(booking.duration_hours, 2.0)
         self.assertEqual(booking.location_id, self.location)
+        self.assertEqual(booking.note, 'A booking test note.')
 
     def test_hourly_membership_reservation_is_restored_on_cancel(self):
         """Verify hourly limit reservation and restoration on cancellation."""

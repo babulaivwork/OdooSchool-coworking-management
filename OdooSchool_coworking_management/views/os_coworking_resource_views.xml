@@ -4,7 +4,11 @@
         <field name="name">os.coworking.resource.list</field>
         <field name="model">os.coworking.resource</field>
         <field name="arch" type="xml">
-            <list>
+            <list
+                decoration-success="state == 'available'"
+                decoration-warning="state == 'maintenance'"
+                decoration-danger="state == 'inactive'"
+            >
                 <field name="name"/>
                 <field name="code"/>
                 <field name="location_id"/>
@@ -12,7 +16,7 @@
                 <field name="capacity"/>
                 <field name="hourly_rate"/>
                 <field name="currency_id" optional="hide"/>
-                <field name="state"/>
+                <field name="state" widget="badge"/>
                 <field name="company_id" optional="hide"/>
             </list>
         </field>

@@ -49,7 +49,14 @@ class OSCoworkingMembershipPlan(models.Model):
         default=lambda self: self.env.company.currency_id,
     )
     all_locations = fields.Boolean(string='All Locations', default=True)
-    allow_auto_renew = fields.Boolean(string='Allow Automatic Renewal', default=False)
+    allow_auto_renew = fields.Boolean(
+        string='Allow Automatic Renewal',
+        default=False,
+        help=(
+            'Allows memberships using this plan to create a draft renewal '
+            'after expiry.'
+        ),
+    )
     description = fields.Text(string='Description')
 
     _code_unique = models.Constraint(

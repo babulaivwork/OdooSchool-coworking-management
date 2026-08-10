@@ -88,12 +88,20 @@ class OSCoworkingBooking(models.Model):
         readonly=True,
         copy=False,
         default=0.0,
+        help=(
+            'Reserved from the membership when the booking is confirmed and '
+            'returned when it is cancelled before check-in.'
+        ),
     )
     reserved_visits = fields.Integer(
         string='Reserved Visits',
         readonly=True,
         copy=False,
         default=0,
+        help=(
+            'Reserved from the membership when the booking is confirmed and '
+            'returned when it is cancelled before check-in.'
+        ),
     )
     visit_ids = fields.One2many(
         comodel_name='os.coworking.visit',
@@ -104,6 +112,7 @@ class OSCoworkingBooking(models.Model):
         string='Visits',
         compute='_compute_visit_count',
     )
+    note = fields.Text(string='Notes')
 
     _booking_interval_valid = models.Constraint(
         'CHECK(end_datetime > start_datetime)',
@@ -398,12 +407,18 @@ class OSCoworkingBooking(models.Model):
         if self.visit_ids:
             raise UserError(self.env._('A visit already exists for this booking.'))
 
-        self.env['os.coworking.visit'].create(
+        visit = self.env['os.coworking.visit'].create(
             {
                 'booking_id': self.id,
                 'check_in': fields.Datetime.now(),
                 'registered_by_id': self.env.user.id,
             }
+        )
+        self.message_post(
+            body=self.env._(
+                'Visit %(visit)s was created at check-in.',
+                visit=visit.display_name,
+            )
         )
         return True
 
@@ -432,6 +447,13 @@ class OSCoworkingBooking(models.Model):
         """
         if any(booking.state != 'confirmed' for booking in self):
             raise UserError(self.env._('Only confirmed bookings can be cancelled.'))
+        if any(booking.visit_ids for booking in self):
+            raise UserError(
+                self.env._(
+                    'A booking cannot be cancelled after check-in. '
+                    'Complete the visit by checking out.'
+                )
+            )
         for booking in self:
             booking._restore_membership_limit()
             booking.state = 'cancelled'

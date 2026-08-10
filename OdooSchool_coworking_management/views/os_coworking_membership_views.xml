@@ -4,7 +4,12 @@
         <field name="name">os.coworking.membership.list</field>
         <field name="model">os.coworking.membership</field>
         <field name="arch" type="xml">
-            <list>
+            <list
+                decoration-success="state == 'active'"
+                decoration-warning="state == 'frozen'"
+                decoration-muted="state == 'expired'"
+                decoration-danger="state == 'cancelled'"
+            >
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="plan_id"/>
@@ -50,6 +55,7 @@
                         string="Terminate"
                         type="object"
                         invisible="state not in ['active', 'frozen']"
+                        confirm="Terminate this membership early? This action cannot be undone."
                     />
                     <field
                         name="state"

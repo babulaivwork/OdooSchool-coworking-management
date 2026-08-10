@@ -150,6 +150,12 @@ class TestOSCoworkingVisit(TransactionCase):
         self.assertEqual(visit.membership_id, booking.membership_id)
         self.assertEqual(visit.company_id, booking.company_id)
         self.assertEqual(booking.state, 'confirmed')
+        self.assertTrue(
+            any(
+                visit.display_name in message.body
+                for message in booking.message_ids
+            )
+        )
 
         visit.check_in = fields.Datetime.now() - timedelta(hours=2)
         visit.action_check_out()
@@ -189,6 +195,21 @@ class TestOSCoworkingVisit(TransactionCase):
             self.cr.savepoint(),
         ):
             self.visit_model.create({'booking_id': booking.id})
+
+    def test_checked_in_booking_cannot_be_cancelled(self):
+        """Verify an open visit protects its booking from cancellation."""
+        booking = self._create_confirmed_booking()
+        booking.action_check_in()
+        visit = booking.visit_ids
+
+        with self.assertRaisesRegex(
+            UserError,
+            'cannot be cancelled after check-in',
+        ):
+            booking.action_cancel()
+
+        self.assertEqual(booking.state, 'confirmed')
+        self.assertEqual(visit.state, 'checked_in')
 
     def test_client_cannot_have_two_open_visits(self):
         """Verify one client cannot be checked in to two resources."""

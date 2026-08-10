@@ -16,7 +16,14 @@ class OSCoworkingResource(models.Model):
         copy=False,
         default=lambda self: self.env._('New'),
     )
-    active = fields.Boolean(string='Active', default=True)
+    active = fields.Boolean(
+        string='Active',
+        default=True,
+        help=(
+            'Archive the resource when it should no longer appear in regular '
+            'lists. This is separate from its operational state.'
+        ),
+    )
     location_id = fields.Many2one(
         comodel_name='os.coworking.location',
         string='Location',
@@ -68,6 +75,10 @@ class OSCoworkingResource(models.Model):
         string='State',
         required=True,
         default='available',
+        help=(
+            'Controls whether the resource can be booked. Maintenance and '
+            'inactive resources cannot be confirmed in bookings.'
+        ),
     )
     image_1920 = fields.Image(string='Image')
     description = fields.Text(string='Description')

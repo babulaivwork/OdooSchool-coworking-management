@@ -6,6 +6,7 @@
         <field name="membership_id" ref="os_coworking_membership_demo_active_unlimited"/>
         <field name="start_datetime" eval="DateTime.now().strftime('%Y-%m-%d 08:00:00')"/>
         <field name="end_datetime" eval="DateTime.now().strftime('%Y-%m-%d 10:00:00')"/>
+        <field name="note">Daily desk booking for focused work.</field>
         <field name="state">confirmed</field>
     </record>
 
@@ -33,6 +34,7 @@
         <field name="membership_id" ref="os_coworking_membership_demo_active_unlimited"/>
         <field name="start_datetime" eval="(DateTime.now() + timedelta(days=2)).strftime('%Y-%m-%d 10:00:00')"/>
         <field name="end_datetime" eval="(DateTime.now() + timedelta(days=2)).strftime('%Y-%m-%d 12:00:00')"/>
+        <field name="note">Boardroom requested for a client presentation.</field>
     </record>
 
     <record id="os_coworking_booking_demo_hours_confirmed" model="os.coworking.booking">
@@ -42,6 +44,7 @@
         <field name="start_datetime" eval="DateTime.now().strftime('%Y-%m-%d 10:00:00')"/>
         <field name="end_datetime" eval="DateTime.now().strftime('%Y-%m-%d 12:00:00')"/>
         <field name="reserved_hours">2.0</field>
+        <field name="note">Team meeting covered by the hourly membership.</field>
         <field name="state">confirmed</field>
     </record>
 
@@ -107,6 +110,7 @@
         <field name="membership_id" ref="os_coworking_membership_demo_active_visits"/>
         <field name="start_datetime" eval="(DateTime.now() + timedelta(days=2)).strftime('%Y-%m-%d 10:00:00')"/>
         <field name="end_datetime" eval="(DateTime.now() + timedelta(days=2)).strftime('%Y-%m-%d 11:00:00')"/>
+        <field name="note">Draft example using a resource that is under maintenance.</field>
     </record>
 
     <record id="os_coworking_booking_demo_unlimited_visit_history" model="os.coworking.booking">

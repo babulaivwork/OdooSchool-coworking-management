@@ -78,6 +78,10 @@ class OSCoworkingMembership(models.Model):
         string='Automatic Renewal',
         default=False,
         tracking=True,
+        help=(
+            'Creates a draft renewal after expiry. The renewal is not '
+            'activated automatically.'
+        ),
     )
     freeze_date = fields.Date(
         string='Freeze Date',

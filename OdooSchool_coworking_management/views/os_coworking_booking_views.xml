@@ -6,7 +6,8 @@
         <field name="arch" type="xml">
             <list
                 decoration-success="state == 'confirmed'"
-                decoration-muted="state in ['done', 'cancelled']"
+                decoration-muted="state == 'done'"
+                decoration-danger="state == 'cancelled'"
             >
                 <field name="name"/>
                 <field name="partner_id"/>
@@ -48,7 +49,8 @@
                         name="action_cancel"
                         string="Cancel"
                         type="object"
-                        invisible="state != 'confirmed'"
+                        invisible="state != 'confirmed' or visit_ids"
+                        confirm="Cancel this booking and return its reserved membership limit?"
                     />
                     <field
                         name="state"
@@ -73,6 +75,14 @@
                                 widget="statinfo"
                             />
                         </button>
+                    </div>
+                    <div
+                        class="alert alert-info"
+                        role="alert"
+                        invisible="state != 'confirmed' or not visit_ids"
+                    >
+                        The client is checked in. Open Visits to complete the
+                        check-out.
                     </div>
                     <div class="oe_title">
                         <label for="name"/>
@@ -115,6 +125,11 @@
                             <field name="reserved_visits"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page name="notes" string="Notes">
+                            <field name="note" nolabel="1"/>
+                        </page>
+                    </notebook>
                 </sheet>
                 <chatter/>
             </form>

@@ -55,6 +55,13 @@
                             <field name="name"/>
                         </h1>
                     </div>
+                    <div
+                        class="alert alert-info"
+                        role="alert"
+                        invisible="state != 'checked_in'"
+                    >
+                        Check Out will complete the related booking.
+                    </div>
                     <group>
                         <group string="Visit">
                             <field name="booking_id" readonly="1"/>
