@@ -99,10 +99,17 @@
         <field name="name">os.coworking.resource.kanban</field>
         <field name="model">os.coworking.resource</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state" records_draggable="false">
+            <kanban
+                default_group_by="state"
+                records_draggable="true"
+                groups_draggable="false"
+            >
                 <field name="currency_id"/>
                 <templates>
-                    <t t-name="card" class="flex-row">
+                    <t
+                        t-name="card"
+                        t-attf-class="flex-row border-start border-4 #{record.state.raw_value === 'available' ? 'border-success' : record.state.raw_value === 'maintenance' ? 'border-warning' : 'border-danger'}"
+                    >
                         <aside class="d-flex align-items-center me-3">
                             <field
                                 name="image_1920"
@@ -124,7 +131,11 @@
                             </div>
                             <footer class="mt-2">
                                 <field name="hourly_rate"/>
-                                <field name="state" class="ms-auto"/>
+                                <span
+                                    t-attf-class="ms-auto badge #{record.state.raw_value === 'available' ? 'text-bg-success' : record.state.raw_value === 'maintenance' ? 'text-bg-warning' : 'text-bg-danger'}"
+                                >
+                                    <field name="state"/>
+                                </span>
                             </footer>
                         </main>
                     </t>

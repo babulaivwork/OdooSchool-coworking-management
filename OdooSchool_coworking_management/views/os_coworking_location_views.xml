@@ -105,11 +105,57 @@
         </field>
     </record>
 
+    <record id="os_coworking_view_location_kanban" model="ir.ui.view">
+        <field name="name">os.coworking.location.kanban</field>
+        <field name="model">os.coworking.location</field>
+        <field name="arch" type="xml">
+            <kanban records_draggable="false">
+                <templates>
+                    <t t-name="card" class="flex-row">
+                        <aside class="d-flex align-items-center me-3">
+                            <field
+                                name="image_1920"
+                                widget="image"
+                                options="{'img_class': 'object-fit-cover'}"
+                            />
+                        </aside>
+                        <main class="d-flex flex-column gap-1">
+                            <field name="name" class="fw-bold fs-5"/>
+                            <field name="code"/>
+                            <div>
+                                <span class="fw-bold">City: </span>
+                                <field name="city"/>
+                            </div>
+                            <div>
+                                <span class="fw-bold">Working Hours: </span>
+                                <field name="working_hour_from" widget="float_time"/>
+                                <span> – </span>
+                                <field name="working_hour_to" widget="float_time"/>
+                            </div>
+                            <div>
+                                <span class="fw-bold">Manager: </span>
+                                <field name="manager_id"/>
+                            </div>
+                            <footer class="mt-2">
+                                <span>
+                                    <field name="resource_count"/> Resources
+                                </span>
+                                <span class="ms-auto">
+                                    <field name="booking_count"/> Bookings
+                                </span>
+                            </footer>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="os_coworking_action_location" model="ir.actions.act_window">
         <field name="name">Locations</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">os.coworking.location</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,kanban,form</field>
         <field name="search_view_id" ref="os_coworking_view_location_search"/>
     </record>
 
