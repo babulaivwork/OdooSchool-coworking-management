@@ -146,6 +146,21 @@ class TestOSCoworkingAvailabilityWizard(TransactionCase):
         self.assertEqual(action['res_model'], wizard._name)
         self.assertEqual(action['res_id'], wizard.id)
         self.assertEqual(action['target'], 'new')
+        self.assertTrue(wizard.search_performed)
+
+    def test_search_marks_empty_result_and_criteria_change_resets_it(self):
+        """Verify an empty search is distinguishable from a new wizard."""
+        wizard = self._create_wizard(capacity=100)
+
+        wizard.action_search_resources()
+
+        self.assertTrue(wizard.search_performed)
+        self.assertFalse(wizard.available_resource_ids)
+
+        wizard._onchange_search_criteria()
+
+        self.assertFalse(wizard.search_performed)
+        self.assertFalse(wizard.available_resource_ids)
 
     def test_search_excludes_overlap_and_allows_adjacent_booking(self):
         """Verify only overlapping confirmed bookings block a resource."""

@@ -46,6 +46,10 @@ class OSCoworkingAvailabilityWizard(models.TransientModel):
         string='Available Resources',
         readonly=True,
     )
+    search_performed = fields.Boolean(
+        string='Search Performed',
+        readonly=True,
+    )
     selected_resource_id = fields.Many2one(
         comodel_name='os.coworking.resource',
         string='Selected Resource',
@@ -87,6 +91,7 @@ class OSCoworkingAvailabilityWizard(models.TransientModel):
         """Clear stale search results after availability criteria change."""
         self.available_resource_ids = [Command.clear()]
         self.selected_resource_id = False
+        self.search_performed = False
 
     def _get_timezone_name(self):
         """Return the common timezone used for coworking operations.
@@ -183,6 +188,7 @@ class OSCoworkingAvailabilityWizard(models.TransientModel):
             {
                 'available_resource_ids': [Command.set(resources.ids)],
                 'selected_resource_id': False,
+                'search_performed': True,
             }
         )
         action = self.env['ir.actions.actions']._for_xml_id(

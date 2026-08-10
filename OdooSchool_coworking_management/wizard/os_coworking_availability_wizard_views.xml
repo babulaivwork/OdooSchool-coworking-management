@@ -23,6 +23,17 @@
                         <field name="end_datetime"/>
                     </group>
                 </group>
+                <field name="search_performed" invisible="1"/>
+                <div
+                    class="alert alert-warning"
+                    role="alert"
+                    invisible="not search_performed or available_resource_ids"
+                >
+                    No available resources were found for the selected criteria.
+                    Matching resources may not exist, may not meet the minimum
+                    capacity, may be inactive, archived, under maintenance, or
+                    already booked for the selected period.
+                </div>
                 <group string="Search Results" invisible="not available_resource_ids">
                     <field
                         name="available_resource_ids"
