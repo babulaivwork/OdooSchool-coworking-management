@@ -67,4 +67,37 @@
         <field name="zip">43024</field>
         <field name="country_id" ref="base.ua"/>
     </record>
+
+    <record id="os_coworking_partner_demo_olivia_morgan" model="res.partner">
+        <field name="name">Olivia Morgan</field>
+        <field name="is_coworking_client" eval="True"/>
+        <field name="email">olivia.morgan@example.com</field>
+        <field name="phone">+380 50 100 10 07</field>
+        <field name="street">22 Hradnyi Descent</field>
+        <field name="city">Lutsk</field>
+        <field name="zip">43016</field>
+        <field name="country_id" ref="base.ua"/>
+    </record>
+
+    <record id="os_coworking_partner_demo_ethan_walker" model="res.partner">
+        <field name="name">Ethan Walker</field>
+        <field name="is_coworking_client" eval="True"/>
+        <field name="email">ethan.walker@example.com</field>
+        <field name="phone">+380 50 100 10 08</field>
+        <field name="street">16 Konyakina Street</field>
+        <field name="city">Lutsk</field>
+        <field name="zip">43023</field>
+        <field name="country_id" ref="base.ua"/>
+    </record>
+
+    <record id="os_coworking_partner_demo_mia_collins" model="res.partner">
+        <field name="name">Mia Collins</field>
+        <field name="is_coworking_client" eval="True"/>
+        <field name="email">mia.collins@example.com</field>
+        <field name="phone">+380 50 100 10 09</field>
+        <field name="street">10 Vynnychenka Street</field>
+        <field name="city">Lutsk</field>
+        <field name="zip">43025</field>
+        <field name="country_id" ref="base.ua"/>
+    </record>
 </odoo>

@@ -131,4 +131,114 @@
         <field name="reserved_hours">1.0</field>
         <field name="state">confirmed</field>
     </record>
+
+    <record id="os_coworking_booking_demo_presentation_unlimited_confirmed" model="os.coworking.booking">
+        <field name="partner_id" ref="os_coworking_partner_demo_olivia_morgan"/>
+        <field name="resource_id" ref="os_coworking_resource_demo_central_desk"/>
+        <field name="membership_id" ref="os_coworking_membership_demo_presentation_unlimited"/>
+        <field name="start_datetime">2026-08-11 09:00:00</field>
+        <field name="end_datetime">2026-08-11 11:00:00</field>
+        <field name="note">Confirmed desk booking ready for a live Check In demonstration.</field>
+        <field name="state">confirmed</field>
+    </record>
+
+    <record id="os_coworking_booking_demo_presentation_unlimited_done" model="os.coworking.booking">
+        <field name="partner_id" ref="os_coworking_partner_demo_olivia_morgan"/>
+        <field name="resource_id" ref="os_coworking_resource_demo_riverside_office"/>
+        <field name="membership_id" ref="os_coworking_membership_demo_presentation_unlimited"/>
+        <field name="start_datetime">2026-08-11 11:00:00</field>
+        <field name="end_datetime">2026-08-11 13:00:00</field>
+        <field name="note">Private office booking with a completed visit.</field>
+        <field name="state">confirmed</field>
+    </record>
+
+    <record id="os_coworking_booking_demo_presentation_unlimited_draft" model="os.coworking.booking">
+        <field name="partner_id" ref="os_coworking_partner_demo_olivia_morgan"/>
+        <field name="resource_id" ref="os_coworking_resource_demo_business_boardroom"/>
+        <field name="membership_id" ref="os_coworking_membership_demo_presentation_unlimited"/>
+        <field name="start_datetime">2026-08-11 13:00:00</field>
+        <field name="end_datetime">2026-08-11 15:00:00</field>
+        <field name="note">Draft boardroom booking available for the confirmation workflow.</field>
+    </record>
+
+    <record id="os_coworking_booking_demo_presentation_unlimited_cancelled_visit" model="os.coworking.booking">
+        <field name="partner_id" ref="os_coworking_partner_demo_olivia_morgan"/>
+        <field name="resource_id" ref="os_coworking_resource_demo_central_event_space"/>
+        <field name="membership_id" ref="os_coworking_membership_demo_presentation_unlimited"/>
+        <field name="start_datetime">2026-08-11 15:00:00</field>
+        <field name="end_datetime">2026-08-11 16:00:00</field>
+        <field name="note">Booking cancelled together with its visit after an incorrect check-in.</field>
+        <field name="state">confirmed</field>
+    </record>
+
+    <record id="os_coworking_booking_demo_presentation_hours_confirmed" model="os.coworking.booking">
+        <field name="partner_id" ref="os_coworking_partner_demo_ethan_walker"/>
+        <field name="resource_id" ref="os_coworking_resource_demo_central_meeting_room"/>
+        <field name="membership_id" ref="os_coworking_membership_demo_presentation_hours"/>
+        <field name="start_datetime">2026-08-11 09:00:00</field>
+        <field name="end_datetime">2026-08-11 11:00:00</field>
+        <field name="reserved_hours">2.0</field>
+        <field name="note">Confirmed meeting room booking with two reserved membership hours.</field>
+        <field name="state">confirmed</field>
+    </record>
+
+    <record id="os_coworking_booking_demo_presentation_hours_done" model="os.coworking.booking">
+        <field name="partner_id" ref="os_coworking_partner_demo_ethan_walker"/>
+        <field name="resource_id" ref="os_coworking_resource_demo_business_office"/>
+        <field name="membership_id" ref="os_coworking_membership_demo_presentation_hours"/>
+        <field name="start_datetime">2026-08-11 11:00:00</field>
+        <field name="end_datetime">2026-08-11 13:00:00</field>
+        <field name="reserved_hours">2.0</field>
+        <field name="note">Completed office booking that keeps the consumed hourly limit.</field>
+        <field name="state">confirmed</field>
+    </record>
+
+    <record id="os_coworking_booking_demo_presentation_hours_cancelled" model="os.coworking.booking">
+        <field name="partner_id" ref="os_coworking_partner_demo_ethan_walker"/>
+        <field name="resource_id" ref="os_coworking_resource_demo_business_desk"/>
+        <field name="membership_id" ref="os_coworking_membership_demo_presentation_hours"/>
+        <field name="start_datetime">2026-08-11 13:00:00</field>
+        <field name="end_datetime">2026-08-11 14:00:00</field>
+        <field name="note">Cancelled booking with no reserved hours remaining.</field>
+        <field name="state">cancelled</field>
+    </record>
+
+    <record id="os_coworking_booking_demo_presentation_hours_draft" model="os.coworking.booking">
+        <field name="partner_id" ref="os_coworking_partner_demo_ethan_walker"/>
+        <field name="resource_id" ref="os_coworking_resource_demo_riverside_desk"/>
+        <field name="membership_id" ref="os_coworking_membership_demo_presentation_hours"/>
+        <field name="start_datetime">2026-08-11 14:00:00</field>
+        <field name="end_datetime">2026-08-11 15:00:00</field>
+        <field name="note">Draft desk booking ready to demonstrate hourly limit reservation.</field>
+    </record>
+
+    <record id="os_coworking_booking_demo_presentation_visits_confirmed" model="os.coworking.booking">
+        <field name="partner_id" ref="os_coworking_partner_demo_mia_collins"/>
+        <field name="resource_id" ref="os_coworking_resource_demo_business_boardroom"/>
+        <field name="membership_id" ref="os_coworking_membership_demo_presentation_visits"/>
+        <field name="start_datetime">2026-08-11 09:00:00</field>
+        <field name="end_datetime">2026-08-11 10:00:00</field>
+        <field name="reserved_visits">1</field>
+        <field name="note">Confirmed booking with one reserved visit, ready for Check In.</field>
+        <field name="state">confirmed</field>
+    </record>
+
+    <record id="os_coworking_booking_demo_presentation_visits_draft_maintenance" model="os.coworking.booking">
+        <field name="partner_id" ref="os_coworking_partner_demo_mia_collins"/>
+        <field name="resource_id" ref="os_coworking_resource_demo_central_office"/>
+        <field name="membership_id" ref="os_coworking_membership_demo_presentation_visits"/>
+        <field name="start_datetime">2026-08-11 12:00:00</field>
+        <field name="end_datetime">2026-08-11 13:00:00</field>
+        <field name="note">Draft booking that cannot be confirmed while the resource is under maintenance.</field>
+    </record>
+
+    <record id="os_coworking_booking_demo_presentation_visits_cancelled" model="os.coworking.booking">
+        <field name="partner_id" ref="os_coworking_partner_demo_mia_collins"/>
+        <field name="resource_id" ref="os_coworking_resource_demo_central_desk"/>
+        <field name="membership_id" ref="os_coworking_membership_demo_presentation_visits"/>
+        <field name="start_datetime">2026-08-11 14:00:00</field>
+        <field name="end_datetime">2026-08-11 15:00:00</field>
+        <field name="note">Cancelled visit-based booking with its membership limit already returned.</field>
+        <field name="state">cancelled</field>
+    </record>
 </odoo>

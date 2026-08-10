@@ -82,4 +82,45 @@
         <field name="check_in" eval="DateTime.now().strftime('%Y-%m-%d 08:05:00')"/>
         <field name="note">An open boardroom visit covered by a visit-based membership.</field>
     </record>
+
+    <record id="os_coworking_visit_demo_presentation_unlimited_completed" model="os.coworking.visit">
+        <field name="booking_id" ref="os_coworking_booking_demo_presentation_unlimited_done"/>
+        <field name="check_in">2026-08-11 11:10:00</field>
+        <field name="note">Completed visit example for an unlimited membership.</field>
+        <field name="registered_by_id" ref="os_coworking_admin_demo"/>
+    </record>
+    <record id="os_coworking_visit_demo_presentation_unlimited_completed" model="os.coworking.visit">
+        <field name="check_out">2026-08-11 12:50:00</field>
+        <field name="state">checked_out</field>
+    </record>
+    <record id="os_coworking_booking_demo_presentation_unlimited_done" model="os.coworking.booking">
+        <field name="state">done</field>
+    </record>
+
+    <record id="os_coworking_visit_demo_presentation_hours_completed" model="os.coworking.visit">
+        <field name="booking_id" ref="os_coworking_booking_demo_presentation_hours_done"/>
+        <field name="check_in">2026-08-11 11:05:00</field>
+        <field name="note">Completed visit example for an hourly membership.</field>
+        <field name="registered_by_id" ref="os_coworking_admin_demo"/>
+    </record>
+    <record id="os_coworking_visit_demo_presentation_hours_completed" model="os.coworking.visit">
+        <field name="check_out">2026-08-11 12:40:00</field>
+        <field name="state">checked_out</field>
+    </record>
+    <record id="os_coworking_booking_demo_presentation_hours_done" model="os.coworking.booking">
+        <field name="state">done</field>
+    </record>
+
+    <record id="os_coworking_visit_demo_presentation_cancelled" model="os.coworking.visit">
+        <field name="booking_id" ref="os_coworking_booking_demo_presentation_unlimited_cancelled_visit"/>
+        <field name="check_in">2026-08-11 15:05:00</field>
+        <field name="note">Cancelled visit example after an incorrect check-in.</field>
+        <field name="registered_by_id" ref="os_coworking_admin_demo"/>
+    </record>
+    <record id="os_coworking_visit_demo_presentation_cancelled" model="os.coworking.visit">
+        <field name="state">cancelled</field>
+    </record>
+    <record id="os_coworking_booking_demo_presentation_unlimited_cancelled_visit" model="os.coworking.booking">
+        <field name="state">cancelled</field>
+    </record>
 </odoo>

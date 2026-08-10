@@ -126,4 +126,36 @@
         <field name="state">cancelled</field>
         <field name="note">A visit-based membership terminated before its planned end date.</field>
     </record>
+
+    <record id="os_coworking_membership_demo_presentation_unlimited" model="os.coworking.membership">
+        <field name="partner_id" ref="os_coworking_partner_demo_olivia_morgan"/>
+        <field name="plan_id" ref="os_coworking_membership_plan_demo_unlimited_month"/>
+        <field name="date_start">2026-08-01</field>
+        <field name="date_end">2026-08-30</field>
+        <field name="state">active</field>
+        <field name="auto_renew" eval="True"/>
+        <field name="note">Unlimited membership prepared for the course project presentation.</field>
+    </record>
+
+    <record id="os_coworking_membership_demo_presentation_hours" model="os.coworking.membership">
+        <field name="partner_id" ref="os_coworking_partner_demo_ethan_walker"/>
+        <field name="plan_id" ref="os_coworking_membership_plan_demo_hours_professional"/>
+        <field name="date_start">2026-08-01</field>
+        <field name="date_end">2026-08-30</field>
+        <field name="remaining_hours">36.0</field>
+        <field name="state">active</field>
+        <field name="auto_renew" eval="True"/>
+        <field name="note">Hourly membership with four hours reserved by presentation bookings.</field>
+    </record>
+
+    <record id="os_coworking_membership_demo_presentation_visits" model="os.coworking.membership">
+        <field name="partner_id" ref="os_coworking_partner_demo_mia_collins"/>
+        <field name="plan_id" ref="os_coworking_membership_plan_demo_visits_regular"/>
+        <field name="date_start">2026-08-01</field>
+        <field name="date_end">2026-09-29</field>
+        <field name="remaining_visits">11</field>
+        <field name="state">active</field>
+        <field name="auto_renew" eval="True"/>
+        <field name="note">Visit-based membership with one visit reserved by a presentation booking.</field>
+    </record>
 </odoo>
