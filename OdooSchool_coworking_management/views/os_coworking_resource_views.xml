@@ -57,7 +57,15 @@
         <field name="model">os.coworking.resource</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name"/>
+                <field
+                    name="name"
+                    string="Resource or Location"
+                    filter_domain="[
+                        '|',
+                        ('name', 'ilike', self),
+                        ('location_id.name', 'ilike', self)
+                    ]"
+                />
                 <field name="code"/>
                 <field name="location_id"/>
                 <field name="resource_type"/>

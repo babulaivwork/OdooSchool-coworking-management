@@ -100,6 +100,10 @@ class OSCoworkingBooking(models.Model):
         inverse_name='booking_id',
         string='Visits',
     )
+    visit_count = fields.Integer(
+        string='Visits',
+        compute='_compute_visit_count',
+    )
 
     _booking_interval_valid = models.Constraint(
         'CHECK(end_datetime > start_datetime)',
@@ -123,6 +127,19 @@ class OSCoworkingBooking(models.Model):
                 booking.duration_hours = duration.total_seconds() / 3600.0
             else:
                 booking.duration_hours = 0.0
+
+    @api.depends('visit_ids')
+    def _compute_visit_count(self):
+        """Compute the number of accessible visits for each booking."""
+        count_by_booking = dict(
+            self.env['os.coworking.visit']._read_group(
+                domain=[('booking_id', 'in', self.ids)],
+                groupby=['booking_id'],
+                aggregates=['__count'],
+            )
+        )
+        for booking in self:
+            booking.visit_count = count_by_booking.get(booking, 0)
 
     @api.constrains('resource_id', 'start_datetime', 'end_datetime')
     def _check_hourly_interval(self):
@@ -389,6 +406,19 @@ class OSCoworkingBooking(models.Model):
             }
         )
         return True
+
+    def action_view_visits(self):
+        """Open visits linked to the selected booking.
+
+        :return: Visit action filtered by the current booking.
+        :rtype: dict
+        """
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id(
+            'OdooSchool_coworking_management.os_coworking_action_visit'
+        )
+        action['domain'] = [('booking_id', '=', self.id)]
+        return action
 
     def action_cancel(self):
         """Cancel confirmed bookings.

@@ -232,6 +232,21 @@ class TestOSCoworkingVisit(TransactionCase):
         self.assertEqual(action['domain'], [('partner_id', '=', self.client.id)])
         self.assertEqual(self.visit_model.search(action['domain']), visit)
 
+    def test_booking_visit_smart_button_action(self):
+        """Verify the booking visit count and smart button domain."""
+        booking = self._create_confirmed_booking()
+
+        self.assertEqual(booking.visit_count, 0)
+
+        booking.action_check_in()
+        visit = booking.visit_ids
+
+        self.assertEqual(booking.visit_count, 1)
+
+        action = booking.action_view_visits()
+        self.assertEqual(action['domain'], [('booking_id', '=', booking.id)])
+        self.assertEqual(self.visit_model.search(action['domain']), visit)
+
     def test_user_access_is_limited_to_assigned_locations(self):
         """Verify User and Admin access to visits follows location rules."""
         allowed_booking = self._create_confirmed_booking()

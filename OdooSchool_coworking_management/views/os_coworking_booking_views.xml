@@ -58,6 +58,22 @@
                 </header>
                 <sheet>
                     <field name="visit_ids" invisible="1"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_view_visits"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-sign-in"
+                            invisible="not visit_count"
+                            groups="OdooSchool_coworking_management.group_coworking_user"
+                        >
+                            <field
+                                name="visit_count"
+                                string="Visits"
+                                widget="statinfo"
+                            />
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <label for="name"/>
                         <h1>
