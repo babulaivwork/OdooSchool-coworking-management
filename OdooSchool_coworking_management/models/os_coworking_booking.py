@@ -204,6 +204,8 @@ class OSCoworkingBooking(models.Model):
         :rtype: datetime
         """
         self.ensure_one()
+        # Odoo stores datetimes in UTC, while location working hours represent
+        # the shared local business timezone selected for coworking operations.
         return fields.Datetime.context_timestamp(
             self.with_context(tz=self._get_timezone_name()),
             value,
@@ -265,6 +267,8 @@ class OSCoworkingBooking(models.Model):
             'reserved_visits': 0,
         }
 
+        # Limits are reserved at confirmation rather than check-out so later
+        # bookings cannot consume hours or visits that are already committed.
         if usage_type == 'hours':
             if (
                 float_compare(
@@ -301,6 +305,8 @@ class OSCoworkingBooking(models.Model):
         )
         self.write(
             {
+                # Clearing these technical values prevents a repeated
+                # cancellation path from returning the same limit twice.
                 'reserved_hours': 0.0,
                 'reserved_visits': 0,
             }
@@ -338,6 +344,8 @@ class OSCoworkingBooking(models.Model):
         :raises ValidationError: If another confirmed booking overlaps.
         """
         self.ensure_one()
+        # Strict boundary comparisons allow adjacent intervals: an existing
+        # booking may end at the exact moment when the next booking starts.
         overlapping_booking = self.search(
             [
                 ('id', '!=', self.id),

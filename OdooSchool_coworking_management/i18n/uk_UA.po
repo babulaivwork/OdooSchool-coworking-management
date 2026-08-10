@@ -1,0 +1,1614 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * OdooSchool_coworking_management
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-10 00:00+0000\n"
+"PO-Revision-Date: 2026-08-10 00:00+0000\n"
+"Last-Translator: Odoo School Student\n"
+"Language-Team: Ukrainian\n"
+"Language: uk_UA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 == 0 || (n % 10 >= 5 && n % 10 <= 9) || (n % 100 >= 11 && n % 100 <= 14)) ? 2 : 3);\n"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "A booking cannot be cancelled after check-in. Check out or cancel the related visit first."
+msgstr "Бронювання неможливо скасувати після реєстрації входу. Спочатку зареєструйте вихід або скасуйте пов’язане відвідування."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_product_template_coworking_plan_unique
+msgid "A coworking membership plan can be linked to only one product."
+msgstr "Тарифний план коворкінгу може бути пов’язаний лише з одним продуктом."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "A location is required for a membership plan limited to one location."
+msgstr "Для тарифного плану, обмеженого однією локацією, потрібно вибрати локацію."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_visit.py:0
+msgid "A new visit must start in the Checked In state."
+msgstr "Нове відвідування має починатися зі стану «Вхід зареєстровано»."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "A renewal can be created only for an expired membership."
+msgstr "Продовження можна створити лише для абонемента із завершеним строком."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_visit_booking_unique
+msgid "A visit already exists for this booking."
+msgstr "Для цього бронювання вже існує відвідування."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_visit.py:0
+msgid "A visit can be cancelled only while its booking is confirmed."
+msgstr "Відвідування можна скасувати лише тоді, коли пов’язане бронювання підтверджено."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_visit.py:0
+msgid "A visit can be created only from a confirmed booking."
+msgstr "Відвідування можна створити лише з підтвердженого бронювання."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+msgid "Activate"
+msgstr "Активувати"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__active
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__active
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__active
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_membership__state__active
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+msgid "Active"
+msgstr "Активний"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__product_template__coworking_service_type__additional_service
+msgid "Additional Service"
+msgstr "Додаткова послуга"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_form
+msgid "Address"
+msgstr "Адреса"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__all_locations
+msgid "All Locations"
+msgstr "Усі локації"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__allow_auto_renew
+msgid "Allow Automatic Renewal"
+msgstr "Дозволити автоматичне продовження"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,help:OdooSchool_coworking_management.field_os_coworking_membership_plan__allow_auto_renew
+msgid "Allows memberships using this plan to create a draft renewal after expiry."
+msgstr "Дозволяє абонементам цього тарифу створювати чернетку продовження після завершення строку."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Amount"
+msgstr "Сума"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,help:OdooSchool_coworking_management.field_os_coworking_resource__active
+msgid "Archive the resource when it should no longer appear in regular lists. This is separate from its operational state."
+msgstr "Архівуйте ресурс, коли він більше не повинен відображатися у звичайних списках. Це не залежить від його операційного стану."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_plan_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_search
+msgid "Archived"
+msgstr "Заархівовано"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__auto_renew
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_plan_search
+msgid "Automatic Renewal"
+msgstr "Автоматичне продовження"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Automatic renewal is not allowed for the selected membership plan."
+msgstr "Для вибраного тарифного плану автоматичне продовження не дозволено."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_resource__state__available
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_search
+msgid "Available"
+msgstr "Доступний"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_availability_wizard__available_resource_ids
+msgid "Available Resources"
+msgstr "Доступні ресурси"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__booking_id
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_form
+msgid "Booking"
+msgstr "Бронювання"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_graph
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_pivot
+msgid "Booking Analysis"
+msgstr "Аналіз бронювань"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "Booking cancelled."
+msgstr "Бронювання скасовано."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "Booking completed."
+msgstr "Бронювання завершено."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.actions.report,name:OdooSchool_coworking_management.os_coworking_booking_report_action
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Booking Confirmation"
+msgstr "Підтвердження бронювання"
+
+#. module: OdooSchool_coworking_management
+#: model:report.paperformat,name:OdooSchool_coworking_management.os_coworking_booking_report_paperformat
+msgid "Booking Confirmation A4"
+msgstr "Підтвердження бронювання A4"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "Booking confirmed."
+msgstr "Бронювання підтверджено."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__booking_count
+msgid "Booking Count"
+msgstr "Кількість бронювань"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Booking Date"
+msgstr "Дата бронювання"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Booking Details"
+msgstr "Дані бронювання"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.actions.act_window,name:OdooSchool_coworking_management.os_coworking_action_booking
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__booking_ids
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_res_partner__coworking_booking_count
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_booking
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_calendar
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_kanban
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_partner_form
+msgid "Bookings"
+msgstr "Бронювання"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_availability_wizard_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_form
+msgid "Cancel"
+msgstr "Скасувати"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_form
+msgid "Cancel this booking and return its reserved membership limit?"
+msgstr "Скасувати це бронювання та повернути зарезервований ліміт абонемента?"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_form
+msgid "Cancel this visit and the related booking? The reserved membership limit will be returned."
+msgstr "Скасувати це відвідування та пов’язане бронювання? Зарезервований ліміт абонемента буде повернено."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_booking__state__cancelled
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_membership__state__cancelled
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_visit__state__cancelled
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_search
+msgid "Cancelled"
+msgstr "Скасовано"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__capacity
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Capacity"
+msgstr "Місткість"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_form
+msgid "Check In"
+msgstr "Зареєструвати вхід"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_form
+msgid "Check Out"
+msgstr "Зареєструвати вихід"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_form
+msgid "Check Out will complete the related booking. Cancel will cancel the related booking and return its reserved membership limit."
+msgstr "Реєстрація виходу завершить пов’язане бронювання. Скасування скасує пов’язане бронювання та поверне зарезервований ліміт абонемента."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__check_in
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_search
+msgid "Check-In"
+msgstr "Вхід"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "Check-in is allowed only for a confirmed booking."
+msgstr "Реєстрація входу дозволена лише для підтвердженого бронювання."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_search
+msgid "Check-In Month"
+msgstr "Місяць входу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__check_out
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_search
+msgid "Check-Out"
+msgstr "Вихід"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_visit.py:0
+msgid "Check-out is allowed only for a confirmed booking."
+msgstr "Реєстрація виходу дозволена лише для підтвердженого бронювання."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_visit__state__checked_in
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_search
+msgid "Checked In"
+msgstr "Вхід зареєстровано"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_visit__state__checked_out
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_search
+msgid "Checked Out"
+msgstr "Вихід зареєстровано"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__city
+msgid "City"
+msgstr "Місто"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_kanban
+msgid "City:"
+msgstr "Місто:"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_availability_wizard__partner_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__partner_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__partner_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__partner_id
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_search
+msgid "Client"
+msgstr "Клієнт"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_client
+msgid "Clients"
+msgstr "Клієнти"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__working_hour_to
+msgid "Closing Hour"
+msgstr "Час закриття"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__code
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__code
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__code
+msgid "Code"
+msgstr "Код"
+
+#. module…12885 tokens truncated…онемент? Цю дію неможливо скасувати."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__description
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__description
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__description
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_plan_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_form
+msgid "Description"
+msgstr "Опис"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_availability_wizard__resource_type__desk
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_resource__resource_type__desk
+msgid "Desk"
+msgstr "Робоче місце"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_booking__state__done
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+msgid "Done"
+msgstr "Завершено"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_booking__state__draft
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_membership__state__draft
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+msgid "Draft"
+msgstr "Чернетка"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Duration"
+msgstr "Тривалість"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__duration_days
+msgid "Duration (Days)"
+msgstr "Тривалість (днів)"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__duration_hours
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__duration_hours
+msgid "Duration (Hours)"
+msgstr "Тривалість (годин)"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Email"
+msgstr "Електронна пошта"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_availability_wizard__end_datetime
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__end_datetime
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+msgid "End"
+msgstr "Завершення"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__date_end
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+msgid "End Date"
+msgstr "Дата завершення"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_availability_wizard__resource_type__event_space
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_resource__resource_type__event_space
+msgid "Event Space"
+msgstr "Простір для подій"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_membership__state__expired
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+msgid "Expired"
+msgstr "Строк завершено"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.actions.act_window,name:OdooSchool_coworking_management.os_coworking_action_availability_wizard
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_availability_wizard
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_availability_wizard_form
+msgid "Find Available Resource"
+msgstr "Знайти доступний ресурс"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Follow coworking safety rules and staff instructions."
+msgstr "Дотримуйтеся правил безпеки коворкінгу та вказівок працівників."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+msgid "Freeze"
+msgstr "Заморозити"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__freeze_date
+msgid "Freeze Date"
+msgstr "Дата заморожування"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_membership__state__frozen
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+msgid "Frozen"
+msgstr "Заморожено"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "General Coworking Rules"
+msgstr "Загальні правила коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_form
+msgid "General Information"
+msgstr "Загальна інформація"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership_plan.py:0
+msgid "Hourly plans require a positive number of included hours and no included visits."
+msgstr "Для погодинних тарифів потрібно вказати додатну кількість включених годин без включених відвідувань."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_membership_plan__usage_type__hours
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_plan_search
+msgid "Hours"
+msgstr "Години"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "hours"
+msgstr "годин"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_resource__state__inactive
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_search
+msgid "Inactive"
+msgstr "Неактивний"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__included_hours
+msgid "Included Hours"
+msgstr "Включені години"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__included_visits
+msgid "Included Visits"
+msgstr "Включені відвідування"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Invoice Date"
+msgstr "Дата рахунку"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Invoice Details"
+msgstr "Дані рахунку"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Keep shared areas and equipment clean."
+msgstr "Підтримуйте чистоту в спільних зонах і на обладнанні."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,help:OdooSchool_coworking_management.field_os_coworking_membership__location_id
+msgid "Leave empty to allow the membership at all coworking locations."
+msgstr "Залиште порожнім, щоб абонемент діяв у всіх локаціях коворкінгу."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_availability_wizard__location_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__location_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__location_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__location_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__location_id
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_search
+msgid "Location"
+msgstr "Локація"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_kanban
+msgid "Location:"
+msgstr "Локація:"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.actions.act_window,name:OdooSchool_coworking_management.os_coworking_action_location
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_location
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+msgid "Locations"
+msgstr "Локації"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_resource__state__maintenance
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_search
+msgid "Maintenance"
+msgstr "Обслуговування"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_form
+msgid "Management"
+msgstr "Керування"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__manager_id
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_search
+msgid "Manager"
+msgstr "Керівник"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_kanban
+msgid "Manager:"
+msgstr "Керівник:"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+msgid "Mark as Paid"
+msgstr "Позначити як оплачений"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_availability_wizard__resource_type__meeting_room
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_resource__resource_type__meeting_room
+msgid "Meeting Room"
+msgstr "Переговорна кімната"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__membership_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__membership_id
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__product_template__coworking_service_type__membership
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+msgid "Membership"
+msgstr "Абонемент"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Membership activated."
+msgstr "Абонемент активовано."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_pivot
+msgid "Membership Analysis"
+msgstr "Аналіз абонементів"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Membership expired after %(date)s."
+msgstr "Строк абонемента завершився після %(date)s."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Membership frozen on %(date)s."
+msgstr "Абонемент заморожено %(date)s."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.actions.report,name:OdooSchool_coworking_management.os_coworking_membership_invoice_report_action
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Membership Invoice"
+msgstr "Рахунок за абонемент"
+
+#. module: OdooSchool_coworking_management
+#: model:report.paperformat,name:OdooSchool_coworking_management.os_coworking_membership_invoice_paperformat
+msgid "Membership Invoice A4"
+msgstr "Рахунок за абонемент A4"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Membership payment confirmed on %(date)s."
+msgstr "Оплату абонемента підтверджено %(date)s."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__plan_id
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+msgid "Membership Plan"
+msgstr "Тарифний план"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.actions.act_window,name:OdooSchool_coworking_management.os_coworking_action_membership_plan
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_membership_plan
+msgid "Membership Plans"
+msgstr "Тарифні плани"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Membership terminated early."
+msgstr "Абонемент достроково завершено."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Membership unfrozen after %(days)s full calendar day(s)."
+msgstr "Абонемент розморожено після %(days)s повних календарних днів."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.actions.act_window,name:OdooSchool_coworking_management.os_coworking_action_membership
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_res_partner__coworking_membership_count
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_membership
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_memberships
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_partner_form
+msgid "Memberships"
+msgstr "Абонементи"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_availability_wizard__capacity
+msgid "Minimum Capacity"
+msgstr "Мінімальна місткість"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/wizard/os_coworking_availability_wizard.py:0
+msgid "Minimum capacity must be greater than zero."
+msgstr "Мінімальна місткість має бути більшою за нуль."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__name
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__name
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__name
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Name"
+msgstr "Назва"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_location.py:0
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership_plan.py:0
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_resource.py:0
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_visit.py:0
+msgid "New"
+msgstr "Новий"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/wizard/os_coworking_availability_wizard.py:0
+msgid "New Booking"
+msgstr "Нове бронювання"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_availability_wizard_form
+msgid "No available resources were found for the selected criteria. Matching resources may not exist, may not meet the minimum capacity, may be inactive, archived, under maintenance, or already booked for the selected period."
+msgstr "За вибраними критеріями доступних ресурсів не знайдено. Відповідні ресурси можуть бути відсутні, не відповідати мінімальній місткості, бути неактивними, архівованими, перебувати на обслуговуванні або вже бути заброньованими на вибраний період."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__note
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__note
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__note
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_form
+msgid "Notes"
+msgstr "Примітки"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__name
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__name
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__name
+msgid "Number"
+msgstr "Номер"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.module.module,shortdesc:base.module_OdooSchool_coworking_management
+msgid "Odoo School Coworking Management"
+msgstr "Odoo School — керування коворкінгом"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.module.module,summary:base.module_OdooSchool_coworking_management
+msgid "Manage coworking locations, resources, bookings, memberships, and visits."
+msgstr "Керуйте локаціями, ресурсами, бронюваннями, абонементами та відвідуваннями коворкінгу."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_layout
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_layout
+msgid "of"
+msgstr "з"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_visit.py:0
+msgid "Only a checked-in visit can be cancelled."
+msgstr "Скасувати можна лише відвідування із зареєстрованим входом."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_visit.py:0
+msgid "Only a checked-in visit can be checked out."
+msgstr "Зареєструвати вихід можна лише для відвідування із зареєстрованим входом."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Only a paid membership can be activated."
+msgstr "Активувати можна лише оплачений абонемент."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "Only active and available resources can be booked."
+msgstr "Бронювати можна лише активні та доступні ресурси."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Only active memberships can be frozen."
+msgstr "Заморозити можна лише активні абонементи."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Only active or frozen memberships can be terminated."
+msgstr "Достроково завершити можна лише активні або заморожені абонементи."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "Only an active membership can be used for booking."
+msgstr "Для бронювання можна використати лише активний абонемент."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "Only confirmed bookings can be cancelled."
+msgstr "Скасувати можна лише підтверджені бронювання."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "Only confirmed bookings can be completed."
+msgstr "Завершити можна лише підтверджені бронювання."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "Only draft bookings can be confirmed."
+msgstr "Підтвердити можна лише чернетки бронювань."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Only draft memberships can be activated."
+msgstr "Активувати можна лише чернетки абонементів."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Only frozen memberships can be unfrozen."
+msgstr "Розморозити можна лише заморожені абонементи."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Only unpaid draft memberships can be marked as paid."
+msgstr "Позначити оплаченими можна лише неоплачені чернетки абонементів."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__working_hour_from
+msgid "Opening Hour"
+msgstr "Час відкриття"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_operations
+msgid "Operations"
+msgstr "Операції"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_layout
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_layout
+msgid "Page <span class=\"page\"/> of <span class=\"topage\"/>"
+msgstr "Сторінка <span class=\"page\"/> з <span class=\"topage\"/>"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_layout
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_layout
+msgid "Page"
+msgstr "Сторінка"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_membership__payment_status__paid
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+msgid "Paid"
+msgstr "Оплачено"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+msgid "Payment"
+msgstr "Оплата"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__payment_date
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Payment Date"
+msgstr "Дата оплати"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__payment_status
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+msgid "Payment Status"
+msgstr "Статус оплати"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_availability_wizard_form
+msgid "Period"
+msgstr "Період"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Phone"
+msgstr "Телефон"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_plan_form
+msgid "Plan Details"
+msgstr "Дані тарифу"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Plan Price"
+msgstr "Ціна тарифу"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/wizard/os_coworking_availability_wizard.py:0
+msgid "Please select an available resource."
+msgstr "Виберіть доступний ресурс."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__previous_membership_id
+msgid "Previous Membership"
+msgstr "Попередній абонемент"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_plan_form
+msgid "Pricing and Renewal"
+msgstr "Ціна та продовження"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_availability_wizard__resource_type__private_office
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_resource__resource_type__private_office
+msgid "Private Office"
+msgstr "Приватний офіс"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__registered_by_id
+msgid "Registered By"
+msgstr "Зареєстрував"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__remaining_hours
+msgid "Remaining Hours"
+msgstr "Залишок годин"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+msgid "Remaining Limits"
+msgstr "Залишки лімітів"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__remaining_visits
+msgid "Remaining Visits"
+msgstr "Залишок відвідувань"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Renewal draft %(membership)s created."
+msgstr "Створено чернетку продовження %(membership)s."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+msgid "Renewal History"
+msgstr "Історія продовжень"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__renewed_membership_id
+msgid "Renewed Membership"
+msgstr "Продовжений абонемент"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Report any damage to coworking staff."
+msgstr "Повідомляйте працівникам коворкінгу про будь-які пошкодження."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,help:OdooSchool_coworking_management.field_os_coworking_booking__reserved_hours
+#: model:ir.model.fields,help:OdooSchool_coworking_management.field_os_coworking_booking__reserved_visits
+msgid "Reserved from the membership when the booking is confirmed and returned when it is cancelled before check-in."
+msgstr "Резервується з абонемента під час підтвердження бронювання та повертається, якщо бронювання скасовано до реєстрації входу."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__reserved_hours
+msgid "Reserved Hours"
+msgstr "Зарезервовані години"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_form
+msgid "Reserved Membership Limit"
+msgstr "Зарезервований ліміт абонемента"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__reserved_visits
+msgid "Reserved Visits"
+msgstr "Зарезервовані відвідування"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__resource_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__resource_id
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_search
+msgid "Resource"
+msgstr "Ресурс"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__resource_count
+msgid "Resource Count"
+msgstr "Кількість ресурсів"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_availability_wizard_form
+msgid "Resource Criteria"
+msgstr "Критерії ресурсу"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_form
+msgid "Resource Details"
+msgstr "Дані ресурсу"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_search
+msgid "Resource or Location"
+msgstr "Ресурс або локація"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_availability_wizard__resource_type
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__resource_type
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_search
+msgid "Resource Type"
+msgstr "Тип ресурсу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.actions.act_window,name:OdooSchool_coworking_management.os_coworking_action_resource
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__resource_ids
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_resource
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_resources
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_kanban
+msgid "Resources"
+msgstr "Ресурси"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_form
+msgid "Schedule"
+msgstr "Розклад"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_availability_wizard_form
+msgid "Search"
+msgstr "Пошук"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_availability_wizard__search_performed
+msgid "Search Performed"
+msgstr "Пошук виконано"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_availability_wizard_form
+msgid "Search Results"
+msgstr "Результати пошуку"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_availability_wizard__selected_resource_id
+msgid "Selected Resource"
+msgstr "Вибраний ресурс"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_service
+msgid "Services"
+msgstr "Послуги"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__staff_user_ids
+msgid "Staff"
+msgstr "Працівники"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_availability_wizard__start_datetime
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__start_datetime
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+msgid "Start"
+msgstr "Початок"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__date_start
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+msgid "Start Date"
+msgstr "Дата початку"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+msgid "Start Month"
+msgstr "Місяць початку"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__state
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_search
+msgid "State"
+msgstr "Стан"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__state
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__state
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__state
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_search
+msgid "Status"
+msgstr "Статус"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__street
+msgid "Street"
+msgstr "Вулиця"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__street2
+msgid "Street 2"
+msgstr "Додаткова адреса"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__company_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__company_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__company_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_visit__company_id
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_search
+msgid "Company"
+msgstr "Компанія"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "Configure a coworking membership product for the selected plan before confirming payment or printing the invoice."
+msgstr "Налаштуйте продукт абонемента коворкінгу для вибраного тарифу перед підтвердженням оплати або друком рахунку."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_form
+msgid "Confirm"
+msgstr "Підтвердити"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_booking__state__confirmed
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_search
+msgid "Confirmed"
+msgstr "Підтверджено"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,help:OdooSchool_coworking_management.field_os_coworking_resource__state
+msgid "Controls whether the resource can be booked. Maintenance and inactive resources cannot be confirmed in bookings."
+msgstr "Визначає, чи можна бронювати ресурс. Бронювання ресурсів на обслуговуванні або в неактивному стані не можна підтвердити."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_root
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_partner_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_product_template_form
+msgid "Coworking"
+msgstr "Коворкінг"
+
+#. module: OdooSchool_coworking_management
+#: model:res.groups,name:OdooSchool_coworking_management.group_coworking_admin
+msgid "Coworking Admin"
+msgstr "Адміністратор коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model,name:OdooSchool_coworking_management.model_os_coworking_booking
+#: model:ir.sequence,name:OdooSchool_coworking_management.os_coworking_sequence_booking
+msgid "Coworking Booking"
+msgstr "Бронювання коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_res_partner__coworking_booking_ids
+msgid "Coworking Bookings"
+msgstr "Бронювання коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_res_partner__is_coworking_client
+msgid "Coworking Client"
+msgstr "Клієнт коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.actions.act_window,name:OdooSchool_coworking_management.os_coworking_action_client
+msgid "Coworking Clients"
+msgstr "Клієнти коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model,name:OdooSchool_coworking_management.model_os_coworking_location
+#: model:ir.sequence,name:OdooSchool_coworking_management.os_coworking_sequence_location
+msgid "Coworking Location"
+msgstr "Локація коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.module.category,name:OdooSchool_coworking_management.os_coworking_module_category
+msgid "Coworking Management"
+msgstr "Керування коворкінгом"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model,name:OdooSchool_coworking_management.model_os_coworking_membership
+#: model:ir.sequence,name:OdooSchool_coworking_management.os_coworking_sequence_membership
+msgid "Coworking Membership"
+msgstr "Абонемент коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model,name:OdooSchool_coworking_management.model_os_coworking_membership_plan
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_product_template__coworking_plan_id
+#: model:ir.sequence,name:OdooSchool_coworking_management.os_coworking_sequence_membership_plan
+msgid "Coworking Membership Plan"
+msgstr "Тарифний план коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_res_partner__coworking_membership_ids
+msgid "Coworking Memberships"
+msgstr "Абонементи коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Coworking Product"
+msgstr "Продукт коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model,name:OdooSchool_coworking_management.model_os_coworking_resource
+#: model:ir.sequence,name:OdooSchool_coworking_management.os_coworking_sequence_resource
+msgid "Coworking Resource"
+msgstr "Ресурс коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model,name:OdooSchool_coworking_management.model_os_coworking_availability_wizard
+msgid "Coworking Resource Availability"
+msgstr "Доступність ресурсів коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_product_template__is_coworking_service
+msgid "Coworking Service"
+msgstr "Послуга коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_product_template__coworking_service_type
+msgid "Coworking Service Type"
+msgstr "Тип послуги коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.actions.act_window,name:OdooSchool_coworking_management.os_coworking_action_service
+msgid "Coworking Services"
+msgstr "Послуги коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:res.groups,name:OdooSchool_coworking_management.group_coworking_user
+msgid "Coworking User"
+msgstr "Користувач коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model,name:OdooSchool_coworking_management.model_os_coworking_visit
+#: model:ir.sequence,name:OdooSchool_coworking_management.os_coworking_sequence_visit
+msgid "Coworking Visit"
+msgstr "Відвідування коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_res_partner__coworking_visit_ids
+msgid "Coworking Visits"
+msgstr "Відвідування коворкінгу"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.cron,name:OdooSchool_coworking_management.os_coworking_cron_expire_memberships
+msgid "Coworking: Expire Memberships and Prepare Renewals"
+msgstr "Коворкінг: завершення абонементів і підготовка продовжень"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_availability_wizard_form
+msgid "Create Booking"
+msgstr "Створити бронювання"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,help:OdooSchool_coworking_management.field_os_coworking_membership__auto_renew
+msgid "Creates a draft renewal after expiry. The renewal is not activated automatically."
+msgstr "Створює чернетку продовження після завершення строку. Продовження не активується автоматично."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__currency_id
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__currency_id
+msgid "Currency"
+msgstr "Валюта"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+msgid "Terminate"
+msgstr "Завершити достроково"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+msgid "Terminate this membership early? This action cannot be undone."
+msgstr "Достроково завершити цей абонемент? Цю дію неможливо скасувати."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__hourly_rate
+msgid "Hourly Rate"
+msgstr "Погодинна ставка"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__image_1920
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_resource__image_1920
+msgid "Image"
+msgstr "Зображення"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__price
+msgid "Price"
+msgstr "Ціна"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "The booking client must be the owner of the selected membership."
+msgstr "Клієнт бронювання повинен бути власником вибраного абонемента."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_booking_booking_interval_valid
+msgid "The booking end time must be later than the start time."
+msgstr "Час завершення бронювання має бути пізнішим за час початку."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "The booking must be within the location working hours and cannot cross a local calendar day."
+msgstr "Бронювання має бути в межах робочих годин локації та не може переходити на інший локальний календарний день."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "The booking period must be within the membership validity dates."
+msgstr "Період бронювання має бути в межах строку дії абонемента."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "The booking start and end times must be set to full hours."
+msgstr "Час початку та завершення бронювання має бути встановлено на повну годину."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_visit_check_out_after_check_in
+msgid "The check-out time cannot be earlier than the check-in time."
+msgstr "Час виходу не може бути ранішим за час входу."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_visit.py:0
+msgid "The client already has an open visit."
+msgstr "Клієнт уже має відкрите відвідування."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_form
+msgid "The client is checked in. Open Visits to check out or cancel the visit and related booking."
+msgstr "Вхід клієнта зареєстровано. Відкрийте «Відвідування», щоб зареєструвати вихід або скасувати відвідування та пов’язане бронювання."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "The coworking booking sequence is not configured."
+msgstr "Послідовність бронювань коворкінгу не налаштована."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_location.py:0
+msgid "The coworking location sequence is not configured."
+msgstr "Послідовність локацій коворкінгу не налаштована."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership_plan.py:0
+msgid "The coworking membership plan sequence is not configured."
+msgstr "Послідовність тарифних планів коворкінгу не налаштована."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
+msgid "The coworking membership sequence is not configured."
+msgstr "Послідовність абонементів коворкінгу не налаштована."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_resource.py:0
+msgid "The coworking resource sequence is not configured."
+msgstr "Послідовність ресурсів коворкінгу не налаштована."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_visit.py:0
+msgid "The coworking visit sequence is not configured."
+msgstr "Послідовність відвідувань коворкінгу не налаштована."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/wizard/os_coworking_availability_wizard.py:0
+msgid "The end time must be later than the start time."
+msgstr "Час завершення має бути пізнішим за час початку."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_resource_hourly_rate_non_negative
+msgid "The hourly rate cannot be negative."
+msgstr "Погодинна ставка не може бути від’ємною."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_location_code_company_unique
+msgid "The location code must be unique within the company."
+msgstr "Код локації має бути унікальним у межах компанії."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "The membership does not have enough remaining hours."
+msgstr "В абонементі недостатньо годин."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "The membership does not have enough remaining visits."
+msgstr "В абонементі недостатньо відвідувань."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_membership_date_range_valid
+msgid "The membership end date must be on or after the start date."
+msgstr "Дата завершення абонемента має збігатися з датою початку або бути пізнішою."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "The membership is not valid at the selected location."
+msgstr "Абонемент не діє у вибраній локації."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_membership_plan_code_unique
+msgid "The membership plan code must be unique."
+msgstr "Код тарифного плану має бути унікальним."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_membership_plan_duration_days_positive
+msgid "The membership plan duration must be greater than zero."
+msgstr "Тривалість тарифного плану має бути більшою за нуль."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_membership_plan_price_non_negative
+msgid "The membership plan price cannot be negative."
+msgstr "Ціна тарифного плану не може бути від’ємною."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/wizard/os_coworking_availability_wizard.py:0
+msgid "The period must be within the location working hours and cannot cross a local calendar day."
+msgstr "Період має бути в межах робочих годин локації та не може переходити на інший локальний календарний день."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_membership_remaining_hours_non_negative
+msgid "The remaining hours cannot be negative."
+msgstr "Залишок годин не може бути від’ємним."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_membership_remaining_visits_non_negative
+msgid "The remaining visits cannot be negative."
+msgstr "Залишок відвідувань не може бути від’ємним."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_booking_reserved_hours_non_negative
+msgid "The reserved hours cannot be negative."
+msgstr "Кількість зарезервованих годин не може бути від’ємною."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_booking_reserved_visits_non_negative
+msgid "The reserved visits cannot be negative."
+msgstr "Кількість зарезервованих відвідувань не може бути від’ємною."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "The resource already has a confirmed booking during this period."
+msgstr "Ресурс уже має підтверджене бронювання на цей період."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_resource_capacity_positive
+msgid "The resource capacity must be greater than zero."
+msgstr "Місткість ресурсу має бути більшою за нуль."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.constraint,message:OdooSchool_coworking_management.constraint_os_coworking_resource_code_location_unique
+msgid "The resource code must be unique within the location."
+msgstr "Код ресурсу має бути унікальним у межах локації."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/wizard/os_coworking_availability_wizard.py:0
+msgid "The selected resource is no longer available for this period."
+msgstr "Вибраний ресурс більше не доступний на цей період."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/wizard/os_coworking_availability_wizard.py:0
+msgid "The start and end times must be set to full hours."
+msgstr "Час початку та завершення має бути встановлено на повну годину."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_layout
+msgid "This document is an invoice for a coworking membership."
+msgstr "Цей документ є рахунком за абонемент коворкінгу."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "This document is an invoice for the coworking membership shown above. The amount is based on the sales price of the linked coworking product."
+msgstr "Цей документ є рахунком за вказаний вище абонемент коворкінгу. Суму визначено за ціною продажу пов’язаного продукту коворкінгу."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_layout
+msgid "This document reflects the booking status at the time of printing."
+msgstr "Цей документ відображає стан бронювання на момент друку."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_form
+msgid "Time"
+msgstr "Час"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership__total_frozen_days
+msgid "Total Frozen Days"
+msgstr "Загальна кількість днів заморожування"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Type"
+msgstr "Тип"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+msgid "Unfreeze"
+msgstr "Розморозити"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_membership_plan__usage_type__unlimited
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_plan_search
+msgid "Unlimited"
+msgstr "Безлімітний"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership_plan.py:0
+msgid "Unlimited plans must not define included hours or visits."
+msgstr "Для безлімітних тарифів не можна вказувати включені години або відвідування."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_membership__payment_status__unpaid
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_search
+msgid "Unpaid"
+msgstr "Неоплачено"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_plan_form
+msgid "Usage Limits"
+msgstr "Ліміти використання"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_membership_plan__usage_type
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_plan_search
+msgid "Usage Type"
+msgstr "Тип використання"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Use the resource only during the booked period."
+msgstr "Використовуйте ресурс лише протягом заброньованого періоду."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_form
+msgid "Validity"
+msgstr "Термін дії"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_form
+msgid "Visit"
+msgstr "Відвідування"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_visit.py:0
+msgid "Visit %(visit)s was cancelled after check-in. Any reserved membership limit was returned."
+msgstr "Відвідування %(visit)s скасовано після реєстрації входу. Увесь зарезервований ліміт абонемента повернено."
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_booking.py:0
+msgid "Visit %(visit)s was created at check-in."
+msgstr "Під час реєстрації входу створено відвідування %(visit)s."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_graph
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_visit_pivot
+msgid "Visit Analysis"
+msgstr "Аналіз відвідувань"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_membership_plan.py:0
+msgid "Visit-based plans require a positive number of included visits and no included hours."
+msgstr "Для тарифів за відвідуваннями потрібно вказати додатну кількість включених відвідувань без включених годин."
+
+#. module: OdooSchool_coworking_management
+#: model:ir.actions.act_window,name:OdooSchool_coworking_management.os_coworking_action_visit
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__visit_count
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_booking__visit_ids
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_res_partner__coworking_visit_count
+#: model:ir.model.fields.selection,name:OdooSchool_coworking_management.selection__os_coworking_membership_plan__usage_type__visits
+#: model:ir.ui.menu,name:OdooSchool_coworking_management.os_coworking_menu_visit
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_booking_form
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_membership_plan_search
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_partner_form
+msgid "Visits"
+msgstr "Відвідування"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_form
+msgid "Working Hours"
+msgstr "Робочі години"
+
+#. module: OdooSchool_coworking_management
+#. odoo-python
+#: code:addons/OdooSchool_coworking_management/models/os_coworking_location.py:0
+msgid "Working hours must be within 00:00 and 24:00, and the closing hour must be later than the opening hour."
+msgstr "Робочі години мають бути в межах від 00:00 до 24:00, а час закриття має бути пізнішим за час відкриття."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_location_kanban
+msgid "Working Hours:"
+msgstr "Робочі години:"
+
+#. module: OdooSchool_coworking_management
+#: model:ir.model.fields,field_description:OdooSchool_coworking_management.field_os_coworking_location__zip
+msgid "ZIP"
+msgstr "Індекс"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_view_resource_kanban
+msgid "· Capacity:"
+msgstr "· Місткість:"

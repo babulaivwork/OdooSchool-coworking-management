@@ -42,7 +42,10 @@
         'demo/os_coworking_booking_demo.xml',
         'demo/os_coworking_visit_demo.xml',
     ],
-    'images': ['static/description/icon.png'],
+    'images': [
+        'static/description/banner.png',
+        'static/description/icon.png',
+    ],
     'installable': True,
     'application': True,
     'auto_install': False,
