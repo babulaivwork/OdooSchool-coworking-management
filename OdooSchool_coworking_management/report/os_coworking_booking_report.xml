@@ -4,12 +4,12 @@
         <field name="name">Booking Confirmation A4</field>
         <field name="format">A4</field>
         <field name="orientation">Portrait</field>
-        <field name="margin_top">55</field>
-        <field name="margin_bottom">20</field>
-        <field name="margin_left">10</field>
-        <field name="margin_right">10</field>
+        <field name="margin_top">38</field>
+        <field name="margin_bottom">18</field>
+        <field name="margin_left">12</field>
+        <field name="margin_right">12</field>
         <field name="header_line" eval="False"/>
-        <field name="header_spacing">45</field>
+        <field name="header_spacing">28</field>
         <field name="dpi">96</field>
     </record>
 
@@ -27,30 +27,37 @@
     </record>
 
     <template id="os_coworking_booking_confirmation_layout">
-        <div class="header">
-            <div class="row align-items-center border-bottom pb-2">
-                <div class="col-4">
-                    <img
-                        t-if="company.logo"
-                        t-att-src="image_data_uri(company.logo)"
-                        t-att-alt="company.name"
-                        style="max-height: 70px; max-width: 100%;"
-                    />
-                </div>
-                <div class="col-8 text-end">
-                    <h2 class="mb-1" t-out="company.name"/>
-                    <div class="d-inline-block text-start">
-                        <div
-                            t-field="company.partner_id"
-                            t-options='{
-                                "widget": "contact",
-                                "fields": ["address", "phone", "email", "website"],
-                                "no_marker": true
-                            }'
+        <div class="header os-coworking-header">
+            <table class="os-header-table">
+                <tr>
+                    <td class="os-header-brand">
+                        <img
+                            t-if="company.logo"
+                            t-att-src="image_data_uri(company.logo)"
+                            t-att-alt="company.name"
+                            class="os-company-logo"
                         />
-                    </div>
-                </div>
-            </div>
+                        <span class="os-company-name" t-out="company.name"/>
+                    </td>
+                    <td class="os-header-contact">
+                        <div t-if="company.street or company.street2 or company.city or company.zip">
+                            <span t-if="company.street" t-field="company.street"/>
+                            <span t-if="company.street and (company.street2 or company.city or company.zip)">, </span>
+                            <span t-if="company.street2" t-field="company.street2"/>
+                            <span t-if="company.street2 and (company.city or company.zip)">, </span>
+                            <span t-if="company.zip" t-field="company.zip"/>
+                            <span t-if="company.zip and company.city"> </span>
+                            <span t-if="company.city" t-field="company.city"/>
+                        </div>
+                        <div t-if="company.phone or company.email">
+                            <span t-if="company.phone" t-field="company.phone"/>
+                            <span t-if="company.phone and company.email" class="os-contact-divider"> | </span>
+                            <span t-if="company.email" t-field="company.email"/>
+                        </div>
+                        <div class="os-document-kind">Booking Confirmation</div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div
@@ -62,15 +69,15 @@
             <t t-out="0"/>
         </div>
 
-        <div class="footer border-top pt-2">
-            <div class="row">
-                <div class="col-8">
-                    This document reflects the booking status at the time of printing.
-                </div>
-                <div class="col-4 text-end">
-                    Page <span class="page"/> of <span class="topage"/>
-                </div>
-            </div>
+        <div class="footer os-coworking-footer">
+            <table>
+                <tr>
+                    <td>This document reflects the booking status at the time of printing.</td>
+                    <td class="os-footer-page">
+                        <span t-out="booking.name"/> | <span class="page"/> / <span class="topage"/>
+                    </td>
+                </tr>
+            </table>
         </div>
     </template>
 
@@ -78,187 +85,451 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="booking">
                 <t t-set="company" t-value="booking.company_id"/>
-                <t
-                    t-set="product"
-                    t-value="booking.membership_id._get_coworking_product()"
-                />
+                <t t-set="membership" t-value="booking.membership_id"/>
+                <t t-set="plan" t-value="membership.plan_id"/>
                 <t
                     t-call="OdooSchool_coworking_management.os_coworking_booking_confirmation_layout"
                 >
-                    <div class="page os_coworking_booking_report">
+                    <div class="page os-coworking-document os-booking-document">
                         <style>
-                            .os_coworking_booking_report th {
-                                font-weight: 700 !important;
+                            .os-coworking-document {
+                                color: #172333;
+                                font-family: Arial, Helvetica, sans-serif;
+                                font-size: 10pt;
+                                line-height: 1.35;
+                            }
+                            .os-coworking-header,
+                            .os-coworking-footer {
+                                color: #667486;
+                                font-family: Arial, Helvetica, sans-serif;
+                                font-size: 9pt;
+                            }
+                            .os-header-table,
+                            .os-coworking-footer table {
+                                border-collapse: collapse;
+                                table-layout: fixed;
+                                width: 100%;
+                            }
+                            .os-header-table {
+                                border-bottom: 1px solid #d7e0e7;
+                            }
+                            .os-header-table td {
+                                padding: 0 0 7px;
+                                vertical-align: middle;
+                            }
+                            .os-header-brand {
+                                color: #193956;
+                                font-size: 19pt;
+                                font-weight: 700;
+                                width: 48%;
+                            }
+                            .os-company-logo {
+                                display: inline-block;
+                                margin-right: 10px;
+                                max-height: 48px;
+                                max-width: 72px;
+                                vertical-align: middle;
+                            }
+                            .os-company-name {
+                                display: inline-block;
+                                max-width: 270px;
+                                vertical-align: middle;
+                            }
+                            .os-header-contact {
+                                line-height: 1.55;
+                                text-align: right;
+                                width: 52%;
+                            }
+                            .os-document-kind {
+                                color: #193956;
+                                font-size: 9pt;
+                                font-weight: 700;
+                                letter-spacing: 0.3px;
+                                text-transform: uppercase;
+                            }
+                            .os-coworking-footer {
+                                border-top: 1px solid #d7e0e7;
+                                padding-top: 6px;
+                            }
+                            .os-coworking-footer td {
+                                padding: 0;
+                            }
+                            .os-footer-page {
+                                font-weight: 700;
+                                text-align: right;
+                            }
+                            .os-title-table {
+                                border-collapse: collapse;
+                                margin-bottom: 14px;
+                                table-layout: fixed;
+                                width: 100%;
+                            }
+                            .os-title-table td {
+                                padding: 0;
+                                vertical-align: middle;
+                            }
+                            .os-title-copy {
+                                width: 68%;
+                            }
+                            .os-title-status {
+                                text-align: right;
+                                width: 32%;
+                            }
+                            .os-eyebrow {
+                                background: #f4f7f9;
+                                border: 1px solid #d9e2e8;
+                                border-radius: 14px;
+                                color: #667486;
+                                display: inline-block;
+                                font-size: 8pt;
+                                font-weight: 700;
+                                margin-bottom: 8px;
+                                padding: 5px 11px;
+                                text-transform: uppercase;
+                            }
+                            .os-document-title {
+                                color: #193956;
+                                font-size: 28pt;
+                                font-weight: 700;
+                                line-height: 1.05;
+                                margin: 0 0 5px;
+                                text-transform: uppercase;
+                            }
+                            .os-document-number,
+                            .os-issued-label {
+                                color: #687789;
+                                font-size: 10pt;
+                            }
+                            .os-status {
+                                border: 1.5px solid #718096;
+                                border-radius: 18px;
+                                color: #4a5568;
+                                display: inline-block;
+                                font-size: 11pt;
+                                font-weight: 700;
+                                margin-top: 7px;
+                                min-width: 118px;
+                                padding: 7px 14px;
+                                text-align: center;
+                                text-transform: uppercase;
+                            }
+                            .os-status-confirmed {
+                                background: #ecf9f4;
+                                border-color: #008b62;
+                                color: #008b62;
+                            }
+                            .os-status-done {
+                                background: #edf4fa;
+                                border-color: #1d5b86;
+                                color: #1d5b86;
+                            }
+                            .os-status-cancelled {
+                                background: #fff0f0;
+                                border-color: #b42332;
+                                color: #b42332;
+                            }
+                            .os-highlight-table {
+                                background: #193956;
+                                border-collapse: separate;
+                                border-radius: 12px;
+                                color: #ffffff;
+                                margin-bottom: 16px;
+                                table-layout: fixed;
+                                width: 100%;
+                            }
+                            .os-highlight-table td {
+                                padding: 17px 19px;
+                                vertical-align: top;
+                                width: 33.333%;
+                            }
+                            .os-highlight-table td + td {
+                                border-left: 1px solid #557089;
+                            }
+                            .os-highlight-label,
+                            .os-card-label {
+                                color: #b9c5d0;
+                                font-size: 8pt;
+                                font-weight: 700;
+                                margin-bottom: 6px;
+                                text-transform: uppercase;
+                            }
+                            .os-highlight-value {
+                                font-size: 18pt;
+                                font-weight: 700;
+                                line-height: 1.15;
+                                margin-bottom: 5px;
+                            }
+                            .os-highlight-subvalue {
+                                color: #cbd5df;
+                                font-size: 10pt;
+                            }
+                            .os-card-table {
+                                border-collapse: separate;
+                                border-spacing: 0 10px;
+                                margin: -10px 0 6px;
+                                table-layout: fixed;
+                                width: 100%;
+                            }
+                            .os-card-cell {
+                                width: 50%;
+                            }
+                            .os-card-cell-left {
+                                padding-right: 6px;
+                            }
+                            .os-card-cell-right {
+                                padding-left: 6px;
+                            }
+                            .os-card {
+                                border: 1px solid #d7e0e7;
+                                border-left: 6px solid #168f80;
+                                border-radius: 10px;
+                                min-height: 132px;
+                                padding: 14px 16px;
+                                page-break-inside: avoid;
+                            }
+                            .os-card-blue {
+                                border-left-color: #193956;
+                            }
+                            .os-card-title,
+                            .os-section-title {
+                                color: #193956;
+                                font-size: 11pt;
+                                font-weight: 700;
+                                margin-bottom: 12px;
+                                text-transform: uppercase;
+                            }
+                            .os-card-label {
+                                color: #6d7b8b;
+                                margin: 8px 0 2px;
+                            }
+                            .os-card-value {
+                                color: #172333;
+                                font-size: 10pt;
+                            }
+                            .os-note {
+                                background: #eaf6f3;
+                                border-radius: 10px;
+                                margin-bottom: 14px;
+                                padding: 13px 16px;
+                                page-break-inside: avoid;
+                            }
+                            .os-note-title {
+                                color: #087568;
+                                font-size: 8pt;
+                                font-weight: 700;
+                                margin-bottom: 7px;
+                                text-transform: uppercase;
+                            }
+                            .os-rules {
+                                background: #f5f8fa;
+                                border: 1px solid #d7e0e7;
+                                border-radius: 10px;
+                                padding: 14px 16px 10px;
+                                page-break-inside: avoid;
+                            }
+                            .os-rule-table {
+                                border-collapse: collapse;
+                                width: 100%;
+                            }
+                            .os-rule-table td {
+                                padding: 5px 0;
+                                vertical-align: middle;
+                            }
+                            .os-rule-number {
+                                width: 34px;
+                            }
+                            .os-rule-number span {
+                                border: 1px solid #168f80;
+                                border-radius: 50%;
+                                color: #087568;
+                                display: inline-block;
+                                font-size: 8pt;
+                                font-weight: 700;
+                                height: 22px;
+                                line-height: 22px;
+                                text-align: center;
+                                width: 22px;
                             }
                         </style>
-                        <div class="text-center mb-4">
-                            <h1>Booking Confirmation</h1>
-                            <h3>
-                                <span t-field="booking.name"/>
-                            </h3>
-                        </div>
 
-                        <h3>Booking Details</h3>
-                        <table class="table table-sm table-bordered mb-4">
-                            <tbody>
-                                <tr>
-                                    <th class="w-25">Booking Date</th>
-                                    <td><span t-field="booking.create_date"/></td>
-                                    <th class="w-25">Status</th>
-                                    <td><span t-field="booking.state"/></td>
-                                </tr>
-                                <tr>
-                                    <th>Start</th>
-                                    <td><span t-field="booking.start_datetime"/></td>
-                                    <th>End</th>
-                                    <td><span t-field="booking.end_datetime"/></td>
-                                </tr>
-                                <tr>
-                                    <th>Duration</th>
-                                    <td colspan="3">
-                                        <span t-field="booking.duration_hours"/> hours
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div class="row mb-4">
-                            <div class="col-6">
-                                <h3>Client</h3>
-                                <table class="table table-sm table-bordered">
-                                    <tbody>
-                                        <tr>
-                                            <th>Name</th>
-                                            <td><span t-field="booking.partner_id"/></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Phone</th>
-                                            <td>
-                                                <span
-                                                    t-out="booking.partner_id.phone or '-'"
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Email</th>
-                                            <td>
-                                                <span
-                                                    t-out="booking.partner_id.email or '-'"
-                                                />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-6">
-                                <h3>Location</h3>
-                                <table class="table table-sm table-bordered">
-                                    <tbody>
-                                        <tr>
-                                            <th>Name</th>
-                                            <td><span t-field="booking.location_id"/></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Address</th>
-                                            <td>
-                                                <t t-if="booking.location_id.street">
-                                                    <span
-                                                        t-field="booking.location_id.street"
-                                                    />
-                                                </t>
-                                                <t t-if="booking.location_id.street2">
-                                                    <br/>
-                                                    <span
-                                                        t-field="booking.location_id.street2"
-                                                    />
-                                                </t>
-                                                <t
-                                                    t-if="booking.location_id.city or booking.location_id.zip"
-                                                >
-                                                    <br/>
-                                                    <span
-                                                        t-if="booking.location_id.zip"
-                                                        t-field="booking.location_id.zip"
-                                                    />
-                                                    <span
-                                                        t-if="booking.location_id.zip and booking.location_id.city"
-                                                    > </span>
-                                                    <span
-                                                        t-if="booking.location_id.city"
-                                                        t-field="booking.location_id.city"
-                                                    />
-                                                </t>
-                                                <span
-                                                    t-if="not booking.location_id.street and not booking.location_id.street2 and not booking.location_id.city and not booking.location_id.zip"
-                                                >-</span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <h3>Resource</h3>
-                        <table class="table table-sm table-bordered mb-4">
-                            <tbody>
-                                <tr>
-                                    <th>Name</th>
-                                    <td><span t-field="booking.resource_id"/></td>
-                                    <th>Type</th>
-                                    <td>
-                                        <span t-field="booking.resource_id.resource_type"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Capacity</th>
-                                    <td colspan="3">
-                                        <span t-field="booking.resource_id.capacity"/>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h3>Membership</h3>
-                        <table class="table table-sm table-bordered mb-4">
-                            <tbody>
-                                <tr>
-                                    <th>Membership</th>
-                                    <td><span t-field="booking.membership_id"/></td>
-                                    <th>Membership Plan</th>
-                                    <td>
-                                        <span t-field="booking.membership_id.plan_id"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Product Price</th>
-                                    <td colspan="3">
+                        <table class="os-title-table">
+                            <tr>
+                                <td class="os-title-copy">
+                                    <div class="os-eyebrow">Booking Document</div>
+                                    <h1 class="os-document-title">Booking Confirmation</h1>
+                                    <div class="os-document-number">
+                                        Booking No. <span t-field="booking.name"/>
+                                    </div>
+                                </td>
+                                <td class="os-title-status">
+                                    <div class="os-issued-label">
+                                        Booking Date:
                                         <span
-                                            t-field="product.list_price"
-                                            t-options='{
-                                                "widget": "monetary",
-                                                "display_currency": product.currency_id
-                                            }'
+                                            t-field="booking.create_date"
+                                            t-options='{"widget": "datetime", "format": "dd.MM.yyyy, HH:mm"}'
                                         />
-                                    </td>
-                                </tr>
-                            </tbody>
+                                    </div>
+                                    <div t-att-class="'os-status os-status-%s' % booking.state">
+                                        <span t-field="booking.state"/>
+                                    </div>
+                                </td>
+                            </tr>
                         </table>
 
-                        <div t-if="booking.note" class="mb-4">
-                            <h3>Notes</h3>
-                            <div class="border rounded p-2">
-                                <span t-field="booking.note"/>
-                            </div>
+                        <table class="os-highlight-table">
+                            <tr>
+                                <td>
+                                    <div class="os-highlight-label">Date</div>
+                                    <div class="os-highlight-value">
+                                        <span
+                                            t-field="booking.start_datetime"
+                                            t-options='{"widget": "datetime", "format": "dd MMMM yyyy"}'
+                                        />
+                                    </div>
+                                    <div class="os-highlight-subvalue">
+                                        <span
+                                            t-field="booking.start_datetime"
+                                            t-options='{"widget": "datetime", "format": "EEEE"}'
+                                        />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="os-highlight-label">Time</div>
+                                    <div class="os-highlight-value">
+                                        <span
+                                            t-field="booking.start_datetime"
+                                            t-options='{"widget": "datetime", "format": "HH:mm"}'
+                                        />
+                                        <span> - </span>
+                                        <span
+                                            t-field="booking.end_datetime"
+                                            t-options='{"widget": "datetime", "format": "HH:mm"}'
+                                        />
+                                    </div>
+                                    <div class="os-highlight-subvalue">
+                                        Duration: <span t-field="booking.duration_hours"/> hours
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="os-highlight-label">Membership Limit</div>
+                                    <t t-if="plan.usage_type == 'hours'">
+                                        <div class="os-highlight-value">
+                                            <span t-field="booking.reserved_hours"/> hours
+                                        </div>
+                                        <div class="os-highlight-subvalue">reserved</div>
+                                    </t>
+                                    <t t-elif="plan.usage_type == 'visits'">
+                                        <div class="os-highlight-value">
+                                            <span t-field="booking.reserved_visits"/> visit(s)
+                                        </div>
+                                        <div class="os-highlight-subvalue">reserved</div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="os-highlight-value">Unlimited</div>
+                                        <div class="os-highlight-subvalue">access</div>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="os-card-table">
+                            <tr>
+                                <td class="os-card-cell os-card-cell-left">
+                                    <div class="os-card">
+                                        <div class="os-card-title">Resource</div>
+                                        <div class="os-card-label">Name</div>
+                                        <div class="os-card-value" t-field="booking.resource_id"/>
+                                        <div class="os-card-label">Type</div>
+                                        <div class="os-card-value" t-field="booking.resource_id.resource_type"/>
+                                        <div class="os-card-label">Capacity</div>
+                                        <div class="os-card-value">
+                                            <span t-field="booking.resource_id.capacity"/> people
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="os-card-cell os-card-cell-right">
+                                    <div class="os-card os-card-blue">
+                                        <div class="os-card-title">Location</div>
+                                        <div class="os-card-label">Name</div>
+                                        <div class="os-card-value" t-field="booking.location_id"/>
+                                        <div class="os-card-label">Address</div>
+                                        <div class="os-card-value">
+                                            <t t-if="booking.location_id.street or booking.location_id.street2 or booking.location_id.city or booking.location_id.zip">
+                                                <span t-if="booking.location_id.street" t-field="booking.location_id.street"/>
+                                                <span t-if="booking.location_id.street and (booking.location_id.street2 or booking.location_id.city or booking.location_id.zip)">, </span>
+                                                <span t-if="booking.location_id.street2" t-field="booking.location_id.street2"/>
+                                                <span t-if="booking.location_id.street2 and (booking.location_id.city or booking.location_id.zip)">, </span>
+                                                <span t-if="booking.location_id.zip" t-field="booking.location_id.zip"/>
+                                                <span t-if="booking.location_id.zip and booking.location_id.city"> </span>
+                                                <span t-if="booking.location_id.city" t-field="booking.location_id.city"/>
+                                            </t>
+                                            <span t-else="">-</span>
+                                        </div>
+                                        <div class="os-card-label">Working Hours</div>
+                                        <div class="os-card-value">
+                                            <span t-field="booking.location_id.working_hour_from" t-options='{"widget": "float_time"}'/>
+                                            <span> - </span>
+                                            <span t-field="booking.location_id.working_hour_to" t-options='{"widget": "float_time"}'/>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="os-card-cell os-card-cell-left">
+                                    <div class="os-card">
+                                        <div class="os-card-title">Client</div>
+                                        <div class="os-card-label">Name</div>
+                                        <div class="os-card-value" t-field="booking.partner_id"/>
+                                        <div t-if="booking.partner_id.phone or booking.partner_id.email">
+                                            <div class="os-card-label">Contact Details</div>
+                                            <div class="os-card-value">
+                                                <div t-if="booking.partner_id.phone" t-field="booking.partner_id.phone"/>
+                                                <div t-if="booking.partner_id.email" t-field="booking.partner_id.email"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="os-card-cell os-card-cell-right">
+                                    <div class="os-card os-card-blue">
+                                        <div class="os-card-title">Membership</div>
+                                        <div class="os-card-label">Number and Plan</div>
+                                        <div class="os-card-value">
+                                            <span t-field="membership.name"/> - <span t-field="plan.name"/>
+                                        </div>
+                                        <div class="os-card-label">Validity Period</div>
+                                        <div class="os-card-value">
+                                            <span t-field="membership.date_start"/> - <span t-field="membership.date_end"/>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div t-if="booking.note" class="os-note">
+                            <div class="os-note-title">Notes</div>
+                            <div t-field="booking.note"/>
                         </div>
 
-                        <div>
-                            <h3>General Coworking Rules</h3>
-                            <ul>
-                                <li>Use the resource only during the booked period.</li>
-                                <li>Follow coworking safety rules and staff instructions.</li>
-                                <li>Keep shared areas and equipment clean.</li>
-                                <li>Report any damage to coworking staff.</li>
-                            </ul>
+                        <div class="os-rules">
+                            <div class="os-section-title">General Coworking Rules</div>
+                            <table class="os-rule-table">
+                                <tr>
+                                    <td class="os-rule-number"><span>1</span></td>
+                                    <td>Use the resource only during the booked period.</td>
+                                </tr>
+                                <tr>
+                                    <td class="os-rule-number"><span>2</span></td>
+                                    <td>Follow coworking safety rules and staff instructions.</td>
+                                </tr>
+                                <tr>
+                                    <td class="os-rule-number"><span>3</span></td>
+                                    <td>Keep shared areas and equipment clean.</td>
+                                </tr>
+                                <tr>
+                                    <td class="os-rule-number"><span>4</span></td>
+                                    <td>Report any damage to coworking staff.</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </t>

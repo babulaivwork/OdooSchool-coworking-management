@@ -4,12 +4,12 @@
         <field name="name">Membership Invoice A4</field>
         <field name="format">A4</field>
         <field name="orientation">Portrait</field>
-        <field name="margin_top">55</field>
-        <field name="margin_bottom">20</field>
-        <field name="margin_left">10</field>
-        <field name="margin_right">10</field>
+        <field name="margin_top">38</field>
+        <field name="margin_bottom">18</field>
+        <field name="margin_left">12</field>
+        <field name="margin_right">12</field>
         <field name="header_line" eval="False"/>
-        <field name="header_spacing">45</field>
+        <field name="header_spacing">28</field>
         <field name="dpi">96</field>
     </record>
 
@@ -27,30 +27,37 @@
     </record>
 
     <template id="os_coworking_membership_invoice_layout">
-        <div class="header">
-            <div class="row align-items-center border-bottom pb-2">
-                <div class="col-4">
-                    <img
-                        t-if="company.logo"
-                        t-att-src="image_data_uri(company.logo)"
-                        t-att-alt="company.name"
-                        style="max-height: 70px; max-width: 100%;"
-                    />
-                </div>
-                <div class="col-8 text-end">
-                    <h2 class="mb-1" t-out="company.name"/>
-                    <div class="d-inline-block text-start">
-                        <div
-                            t-field="company.partner_id"
-                            t-options='{
-                                "widget": "contact",
-                                "fields": ["address", "phone", "email", "website"],
-                                "no_marker": true
-                            }'
+        <div class="header os-coworking-header">
+            <table class="os-header-table">
+                <tr>
+                    <td class="os-header-brand">
+                        <img
+                            t-if="company.logo"
+                            t-att-src="image_data_uri(company.logo)"
+                            t-att-alt="company.name"
+                            class="os-company-logo"
                         />
-                    </div>
-                </div>
-            </div>
+                        <span class="os-company-name" t-out="company.name"/>
+                    </td>
+                    <td class="os-header-contact">
+                        <div t-if="company.street or company.street2 or company.city or company.zip">
+                            <span t-if="company.street" t-field="company.street"/>
+                            <span t-if="company.street and (company.street2 or company.city or company.zip)">, </span>
+                            <span t-if="company.street2" t-field="company.street2"/>
+                            <span t-if="company.street2 and (company.city or company.zip)">, </span>
+                            <span t-if="company.zip" t-field="company.zip"/>
+                            <span t-if="company.zip and company.city"> </span>
+                            <span t-if="company.city" t-field="company.city"/>
+                        </div>
+                        <div t-if="company.phone or company.email">
+                            <span t-if="company.phone" t-field="company.phone"/>
+                            <span t-if="company.phone and company.email" class="os-contact-divider"> | </span>
+                            <span t-if="company.email" t-field="company.email"/>
+                        </div>
+                        <div class="os-document-kind">Membership Invoice</div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div
@@ -62,15 +69,15 @@
             <t t-out="0"/>
         </div>
 
-        <div class="footer border-top pt-2">
-            <div class="row">
-                <div class="col-8">
-                    This document is an invoice for a coworking membership.
-                </div>
-                <div class="col-4 text-end">
-                    Page <span class="page"/> of <span class="topage"/>
-                </div>
-            </div>
+        <div class="footer os-coworking-footer">
+            <table>
+                <tr>
+                    <td>The amount is based on the sales price of the linked coworking product.</td>
+                    <td class="os-footer-page">
+                        <span t-out="membership.name"/> | <span class="page"/> / <span class="topage"/>
+                    </td>
+                </tr>
+            </table>
         </div>
     </template>
 
@@ -79,101 +86,415 @@
             <t t-foreach="docs" t-as="membership">
                 <t t-set="product" t-value="membership._get_coworking_product()"/>
                 <t t-set="company" t-value="product.company_id or membership.env.company"/>
+                <t t-set="partner" t-value="membership.partner_id"/>
+                <t t-set="bank" t-value="company.bank_ids[:1]"/>
                 <t
                     t-call="OdooSchool_coworking_management.os_coworking_membership_invoice_layout"
                 >
-                    <div class="page os_coworking_membership_invoice">
+                    <div class="page os-coworking-document os-invoice-document">
                         <style>
-                            .os_coworking_membership_invoice th {
-                                font-weight: 700 !important;
+                            .os-coworking-document {
+                                color: #172333;
+                                font-family: Arial, Helvetica, sans-serif;
+                                font-size: 10pt;
+                                line-height: 1.35;
+                            }
+                            .os-coworking-header,
+                            .os-coworking-footer {
+                                color: #667486;
+                                font-family: Arial, Helvetica, sans-serif;
+                                font-size: 9pt;
+                            }
+                            .os-header-table,
+                            .os-coworking-footer table {
+                                border-collapse: collapse;
+                                table-layout: fixed;
+                                width: 100%;
+                            }
+                            .os-header-table {
+                                border-bottom: 1px solid #d7e0e7;
+                            }
+                            .os-header-table td {
+                                padding: 0 0 7px;
+                                vertical-align: middle;
+                            }
+                            .os-header-brand {
+                                color: #193956;
+                                font-size: 19pt;
+                                font-weight: 700;
+                                width: 48%;
+                            }
+                            .os-company-logo {
+                                display: inline-block;
+                                margin-right: 10px;
+                                max-height: 48px;
+                                max-width: 72px;
+                                vertical-align: middle;
+                            }
+                            .os-company-name {
+                                display: inline-block;
+                                max-width: 270px;
+                                vertical-align: middle;
+                            }
+                            .os-header-contact {
+                                line-height: 1.55;
+                                text-align: right;
+                                width: 52%;
+                            }
+                            .os-document-kind {
+                                color: #193956;
+                                font-size: 9pt;
+                                font-weight: 700;
+                                letter-spacing: 0.3px;
+                                text-transform: uppercase;
+                            }
+                            .os-coworking-footer {
+                                border-top: 1px solid #d7e0e7;
+                                padding-top: 6px;
+                            }
+                            .os-coworking-footer td {
+                                padding: 0;
+                            }
+                            .os-footer-page {
+                                font-weight: 700;
+                                text-align: right;
+                            }
+                            .os-title-table {
+                                border-collapse: collapse;
+                                margin-bottom: 15px;
+                                table-layout: fixed;
+                                width: 100%;
+                            }
+                            .os-title-table td {
+                                padding: 0;
+                                vertical-align: middle;
+                            }
+                            .os-title-copy {
+                                width: 68%;
+                            }
+                            .os-title-status {
+                                text-align: right;
+                                width: 32%;
+                            }
+                            .os-document-title {
+                                color: #193956;
+                                font-size: 27pt;
+                                font-weight: 700;
+                                line-height: 1.08;
+                                margin: 0 0 7px;
+                                text-transform: uppercase;
+                            }
+                            .os-document-number,
+                            .os-issued-label {
+                                color: #687789;
+                                font-size: 10pt;
+                            }
+                            .os-issued-label + .os-issued-label {
+                                margin-top: 5px;
+                            }
+                            .os-payment-badge {
+                                border: 1.5px solid #bd7000;
+                                border-radius: 18px;
+                                color: #bd7000;
+                                display: inline-block;
+                                font-size: 11pt;
+                                font-weight: 700;
+                                margin-bottom: 11px;
+                                min-width: 118px;
+                                padding: 7px 14px;
+                                text-align: center;
+                                text-transform: uppercase;
+                            }
+                            .os-payment-badge-paid {
+                                background: #ecf9f4;
+                                border-color: #008b62;
+                                color: #008b62;
+                            }
+                            .os-party-table {
+                                border-collapse: separate;
+                                border-spacing: 0;
+                                margin-bottom: 17px;
+                                table-layout: fixed;
+                                width: 100%;
+                            }
+                            .os-party-cell {
+                                width: 50%;
+                            }
+                            .os-party-cell-left {
+                                padding-right: 6px;
+                            }
+                            .os-party-cell-right {
+                                padding-left: 6px;
+                            }
+                            .os-party-card {
+                                border: 1px solid #d7e0e7;
+                                border-top: 6px solid #193956;
+                                border-radius: 0 0 10px 10px;
+                                min-height: 142px;
+                                padding: 14px 16px;
+                                page-break-inside: avoid;
+                            }
+                            .os-party-card-client {
+                                border-top-color: #168f80;
+                            }
+                            .os-card-caption,
+                            .os-field-label {
+                                color: #6d7b8b;
+                                font-size: 8pt;
+                                font-weight: 700;
+                                text-transform: uppercase;
+                            }
+                            .os-card-caption {
+                                margin-bottom: 13px;
+                            }
+                            .os-party-name {
+                                color: #193956;
+                                font-size: 14pt;
+                                font-weight: 700;
+                                margin-bottom: 7px;
+                            }
+                            .os-party-line {
+                                margin-bottom: 3px;
+                            }
+                            .os-section-heading {
+                                border-left: 5px solid #168f80;
+                                color: #193956;
+                                font-size: 11pt;
+                                font-weight: 700;
+                                margin: 0 0 12px;
+                                padding-left: 10px;
+                                text-transform: uppercase;
+                            }
+                            .os-service-table {
+                                border: 1px solid #d7e0e7;
+                                border-collapse: separate;
+                                border-radius: 10px;
+                                border-spacing: 0;
+                                margin-bottom: 15px;
+                                overflow: hidden;
+                                table-layout: fixed;
+                                width: 100%;
+                            }
+                            .os-service-table th {
+                                background: #193956;
+                                color: #ffffff;
+                                font-size: 8pt;
+                                font-weight: 700;
+                                padding: 10px 9px;
+                                text-align: left;
+                                text-transform: uppercase;
+                            }
+                            .os-service-table td {
+                                border-right: 1px solid #d7e0e7;
+                                padding: 13px 9px;
+                                vertical-align: top;
+                            }
+                            .os-service-table td:last-child {
+                                border-right: 0;
+                            }
+                            .os-col-number {
+                                text-align: center !important;
+                                width: 5%;
+                            }
+                            .os-col-service {
+                                width: 40%;
+                            }
+                            .os-col-period {
+                                width: 21%;
+                            }
+                            .os-col-quantity {
+                                text-align: center !important;
+                                width: 8%;
+                            }
+                            .os-col-price {
+                                text-align: right !important;
+                                width: 12%;
+                            }
+                            .os-col-total {
+                                text-align: right !important;
+                                width: 14%;
+                            }
+                            .os-service-name {
+                                font-weight: 700;
+                                margin-bottom: 7px;
+                            }
+                            .os-service-plan {
+                                color: #738194;
+                                font-size: 9pt;
+                            }
+                            .os-total-table {
+                                background: #193956;
+                                border-collapse: collapse;
+                                border-radius: 10px;
+                                color: #ffffff;
+                                margin-bottom: 16px;
+                                table-layout: fixed;
+                                width: 100%;
+                            }
+                            .os-total-table td {
+                                padding: 15px 18px;
+                            }
+                            .os-total-label {
+                                font-size: 10pt;
+                                font-weight: 700;
+                                text-transform: uppercase;
+                            }
+                            .os-total-value {
+                                font-size: 21pt;
+                                font-weight: 700;
+                                text-align: right;
+                            }
+                            .os-payment-details {
+                                background: #eaf6f3;
+                                border-radius: 10px;
+                                margin-bottom: 14px;
+                                padding: 13px 16px;
+                                page-break-inside: avoid;
+                            }
+                            .os-payment-table {
+                                border-collapse: collapse;
+                                table-layout: fixed;
+                                width: 100%;
+                            }
+                            .os-payment-table td {
+                                padding: 0;
+                                vertical-align: top;
+                                width: 50%;
+                            }
+                            .os-payment-table td + td {
+                                padding-left: 22px;
+                            }
+                            .os-field-label {
+                                margin: 7px 0 3px;
+                            }
+                            .os-field-value {
+                                font-size: 10pt;
+                            }
+                            .os-invoice-note {
+                                background: #f5f8fa;
+                                border: 1px solid #d7e0e7;
+                                border-radius: 10px;
+                                color: #687789;
+                                padding: 13px 16px;
+                                page-break-inside: avoid;
+                            }
+                            .os-invoice-note-title {
+                                color: #193956;
+                                font-size: 9pt;
+                                font-weight: 700;
+                                margin-bottom: 6px;
+                                text-transform: uppercase;
                             }
                         </style>
-                        <div class="text-center mb-4">
-                            <h1>Membership Invoice</h1>
-                            <h3><span t-field="membership.name"/></h3>
-                        </div>
 
-                        <h3>Invoice Details</h3>
-                        <table class="table table-sm table-bordered mb-4">
-                            <tbody>
-                                <tr>
-                                    <th class="w-25">Invoice Date</th>
-                                    <td><span t-field="membership.create_date"/></td>
-                                    <th class="w-25">Payment Status</th>
-                                    <td><span t-field="membership.payment_status"/></td>
-                                </tr>
-                                <tr>
-                                    <th>Payment Date</th>
-                                    <td colspan="3">
+                        <table class="os-title-table">
+                            <tr>
+                                <td class="os-title-copy">
+                                    <h1 class="os-document-title">Membership Invoice</h1>
+                                    <div class="os-document-number">
+                                        Membership No. <span t-field="membership.name"/>
+                                    </div>
+                                </td>
+                                <td class="os-title-status">
+                                    <div
+                                        t-att-class="'os-payment-badge %s' % ('os-payment-badge-paid' if membership.payment_status == 'paid' else '')"
+                                    >
+                                        <span t-if="membership.payment_status == 'paid'">Paid</span>
+                                        <span t-else="">Amount Due</span>
+                                    </div>
+                                    <div class="os-issued-label">
+                                        Invoice Date:
                                         <span
-                                            t-if="membership.payment_date"
-                                            t-field="membership.payment_date"
+                                            t-field="membership.create_date"
+                                            t-options='{"widget": "datetime", "format": "dd.MM.yyyy"}'
                                         />
-                                        <span t-else="">-</span>
-                                    </td>
-                                </tr>
-                            </tbody>
+                                    </div>
+                                    <div class="os-issued-label">
+                                        Payment Status: <span t-field="membership.payment_status"/>
+                                    </div>
+                                    <div t-if="membership.payment_date" class="os-issued-label">
+                                        Payment Date: <span t-field="membership.payment_date"/>
+                                    </div>
+                                </td>
+                            </tr>
                         </table>
 
-                        <div class="row mb-4">
-                            <div class="col-6">
-                                <h3>Company</h3>
-                                <table class="table table-sm table-bordered">
-                                    <tbody>
-                                        <tr>
-                                            <th>Name</th>
-                                            <td><span t-field="company.name"/></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Phone</th>
-                                            <td><span t-out="company.phone or '-'"/></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Email</th>
-                                            <td><span t-out="company.email or '-'"/></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-6">
-                                <h3>Client</h3>
-                                <table class="table table-sm table-bordered">
-                                    <tbody>
-                                        <tr>
-                                            <th>Name</th>
-                                            <td><span t-field="membership.partner_id"/></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Phone</th>
-                                            <td><span t-out="membership.partner_id.phone or '-'"/></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Email</th>
-                                            <td><span t-out="membership.partner_id.email or '-'"/></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <table class="os-party-table">
+                            <tr>
+                                <td class="os-party-cell os-party-cell-left">
+                                    <div class="os-party-card">
+                                        <div class="os-card-caption">Supplier</div>
+                                        <div class="os-party-name" t-field="company.name"/>
+                                        <div t-if="company.street or company.street2 or company.city or company.zip" class="os-party-line">
+                                            <span t-if="company.street" t-field="company.street"/>
+                                            <span t-if="company.street and (company.street2 or company.city or company.zip)">, </span>
+                                            <span t-if="company.street2" t-field="company.street2"/>
+                                            <span t-if="company.street2 and (company.city or company.zip)">, </span>
+                                            <span t-if="company.zip" t-field="company.zip"/>
+                                            <span t-if="company.zip and company.city"> </span>
+                                            <span t-if="company.city" t-field="company.city"/>
+                                        </div>
+                                        <div t-if="company.phone" class="os-party-line" t-field="company.phone"/>
+                                        <div t-if="company.email" class="os-party-line" t-field="company.email"/>
+                                        <div t-if="company.company_registry" class="os-party-line">
+                                            Company ID: <span t-field="company.company_registry"/>
+                                        </div>
+                                        <div t-if="company.vat" class="os-party-line">
+                                            Tax ID: <span t-field="company.vat"/>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="os-party-cell os-party-cell-right">
+                                    <div class="os-party-card os-party-card-client">
+                                        <div class="os-card-caption">Customer</div>
+                                        <div class="os-party-name" t-field="partner.name"/>
+                                        <div t-if="partner.street or partner.street2 or partner.city or partner.zip" class="os-party-line">
+                                            <span t-if="partner.street" t-field="partner.street"/>
+                                            <span t-if="partner.street and (partner.street2 or partner.city or partner.zip)">, </span>
+                                            <span t-if="partner.street2" t-field="partner.street2"/>
+                                            <span t-if="partner.street2 and (partner.city or partner.zip)">, </span>
+                                            <span t-if="partner.zip" t-field="partner.zip"/>
+                                            <span t-if="partner.zip and partner.city"> </span>
+                                            <span t-if="partner.city" t-field="partner.city"/>
+                                        </div>
+                                        <div t-if="partner.phone" class="os-party-line" t-field="partner.phone"/>
+                                        <div t-if="partner.email" class="os-party-line" t-field="partner.email"/>
+                                        <div t-if="partner.vat" class="os-party-line">
+                                            Tax ID: <span t-field="partner.vat"/>
+                                        </div>
+                                        <div class="os-party-line">Coworking Client</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
 
-                        <h3>Membership</h3>
-                        <table class="table table-sm table-bordered mb-4">
+                        <div class="os-section-heading">Service</div>
+                        <table class="os-service-table">
+                            <thead>
+                                <tr>
+                                    <th class="os-col-number">No.</th>
+                                    <th class="os-col-service">Description</th>
+                                    <th class="os-col-period">Period</th>
+                                    <th class="os-col-quantity">Qty</th>
+                                    <th class="os-col-price">Price</th>
+                                    <th class="os-col-total">Amount</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <tr>
-                                    <th class="w-25">Membership Plan</th>
-                                    <td><span t-field="membership.plan_id"/></td>
-                                    <th class="w-25">Coworking Product</th>
-                                    <td><span t-field="product.name"/></td>
-                                </tr>
-                                <tr>
-                                    <th>Start Date</th>
-                                    <td><span t-field="membership.date_start"/></td>
-                                    <th>End Date</th>
-                                    <td><span t-field="membership.date_end"/></td>
-                                </tr>
-                                <tr>
-                                    <th>Amount</th>
-                                    <td colspan="3">
+                                    <td class="os-col-number">1</td>
+                                    <td class="os-col-service">
+                                        <div class="os-service-name" t-field="product.name"/>
+                                        <div class="os-service-plan">
+                                            Membership Plan: <span t-field="membership.plan_id"/>
+                                        </div>
+                                    </td>
+                                    <td class="os-col-period">
+                                        <span t-field="membership.date_start"/> -<br/>
+                                        <span t-field="membership.date_end"/>
+                                    </td>
+                                    <td class="os-col-quantity">1</td>
+                                    <td class="os-col-price">
                                         <span
                                             t-field="product.list_price"
                                             t-options='{
@@ -182,13 +503,74 @@
                                             }'
                                         />
                                     </td>
+                                    <td class="os-col-total">
+                                        <strong>
+                                            <span
+                                                t-field="product.list_price"
+                                                t-options='{
+                                                    "widget": "monetary",
+                                                    "display_currency": product.currency_id
+                                                }'
+                                            />
+                                        </strong>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <div class="border rounded p-3">
-                            This document is an invoice for the coworking membership shown above.
-                            The amount is based on the sales price of the linked coworking product.
+                        <table class="os-total-table">
+                            <tr>
+                                <td class="os-total-label">
+                                    <span t-if="membership.payment_status == 'paid'">Total Paid</span>
+                                    <span t-else="">Total Amount Due</span>
+                                </td>
+                                <td class="os-total-value">
+                                    <span
+                                        t-field="product.list_price"
+                                        t-options='{
+                                            "widget": "monetary",
+                                            "display_currency": product.currency_id
+                                        }'
+                                    />
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="os-payment-details">
+                            <div class="os-section-heading">Payment Details</div>
+                            <table class="os-payment-table">
+                                <tr>
+                                    <td>
+                                        <div class="os-field-label">Recipient</div>
+                                        <div class="os-field-value"><strong t-field="company.name"/></div>
+                                        <t t-if="bank">
+                                            <div class="os-field-label">Bank Account</div>
+                                            <div class="os-field-value" t-field="bank.acc_number"/>
+                                            <t t-if="bank.bank_id">
+                                                <div class="os-field-label">Bank</div>
+                                                <div class="os-field-value" t-field="bank.bank_id.name"/>
+                                            </t>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <div class="os-field-label">Payment Reference</div>
+                                        <div class="os-field-value">
+                                            Membership payment <span t-field="membership.name"/>, <span t-field="partner.name"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="os-invoice-note">
+                            <div class="os-invoice-note-title">Important Information</div>
+                            <div>
+                                This document is an invoice for the coworking membership shown above.
+                                The membership can be activated after payment is confirmed.
+                            </div>
+                            <div t-if="membership.note" style="margin-top: 7px;">
+                                <strong>Notes:</strong> <span t-field="membership.note"/>
+                            </div>
                         </div>
                     </div>
                 </t>

@@ -1681,3 +1681,193 @@ msgstr "Довідкове значення ціни продажу пов’я�
 #: code:addons/OdooSchool_coworking_management/models/os_coworking_membership.py:0
 msgid "Payment status and date can be changed only by the Mark as Paid action."
 msgstr "Статус і дату оплати можна змінити лише дією «Позначити як оплачений»."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Booking Document"
+msgstr "Документ бронювання"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Booking No."
+msgstr "Бронювання №"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Date"
+msgstr "Дата"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Membership Limit"
+msgstr "Ліміт абонемента"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "reserved"
+msgstr "зарезервовано"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "visit(s)"
+msgstr "відвідування"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "access"
+msgstr "доступ"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Contact Details"
+msgstr "Контактні дані"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Number and Plan"
+msgstr "Номер і тариф"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Validity Period"
+msgstr "Період дії"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "people"
+msgstr "осіб"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Booking Date:"
+msgstr "Дата бронювання:"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_booking_confirmation_report
+msgid "Duration:"
+msgstr "Тривалість:"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Amount Due"
+msgstr "До сплати"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Invoice Date:"
+msgstr "Дата рахунку:"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Payment Status:"
+msgstr "Статус оплати:"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Payment Date:"
+msgstr "Дата оплати:"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Supplier"
+msgstr "Постачальник"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Customer"
+msgstr "Платник"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Company ID:"
+msgstr "Код компанії:"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Tax ID:"
+msgstr "Податковий номер:"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Service"
+msgstr "Послуга"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "No."
+msgstr "№"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Qty"
+msgstr "К-сть"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Price"
+msgstr "Ціна"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Membership Plan:"
+msgstr "Тарифний план:"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Total Amount Due"
+msgstr "Разом до сплати"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Total Paid"
+msgstr "Разом оплачено"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Payment Details"
+msgstr "Реквізити для оплати"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Recipient"
+msgstr "Отримувач"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Bank Account"
+msgstr "Банківський рахунок"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Bank"
+msgstr "Банк"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Payment Reference"
+msgstr "Призначення платежу"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Important Information"
+msgstr "Важлива інформація"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Membership No."
+msgstr "Абонемент №"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "Membership payment"
+msgstr "Оплата абонемента"
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "The amount is based on the sales price of the linked coworking product."
+msgstr "Суму визначено за ціною продажу пов’язаного продукту коворкінгу."
+
+#. module: OdooSchool_coworking_management
+#: model_terms:ir.ui.view,arch_db:OdooSchool_coworking_management.os_coworking_membership_invoice_report
+msgid "This document is an invoice for the coworking membership shown above. The membership can be activated after payment is confirmed."
+msgstr "Цей документ є рахунком за вказаний вище абонемент коворкінгу. Абонемент можна активувати після підтвердження оплати."
